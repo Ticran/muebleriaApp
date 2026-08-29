@@ -1,2 +1,2 @@
 # muebleriaApp
-app we muebleria hermanos jota
+app web muebleria hermanos jota
