@@ -1,0 +1,37 @@
+[
+    {
+        "id": 1,
+        "nombre":"Aparador Uspallata",
+        "precio": 450000,
+        "imagen": "imagenes/Aparador Uspallata.png"
+        ,
+       "destacado":true
+    },
+    {
+        "id": 2,
+        "nombre": "Mesa Comedor Pampa",
+        "precio": 280000,
+        "imagen": "imagenes/Mesa Comedor Pampa.png"
+        ,
+       "destacado":true
+    },
+    {
+        "id": 3,
+        "nombre": "Sillón Copacabana",
+        "precio": 195000,
+        "imagen": "imagenes/Sillón Copacabana.png"
+        ,
+       "destacado":true
+        
+
+    },
+    {
+        "id": 4,
+        "nombre": "Escritorio Costa",
+        "precio": 320000,
+        "imagen": "imagenes/Escritorio Costa.png",
+       "destacado":true
+
+    }
+   
+]
