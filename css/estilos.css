@@ -225,6 +225,71 @@ h3 {
     border-bottom-color: var(--siena);
 }
 
+/* ----- Formulario de Contacto ----- */
+
+.contacto {
+    padding: 4rem 0;
+}
+
+.contacto h1 {
+    color: var(--madera);
+    margin-bottom: 1rem;
+}
+
+.contacto p {
+    margin-bottom: 2rem;
+    color: var(--tinta-suave);
+    max-width: 60ch;
+}
+
+#form-contacto {
+    max-width: 600px;
+    background: var(--papel);
+    padding: 2rem;
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+}
+
+.campo label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: var(--tinta);
+}
+
+.campo input,
+.campo textarea {
+    font-family: inherit;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--borde);
+    border-radius: 8px; /* Un poco más chico que el radio general para inputs */
+    background: var(--crema);
+    color: var(--tinta);
+    font-size: 1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.campo input:focus,
+.campo textarea:focus {
+    outline: none;
+    border-color: var(--siena);
+    box-shadow: 0 0 0 3px rgba(160, 82, 45, 0.15);
+}
+
+/* Estilo para los mensajes de error del formulario */
+.error {
+    color: #d32f2f;
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+    min-height: 1.2rem;
+}
+
 /* ----- Footer ----- */
 
 .footer {
