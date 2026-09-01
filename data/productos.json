@@ -1,10 +1,12 @@
 [
     {
         "id": 1,
-        "nombre":"Aparador Uspallata",
+        "nombre": "Aparador Uspallata",
         "precio": 450000,
-        "imagen": "imagenes/Aparador Uspallata.png"
-        ,
+        "imagen": "imagenes/Aparador Uspallata.png",
+        "descripcion": "Aparador de seis puertas fabricado en nogal sostenible con tiradores metálicos en acabado latón. Su silueta minimalista realza el veteado natural de la madera,creando una pieza que combina funcionalidad y elegancia atemporal para espacios contemporáneos.",
+        "material": "Nogal macizo FSC®, herrajes de latón",
+        "fabricacion": "Fabricado artesanalmente en Argentina",
        "destacado":true
     },
     {
