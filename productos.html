@@ -5,27 +5,131 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo | Hermanos Jota</title>
-<link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="css/estilos.css">
 </head>
 
 <body>
+    <!-- Encabezado de la página -->
+    <header class="header">
+        <div class="contenedor">
+
+            <!-- Logo de Hermanos Jota -->
+            <a href="index.html" class="logo">
+                <img src="./imagenes/logo.svg" alt="Logo Hermanos Jota">
+            </a>
+
+            <!-- Menú de navegación -->
+            <nav class="menu">
+                <ul>
+                    <li>
+                        <a href="index.html">Inicio</a>
+                    </li>
+
+                    <!-- En esta sección se puede agregar información sobre la empresa -->
+                    <li>
+                        <a href="#nosotros">Nosotros</a>
+                    </li>
+
+                    <li>
+                        <a href="contacto.html">Contacto</a>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+    </header>
 
     <main>
         <section class="catalogo">
 
             <h1>Catálogo de productos</h1>
-<label for="buscador">Buscar producto:</label>
-    <input
-        type="text"
-        id="buscador"
-        placeholder="Escribí el nombre de un producto"
-    >
+            <label for="buscador">Buscar producto:</label>
+            <input type="text" id="buscador" placeholder="Escribí el nombre de un producto">
             <div id="productos-container">
                 <!-- Las tarjetas se generan con JavaScript -->
             </div>
 
         </section>
     </main>
+
+
+
+    <!-- Pie de página -->
+    <footer class="footer">
+
+        <div class="contenedor footer-grid">
+
+            <!-- Información general de la mueblería -->
+            <div>
+                <p>
+                    Más de 30 años ofreciendo muebles de calidad
+                    para cada hogar.
+                </p>
+            </div>
+
+
+            <!-- Enlaces rápidos del sitio -->
+            <div>
+                <h3>Enlaces</h3>
+
+                <ul>
+                    <li>
+                        <a href="index.html">Inicio</a>
+                    </li>
+
+                    <li>
+                        <a href="productos.html">Productos</a>
+                    </li>
+
+                    <li>
+                        <a href="#nosotros">Nosotros</a>
+                    </li>
+
+                    <li>
+                        <a href="contacto.html">Contacto</a>
+                    </li>
+                </ul>
+            </div>
+
+
+            <!-- Datos de contacto -->
+            <div>
+                <h3>Contacto</h3>
+
+                <p>📍 Av. San Juan 2847</p>
+                <p>C1232AAB</p>
+                <p>Barrio de San Cristóbal</p>
+                <p>Ciudad Autónoma de Buenos Aires</p>
+
+                <p>📞 +54 11 4567-8900</p>
+                <p>✉ info@hermanosjota.com.ar</p>
+            </div>
+
+
+            <!-- Redes sociales -->
+            <div>
+                <h3>Seguinos</h3>
+
+                <a href="#">Instagram</a>
+                <br>
+
+                <a href="#">Facebook</a>
+                <br>
+
+                <a href="#">WhatsApp</a>
+            </div>
+
+        </div>
+
+
+        <!-- Derechos de autor -->
+        <div class="copyright">
+            <p>
+                © 2026 Hermanos Jota. Todos los derechos reservados.
+            </p>
+        </div>
+
+    </footer>
 
     <script src="js/catalogo.js"></script>
 
