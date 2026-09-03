@@ -2,11 +2,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("form-contacto");
     // Referencias a los campos
     const nombre = document.getElementById("nombre");
+
     const email = document.getElementById("email");
+
     const mensaje = document.getElementById("mensaje");
     // Referencias a los spans de error
     const errorNombre = document.getElementById("error-nombre");
+
     const errorEmail = document.getElementById("error-email");
+
     const errorMensaje = document.getElementById("error-mensaje");
     // Referencia al div de éxito
     const mensajeExito = document.getElementById("mensaje-exito");
@@ -26,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     // Valida email: no vacío y formato válido
     function validarEmail() {
-        const formatoEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expresión regular para validar el email
+        const formatoEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expresión regular para validar el email (aunque se genera cada vez que el usuario sale del campo email)
         if (email.value.trim() === "") {
             errorEmail.textContent = "El email es obligatorio.";
             return false;

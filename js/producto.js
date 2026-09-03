@@ -1,15 +1,11 @@
-async function carProducto() {
+async function cargarProducto() {
     const URL = "data/productos.json";
     const contenedor = document.getElementById("producto-detalle");
     const idProducto = Number(new URLSearchParams(window.location.search).get("id"));
 
-
-
     if (!idProducto) {
-        contenedor.innerHTML = 
-        "<p>No se indicó un producto.</p>";
+        contenedor.innerHTML = "<p>No se indicó un producto.</p>";
         return;
-        
     }
 
     try {
@@ -37,55 +33,37 @@ async function carProducto() {
 
         contenedor.innerHTML = `
             <article class="producto-detalle">
-
                 <img
                     src="${producto.imagen}"
                     alt="${producto.nombre}"
                 >
-
                 <div class="producto-info">
-
                     <h1>${producto.nombre}</h1>
-
                     ${precio}
-
                     <h2>Descripción</h2>
-
                     ${descripcion}
                     <h2>Material</h2>
                     <p>${producto.material}</p>
                     <h2>Fabricación</h2>
                     <p>${producto.fabricacion}</p>
-                    
-
                     <button id="aCarrito">Añadir al carrito</button>
-
-
-                    <a href= "productos.html">
+                    <a href="productos.html">
                         Volver al catálogo
                     </a>
-
                 </div>
-
             </article>
         `;
         const agregarCarrito = document.getElementById("aCarrito");
-        agregarCarrito.addEventListener("click", function () {            
-            let carrito =
-            JSON.parse(localStorage.getItem("carrito")) || [];
+        agregarCarrito.addEventListener("click", function () {
+            let carrito = JSON.parse(localStorage.getItem("carrito")) || []; // Si no hay carrito, se crea un array vacío
             carrito.push(producto);
-            localStorage.setItem(
-                "carrito",
-                JSON.stringify(carrito));
-                alert("Producto añadido al carrito");
-            });
-} catch (error) {
-
-        contenedor.innerHTML = `
-            <p>No se pudo cargar el producto.</p>
-        `;
+            localStorage.setItem("carrito", JSON.stringify(carrito)); // Guardamos el carrito en el localStorage
+            alert("Producto añadido al carrito");
+        });
+    } catch (error) {
+        contenedor.innerHTML = `<p>No se pudo cargar el producto.</p>`;
+        console.error("Error al cargar el producto:", error);
     }
 }
 
-carProducto();
-
+cargarProducto();
