@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     // Valida email: no vacío y formato válido
     function validarEmail() {
-        const formatoEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const formatoEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expresión regular para validar el email
         if (email.value.trim() === "") {
             errorEmail.textContent = "El email es obligatorio.";
             return false;

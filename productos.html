@@ -43,9 +43,11 @@
         <section class="catalogo">
 
             <h1>Catálogo de productos</h1>
-            <label for="buscador">Buscar producto:</label>
-            <input type="text" id="buscador" placeholder="Escribí el nombre de un producto">
-            <div id="productos-container">
+            <div class="buscador">
+                <label for="buscador">Buscar producto:</label>  <!-- Etiqueta para el buscador no tenia a que referenciar en el css, por eso la puse en el div -->
+                <input type="text" id="buscador" placeholder="Escribí el nombre de un producto">  <!-- Input para el buscador -->
+            </div>
+            <div id="productos-container">  <!-- Contenedor para las tarjetas de productos -->
                 <!-- Las tarjetas se generan con JavaScript -->
             </div>
 
