@@ -377,7 +377,7 @@ h3 {
         flex: 1 1 200px;
     }
 
-
+}
 /*  CATÁLOGO MUEBLERIA */
 
 .catalogo {
@@ -577,7 +577,5 @@ h3 {
         grid-template-columns: repeat(3, 1fr);
         gap: 1.7rem;
     }
-
-}
 
 }
