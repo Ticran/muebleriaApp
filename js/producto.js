@@ -58,6 +58,7 @@ async function cargarProducto() {
             let carrito = JSON.parse(localStorage.getItem("carrito")) || []; // Si no hay carrito, se crea un array vacío
             carrito.push(producto);
             localStorage.setItem("carrito", JSON.stringify(carrito)); // Guardamos el carrito en el localStorage
+            actualizarCarrito(); // Actualizamos el contador y mostramos por consola los productos añadidos
             alert("Producto añadido al carrito");
         });
     } catch (error) {
