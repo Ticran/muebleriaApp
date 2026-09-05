@@ -40,7 +40,7 @@ Sitio web e-commerce para la mueblería **Hermanos Jota**, construido íntegrame
 | Valentina Urquiza | — |
 | Jesica Alfonso | — |
 | Cristian Andrada | [@Ticran](https://github.com/Ticran) |
-| Teresa Perello | — |
+| Teresa Perello | — | [@tereperelloo](https://github.com/tereperelloo-hub)
 
 ---
 
