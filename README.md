@@ -37,7 +37,7 @@ Sitio web e-commerce para la mueblería **Hermanos Jota**, construido íntegrame
 | Nombre | GitHub |
 |---|---|
 | Javier Agustín Melo | [@AgusMelo99](https://github.com/AgusMelo99) |
-| Valentina Urquiza | — |
+| Valentina Urquiza | [@val3t8](https://github.com/val3t8) |
 | Jesica Alfonso | — |
 | Cristian Andrada | [@Ticran](https://github.com/Ticran) |
 | Teresa Perello | [@tereperelloo](https://github.com/tereperelloo-hub) |
