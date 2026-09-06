@@ -1,15 +1,22 @@
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Outfit:wght@300;400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap");
 
 :root {
+     /* ----- Colores Oficiales (Manual de Marca) ----- */
+    --siena: #a0522d;          /* Siena Tostado (Color principal de marca) */
+    --siena-oscura: #7a3d1f;   /* Tono para hover de botones */
+    --salvia: #87a96b;         /* Verde Salvia (Acento secundario) */
+    --oro: #d4a437;            /* Vara de Oro (Detalles premium) */
+    --rosa: #c47a6d;           /* Rosa Polvoriento (Acentos suaves) */
+    --crema: #f5e6d3;          /* Alabastro Cálido (Color oficial de fondo del manual) */
+    --alabastro: #f5e6d3;
+    /* ----- Tonos Neutros y Secundarios ----- */
     --madera: #6b3e26;
-    --siena: #a0522d;
-    --siena-oscura: #7a3d1f;
-    --crema: #f4eee4;
     --lino: #e8dccb;
     --papel: #fffaf3;
     --tinta: #2c2118;
     --tinta-suave: #5c4c3d;
     --borde: #d9cbb8;
+    /* ----- Estructura y Efectos ----- */
     --sombra: 0 12px 32px rgba(44, 33, 24, 0.12);
     --radio: 12px;
     --max: 1120px;
@@ -26,7 +33,7 @@ html {
 }
 
 body {
-    font-family: "Outfit", system-ui, sans-serif;
+    font-family: "Inter", system-ui, sans-serif;
     font-weight: 400;
     color: var(--tinta);
     background: var(--crema);
@@ -54,7 +61,7 @@ ul {
 h1,
 h2,
 h3 {
-    font-family: "Cormorant Garamond", Georgia, serif;
+    font-family: "Playfair Display", Georgia, serif;
     line-height: 1.15;
 }
 
@@ -330,7 +337,7 @@ h3 {
 /* TÍTULO */
 
 .catalogo h1 {
-    font-family: "Cormorant Garamond", Georgia, serif;
+    font-family: "Playfair Display", Georgia, serif;
     font-size: clamp(2.5rem, 5vw, 4rem);
     font-weight: 700;
     color: var(--madera);
@@ -350,7 +357,7 @@ h3 {
 }
 
 .buscador label {
-    font-family: "Outfit", sans-serif;
+    font-family: "Inter", sans-serif;
     font-size: 0.95rem;
     font-weight: 500;
     color: var(--tinta-suave);
@@ -366,7 +373,7 @@ h3 {
     border: 1px solid var(--borde);
     border-radius: 8px;
 
-    font-family: "Outfit", sans-serif;
+    font-family: "Inter", sans-serif;
     font-size: 1rem;
 
     outline: none;
@@ -443,7 +450,7 @@ h3 {
 /* NOMBRE */
 
 #productos-container .producto-card h2 {
-    font-family: "Cormorant Garamond", Georgia, serif;
+    font-family: "Playfair Display", Georgia, serif;
 
     font-size: 1.7rem;
     font-weight: 700;
@@ -458,7 +465,7 @@ h3 {
 /* PRECIO */
 
 #productos-container .producto-card p {
-    font-family: "Outfit", sans-serif;
+    font-family: "Inter", sans-serif;
 
     font-size: 1.15rem;
     font-weight: 600;
@@ -477,7 +484,7 @@ h3 {
 
     padding: 0.55rem 1rem;
 
-    font-family: "Outfit", sans-serif;
+    font-family: "Inter", sans-serif;
 
     font-size: 0.9rem;
     font-weight: 600;
@@ -611,7 +618,7 @@ h3 {
 }
 
 .producto-precio {
-    font-family: "Outfit", sans-serif;
+    font-family: "Inter", sans-serif;
     font-size: 1.6rem;
     font-weight: 600;
     color: var(--siena);
@@ -625,7 +632,7 @@ h3 {
     padding: 0.85rem 1.8rem;
     background: var(--siena);
     color: #fff;
-    font-family: "Outfit", sans-serif;
+    font-family: "Inter", sans-serif;
     font-size: 1rem;
     font-weight: 600;
     letter-spacing: 0.02em;
