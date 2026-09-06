@@ -38,7 +38,7 @@ Sitio web e-commerce para la mueblería **Hermanos Jota**, construido íntegrame
 |---|---|
 | Javier Agustín Melo | [@AgusMelo99](https://github.com/AgusMelo99) |
 | Valentina Urquiza | [@val3t8](https://github.com/val3t8) |
-| Jesica Alfonso | — |
+| Jesica Alfonso | [@JesicaBelenAlfonso](https://github.com/JesicaBelenAlfonso)|
 | Cristian Andrada | [@Ticran](https://github.com/Ticran) |
 | Teresa Perello | [@tereperelloo](https://github.com/tereperelloo-hub) |
 
@@ -51,4 +51,4 @@ Sitio web e-commerce para la mueblería **Hermanos Jota**, construido íntegrame
 
 ## Deploy
 
-🌐 *Próximamente* — pendiente de publicación en servicio de hosting estático.
+🌐 Sitio web: [Hermanos Jota](https://ticran.github.io/muebleriaApp/)

@@ -261,46 +261,96 @@ h3 {
     margin-top: auto;
     background: var(--tinta);
     color: var(--lino);
-    padding: 2.5rem 0 1.25rem;
+    padding: 4rem 0 1.5rem;
 }
 
 .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+}
+
+/* Cada bloque del footer */
+.footer-grid > div {
     display: flex;
     flex-direction: column;
-    gap: 1.75rem;
+    gap: 0.5rem;
 }
 
-.footer h3 {
-    font-size: 1.2rem;
+/* Texto de presentación */
+.footer-grid > div:first-child p {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 1.4rem;
+    line-height: 1.4;
     color: var(--papel);
-    margin-bottom: 0.5rem;
+    max-width: 30rem;
 }
 
+/* Títulos */
+.footer h3 {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 1.5rem;
+    color: var(--papel);
+    margin-bottom: 0.4rem;
+}
+
+/* Listas */
+.footer ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+/* Enlaces */
 .footer a {
     color: var(--lino);
+    text-decoration: none;
+    transition: color 0.2s ease;
 }
 
 .footer a:hover,
 .footer a:focus-visible {
-    color: #fff;
+    color: var(--siena);
 }
 
-.footer ul {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
+/* Información de contacto */
+.footer-grid > div:nth-child(3) p {
+    margin: 0;
+    line-height: 1.5;
 }
 
+/* Horarios */
+.footer-grid > div:nth-child(3) strong {
+    color: var(--papel);
+    margin-top: 0.5rem;
+}
+
+/* Derechos de autor */
 .copyright {
     width: min(100% - 2rem, var(--max));
-    margin: 2rem auto 0;
-    padding-top: 1.1rem;
+    margin: 3rem auto 0;
+    padding-top: 1.2rem;
     border-top: 1px solid rgba(232, 220, 203, 0.2);
     font-size: 0.85rem;
     text-align: center;
     color: #b8a894;
 }
 
+
+/* ----- Footer en computadora ----- */
+
+@media (min-width: 768px) {
+
+    .footer-grid {
+        grid-template-columns: 1.4fr 0.8fr 1.4fr 1fr;
+        gap: 3rem;
+        align-items: start;
+    }
+
+    .footer-grid > div:first-child p {
+        font-size: 1.6rem;
+    }
+}
 /* ----- PC ----- */
 
 @media (min-width: 768px) {
@@ -348,9 +398,7 @@ h3 {
     margin-bottom: 2rem;
 }
 
-/* ========================================
-   BUSCADOR
-======================================== */
+/* BUSCADOR */
 
 .buscador {
     width: min(100%, 500px);
@@ -719,3 +767,109 @@ h3 {
     color: var(--tinta-suave);
     padding: 3rem 1rem;
 }
+/* HEADER - HERMANOS JOTA  */
+
+.header .contenedor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1.5rem 1rem;
+}
+
+.header {
+    position: static;
+   
+}
+/* Logo + nombre */
+.marca {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 0.4rem;
+}
+
+.logo img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
+
+.nombre-marca {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1;
+}
+
+.nombre-marca h2 {
+    margin: 0;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--madera);
+}
+
+.nombre-marca span {
+    margin-top: 0.4rem;
+    font-family: "Outfit", sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--tinta-suave);
+}
+
+/* Navegación */
+.menu {
+    width: 100%;
+}
+
+.menu ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.menu a {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* Carrito */
+.carrito {
+    display: flex;
+    justify-content: center;
+}
+
+.carrito a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+/* En pantallas grandes */
+@media (min-width: 768px) {
+
+    .header .contenedor {
+        padding-block: 1.5rem 1.2rem;
+        gap: 1rem;
+    }
+
+    .logo img {
+        width: 110px;
+        height: 110px;
+    }
+
+    .nombre-marca h2 {
+        font-size: 2.8rem;
+    }
+
+    .menu ul {
+        gap: 2rem;
+    }
+}
+
