@@ -55,6 +55,18 @@ document.addEventListener("DOMContentLoaded", function () {
         errorMensaje.textContent = "";
         return true;
     }
+    // Muestra el mensaje de éxito creando el nodo con DOM y textContent.
+    // Evitamos innerHTML porque los datos provienen del usuario.
+    function mostrarMensajeExito() {
+        mensajeExito.textContent = "";
+
+        const parrafo = document.createElement("p");
+        parrafo.textContent =
+            `✅ ¡Gracias, ${nombre.value.trim()}! Tu mensaje fue enviado. ` +
+            `Te respondemos a ${email.value.trim()} a la brevedad.`;
+
+        mensajeExito.appendChild(parrafo);
+    }
     // Validación en tiempo real al salir de cada campo
     nombre.addEventListener("blur", validarNombre);
     email.addEventListener("blur", validarEmail);
@@ -67,12 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const mensajeValido = validarMensaje();
         // Si todo es válido, mostramos el mensaje de éxito en el DOM
         if (nombreValido && emailValido && mensajeValido) {
-            mensajeExito.innerHTML = `
-                <p>
-                    ✅ ¡Gracias, ${nombre.value.trim()}! Tu mensaje fue enviado.
-                    Te respondemos a <strong>${email.value.trim()}</strong> a la brevedad.
-                </p>
-            `;
+            mostrarMensajeExito();
             form.reset(); // limpia los campos
         }
     });
