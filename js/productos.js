@@ -1,6 +1,5 @@
 // Carga los productos destacados desde el array de productos (js/datos.js)
 async function cargarDestacados() {
-
     // Buscamos el contenedor donde se van a mostrar los productos
     const container = document.getElementById("productos-container");
 
@@ -10,14 +9,12 @@ async function cargarDestacados() {
 
         // Nos quedamos solamente con los productos marcados como destacados
         // y mostramos como máximo los primeros cuatro
-        const destacados = productos
-            .filter(producto => producto.destacado)
-            .slice(0, 4);
+        const destacados = productos.filter((producto) => producto.destacado).slice(0, 4);
 
         // Limpiamos el contenedor
         container.textContent = "";
         // Recorremos los productos destacados y creamos una tarjeta para cada uno
-        destacados.forEach(producto => {
+        destacados.forEach((producto) => {
             container.appendChild(crearTarjeta(producto));
         });
     } catch (error) {

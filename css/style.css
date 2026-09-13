@@ -1,13 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap");
 
 :root {
-     /* ----- Colores Oficiales (Manual de Marca) ----- */
-    --siena: #a0522d;          /* Siena Tostado (Color principal de marca) */
-    --siena-oscura: #7a3d1f;   /* Tono para hover de botones */
-    --salvia: #87a96b;         /* Verde Salvia (Acento secundario) */
-    --oro: #d4a437;            /* Vara de Oro (Detalles premium) */
-    --rosa: #c47a6d;           /* Rosa Polvoriento (Acentos suaves) */
-    --crema: #f5e6d3;          /* Alabastro Cálido (Color oficial de fondo del manual) */
+    /* ----- Colores Oficiales (Manual de Marca) ----- */
+    --siena: #a0522d; /* Siena Tostado (Color principal de marca) */
+    --siena-oscura: #7a3d1f; /* Tono para hover de botones */
+    --salvia: #87a96b; /* Verde Salvia (Acento secundario) */
+    --oro: #d4a437; /* Vara de Oro (Detalles premium) */
+    --rosa: #c47a6d; /* Rosa Polvoriento (Acentos suaves) */
+    --crema: #f5e6d3; /* Alabastro Cálido (Color oficial de fondo del manual) */
     --alabastro: #f5e6d3;
     /* ----- Tonos Neutros y Secundarios ----- */
     --madera: #6b3e26;
@@ -22,7 +22,7 @@
     --max: 1120px;
 }
 
-*{
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -158,7 +158,12 @@ h3 {
     min-height: 75vh;
     padding: 3.5rem 1.25rem;
     background:
-        linear-gradient(160deg, rgba(44, 33, 24, 0.72) 0%, rgba(107, 62, 38, 0.45) 55%, rgba(160, 82, 45, 0.35) 100%),
+        linear-gradient(
+            160deg,
+            rgba(44, 33, 24, 0.72) 0%,
+            rgba(107, 62, 38, 0.45) 55%,
+            rgba(160, 82, 45, 0.35) 100%
+        ),
         radial-gradient(circle at 20% 20%, #c4a574 0%, #6b3e26 45%, #2c2118 100%);
     color: var(--papel);
 }
@@ -196,7 +201,9 @@ h3 {
     font-weight: 500;
     font-size: 0.95rem;
     border-radius: 999px;
-    transition: background 0.2s ease, transform 0.2s ease;
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
     text-transform: uppercase;
     letter-spacing: 0.08em; /* Especificación manual */
 }
@@ -274,7 +281,9 @@ h3 {
     background: var(--crema);
     color: var(--tinta);
     font-size: 1rem;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .campo input:focus,
@@ -371,7 +380,6 @@ h3 {
     .footer-grid > div {
         flex: 1 1 200px;
     }
-
 }
 /*  CATÁLOGO MUEBLERIA */
 
@@ -435,12 +443,10 @@ h3 {
 .buscador input:focus {
     border-color: var(--siena);
 
-    box-shadow:
-        0 0 0 3px rgba(160, 82, 45, 0.15);
+    box-shadow: 0 0 0 3px rgba(160, 82, 45, 0.15);
 }
 
-
-/*GRILLA DE PRODUCTOS */ 
+/*GRILLA DE PRODUCTOS */
 
 #productos-container {
     display: grid;
@@ -473,8 +479,7 @@ h3 {
 #productos-container .producto-card:hover {
     transform: translateY(-6px);
 
-    box-shadow:
-        0 18px 40px rgba(44, 33, 24, 0.18);
+    box-shadow: 0 18px 40px rgba(44, 33, 24, 0.18);
 }
 
 /* IMAGEN DEL PRODUCTO */
@@ -561,22 +566,18 @@ h3 {
 /* TABLET */
 
 @media (min-width: 600px) {
-
     #productos-container {
         grid-template-columns: repeat(2, 1fr);
     }
-
 }
 
 /* COMPUTADORA */
 
 @media (min-width: 900px) {
-
     #productos-container {
         grid-template-columns: repeat(3, 1fr);
         gap: 1.7rem;
     }
-
 }
 
 /* ----- Carrito simulado del header ----- */
@@ -592,7 +593,9 @@ h3 {
     border: 1px solid var(--borde);
     border-radius: 999px;
     background: var(--papel);
-    transition: color 0.2s ease, border-color 0.2s ease;
+    transition:
+        color 0.2s ease,
+        border-color 0.2s ease;
 }
 
 .carrito a:hover,
@@ -693,7 +696,9 @@ h3 {
     border: none;
     border-radius: 999px;
     cursor: pointer;
-    transition: background 0.2s ease, transform 0.2s ease;
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
 }
 
 #aCarrito:hover,
@@ -742,7 +747,6 @@ h3 {
 /* ----- Detalle de producto (tablet/desktop) ----- */
 
 @media (min-width: 768px) {
-
     .producto-detalle {
         flex-direction: row;
         align-items: flex-start;
@@ -758,7 +762,6 @@ h3 {
     .producto-info {
         flex: 1 1 55%;
     }
-
 }
 
 .mensaje-carga {

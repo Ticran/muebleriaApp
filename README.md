@@ -13,12 +13,12 @@ Sitio web e-commerce para la mueblería **Hermanos Jota**, construido íntegrame
 
 ## Páginas y funcionalidades
 
-| Página | Funcionalidad |
-|---|---|
-| `index.html` | Hero banner, productos destacados cargados dinámicamente desde JSON |
-| `productos.html` | Grilla de productos con buscador en tiempo real |
-| `producto.html` | Detalle de producto con imagen, descripción, precio y botón de carrito |
-| `contacto.html` | Formulario con validación del lado del cliente y mensaje de éxito en el DOM |
+| Página           | Funcionalidad                                                               |
+| ---------------- | --------------------------------------------------------------------------- |
+| `index.html`     | Hero banner, productos destacados cargados dinámicamente desde JSON         |
+| `productos.html` | Grilla de productos con buscador en tiempo real                             |
+| `producto.html`  | Detalle de producto con imagen, descripción, precio y botón de carrito      |
+| `contacto.html`  | Formulario con validación del lado del cliente y mensaje de éxito en el DOM |
 
 ---
 
@@ -34,14 +34,13 @@ Sitio web e-commerce para la mueblería **Hermanos Jota**, construido íntegrame
 
 ## Equipo
 
-| Nombre | GitHub |
-|---|---|
-| Javier Agustín Melo | [@AgusMelo99](https://github.com/AgusMelo99) |
-| Valentina Urquiza | [@val3t8](https://github.com/val3t8) |
-| Jesica Alfonso | [@JesicaBelenAlfonso](https://github.com/JesicaBelenAlfonso)|
-| Cristian Andrada | [@Ticran](https://github.com/Ticran) |
-| Teresa Perello | [@tereperelloo](https://github.com/tereperelloo-hub) |
-
+| Nombre              | GitHub                                                       |
+| ------------------- | ------------------------------------------------------------ |
+| Javier Agustín Melo | [@AgusMelo99](https://github.com/AgusMelo99)                 |
+| Valentina Urquiza   | [@val3t8](https://github.com/val3t8)                         |
+| Jesica Alfonso      | [@JesicaBelenAlfonso](https://github.com/JesicaBelenAlfonso) |
+| Cristian Andrada    | [@Ticran](https://github.com/Ticran)                         |
+| Teresa Perello      | [@tereperelloo](https://github.com/tereperelloo-hub)         |
 
 ---
 

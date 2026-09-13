@@ -6,7 +6,6 @@ async function cargarProductos(listaProductos = null) {
     try {
         // Si no recibimos una lista, cargamos los productos del array de js/datos.js
         if (!listaProductos) {
-
             container.innerHTML = `<p class="mensaje-carga">🪑 Preparando nuestro catálogo...</p>`;
 
             // Carga asíncrona simulada del catálogo (Promise + setTimeout)
@@ -16,7 +15,8 @@ async function cargarProductos(listaProductos = null) {
 
         renderProductos(listaProductos);
     } catch (error) {
-        container.textContent = "No se pudieron cargar los productos. Intentalo nuevamente más tarde.";
+        container.textContent =
+            "No se pudieron cargar los productos. Intentalo nuevamente más tarde.";
         console.error("Error al cargar los productos:", error);
     }
 }
@@ -36,7 +36,7 @@ function renderProductos(listaProductos) {
     }
 
     // Recorremos los productos y creamos una tarjeta para cada uno
-    listaProductos.forEach(producto => {
+    listaProductos.forEach((producto) => {
         container.appendChild(crearTarjeta(producto));
     });
 }
@@ -75,10 +75,9 @@ const buscador = document.getElementById("buscador");
 
 if (buscador) {
     buscador.addEventListener("input", function () {
-
         const textoBuscado = buscador.value.toLowerCase();
 
-        const productosFiltrados = todosLosProductos.filter(producto =>
+        const productosFiltrados = todosLosProductos.filter((producto) =>
             producto.nombre.toLowerCase().includes(textoBuscado)
         );
 
@@ -86,6 +85,5 @@ if (buscador) {
         cargarProductos(productosFiltrados);
     });
 }
-
 
 cargarProductos();

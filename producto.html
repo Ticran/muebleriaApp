@@ -1,150 +1,140 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Producto | Hermanos Jota</title>
+        <meta
+            name="description"
+            content="Mueblería Hermanos Jota. Muebles de diseño fabricados en Argentina: calidad, confort y estilo para cada hogar."
+        />
+        <link rel="icon" type="image/svg+xml" href="imagenes/logo.svg" />
+        <link rel="stylesheet" href="css/style.css" />
+    </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Producto | Hermanos Jota</title>
-    <meta name="description" content="Mueblería Hermanos Jota. Muebles de diseño fabricados en Argentina: calidad, confort y estilo para cada hogar.">
-    <link rel="icon" type="image/svg+xml" href="imagenes/logo.svg">
-    <link rel="stylesheet" href="css/style.css">
-</head>
+    <body>
+        <!-- Encabezado de la página -->
+        <header class="header">
+            <div class="contenedor">
+                <!-- Logo y nombre de la mueblería -->
+                <div class="marca">
+                    <a href="index.html" class="logo">
+                        <img src="./imagenes/logo.svg" alt="Logo Hermanos Jota" />
+                    </a>
 
-<body>
-    <!-- Encabezado de la página -->
-    <header class="header">
-        <div class="contenedor">
+                    <div class="nombre-marca">
+                        <h2>Hermanos Jota</h2>
+                        <span>Mueblería</span>
+                    </div>
+                </div>
 
-            <!-- Logo y nombre de la mueblería -->
-            <div class="marca">
-                <a href="index.html" class="logo">
-                    <img src="./imagenes/logo.svg" alt="Logo Hermanos Jota">
-                </a>
+                <!-- Menú de navegación -->
+                <nav class="menu">
+                    <ul>
+                        <li>
+                            <a href="index.html">Inicio</a>
+                        </li>
 
-                <div class="nombre-marca">
-                    <h2>Hermanos Jota</h2>
-                    <span>Mueblería</span>
+                        <li>
+                            <a href="productos.html">Productos</a>
+                        </li>
+
+                        <li>
+                            <a href="contacto.html">Contacto</a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <!-- Carrito simulado con contador -->
+                <div class="carrito">
+                    <a href="#" id="carrito-link" aria-label="Ver carrito">
+                        <img src="imagenes/shopping-cart.svg" alt="carrito" />
+                        <span id="carrito-contador">0</span>
+                    </a>
+                </div>
+            </div>
+        </header>
+        <main>
+            <section id="producto-detalle"></section>
+        </main>
+
+        <!-- Pie de página -->
+        <footer class="footer">
+            <div class="contenedor footer-grid">
+                <!-- Información general de la mueblería -->
+                <div>
+                    <p>Más de 30 años ofreciendo muebles de calidad para cada hogar.</p>
+                </div>
+
+                <!-- Enlaces rápidos del sitio -->
+                <div>
+                    <h3>Enlaces</h3>
+
+                    <ul>
+                        <li>
+                            <a href="index.html">Inicio</a>
+                        </li>
+
+                        <li>
+                            <a href="productos.html">Productos</a>
+                        </li>
+
+                        <li>
+                            <a href="contacto.html">Contacto</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Datos de contacto -->
+                <div>
+                    <h3>Contacto</h3>
+
+                    <p>📍 Av. San Juan 2847</p>
+                    <p>C1232AAB</p>
+                    <p>Barrio de San Cristóbal</p>
+                    <p>Ciudad Autónoma de Buenos Aires</p>
+
+                    <p>📞 +54 11 4567-8900</p>
+                    <p>✉ info@hermanosjota.com.ar</p>
+                    <p><strong>Horarios:</strong></p>
+                    <p>Lun a Vie: 10:00 - 19:00</p>
+                    <p>Sáb: 10:00 - 14:00</p>
+                </div>
+
+                <!-- Redes sociales -->
+                <div>
+                    <h3>Seguinos</h3>
+
+                    <ul>
+                        <li>
+                            <a
+                                href="https://instagram.com/hermanosjota_ba"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Instagram (@hermanosjota_ba)
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="https://wa.me/541145678900"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                WhatsApp (+54 11 4567-8900)
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
 
-
-            <!-- Menú de navegación -->
-            <nav class="menu">
-                <ul>
-                    <li>
-                        <a href="index.html">Inicio</a>
-                    </li>
-
-                    <li>
-                        <a href="productos.html">Productos</a>
-                    </li>
-
-                    <li>
-                        <a href="contacto.html">Contacto</a>
-                    </li>
-                </ul>
-            </nav>
-
-            <!-- Carrito simulado con contador -->
-            <div class="carrito">
-                <a href="#" id="carrito-link" aria-label="Ver carrito">
-                    <img src="imagenes/shopping-cart.svg" alt="carrito">
-                    <span id="carrito-contador">0</span>
-                </a>
+            <!-- Derechos de autor -->
+            <div class="copyright">
+                <p>© 2026 Hermanos Jota. Todos los derechos reservados.</p>
             </div>
-
-        </div>
-    </header>
-    <main>
-        <section id="producto-detalle">
-
-        </section>
-
-    </main>
-
-    <!-- Pie de página -->
-    <footer class="footer">
-
-        <div class="contenedor footer-grid">
-
-            <!-- Información general de la mueblería -->
-            <div>
-                <p>
-                    Más de 30 años ofreciendo muebles de calidad
-                    para cada hogar.
-                </p>
-            </div>
-
-
-            <!-- Enlaces rápidos del sitio -->
-            <div>
-                <h3>Enlaces</h3>
-
-                <ul>
-                    <li>
-                        <a href="index.html">Inicio</a>
-                    </li>
-
-                    <li>
-                        <a href="productos.html">Productos</a>
-                    </li>
-
-                    <li>
-                        <a href="contacto.html">Contacto</a>
-                    </li>
-                </ul>
-            </div>
-
-
-            <!-- Datos de contacto -->
-            <div>
-                <h3>Contacto</h3>
-
-                <p>📍 Av. San Juan 2847</p>
-                <p>C1232AAB</p>
-                <p>Barrio de San Cristóbal</p>
-                <p>Ciudad Autónoma de Buenos Aires</p>
-
-                <p>📞 +54 11 4567-8900</p>
-                <p>✉ info@hermanosjota.com.ar</p>
-                <p><strong>Horarios:</strong></p>
-                <p>Lun a Vie: 10:00 - 19:00</p>
-                <p>Sáb: 10:00 - 14:00</p>
-            </div>
-
-
-            <!-- Redes sociales -->
-            <div>
-                <h3>Seguinos</h3>
-
-                <ul>
-                    <li>
-                        <a href="https://instagram.com/hermanosjota_ba" target="_blank" rel="noopener noreferrer">
-                            Instagram (@hermanosjota_ba)
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://wa.me/541145678900" target="_blank" rel="noopener noreferrer">
-                            WhatsApp (+54 11 4567-8900)
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-        </div>
-
-
-        <!-- Derechos de autor -->
-        <div class="copyright">
-            <p>
-                © 2026 Hermanos Jota. Todos los derechos reservados.
-            </p>
-        </div>
-
-    </footer>
-    <script src="js/carrito.js"></script>
-    <script src="js/datos.js"></script>
-    <script src="js/producto.js"></script>
-</body>
-
+        </footer>
+        <script src="js/carrito.js"></script>
+        <script src="js/datos.js"></script>
+        <script src="js/producto.js"></script>
+    </body>
 </html>

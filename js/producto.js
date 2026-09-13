@@ -11,8 +11,7 @@ async function cargarProducto() {
         // Carga asíncrona simulada del catálogo (Promise + setTimeout)
         const productos = await cargarProductosAsync();
 
-        const producto = productos.find(
-            item => item.id === idProducto);
+        const producto = productos.find((item) => item.id === idProducto);
 
         if (!producto) {
             contenedor.innerHTML = "<p>Producto seleccionado no disponible.</p>";
@@ -65,7 +64,7 @@ function mostrarProducto(producto) {
         info.appendChild(crearSubtitulo("Medidas"));
         info.appendChild(crearParrafo(producto.medidas));
     }
-    
+
     if (producto.material) {
         info.appendChild(crearSubtitulo("Material"));
         info.appendChild(crearParrafo(producto.material));
