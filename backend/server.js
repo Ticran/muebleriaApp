@@ -2,8 +2,13 @@ const express = require("express");
 const app = express();
 const PORT = 3000;
 
+// Middleware de logging
+const logger = require("./middlewares/logger.js");
+
 // Rutas de la API
 const productRoutes = require("./routes/productRoutes");
+// T08 - Activar middleware 
+app.use(logger);
 
 // Ruta de prueba
 app.get("/", (req, res) => {
