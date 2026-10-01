@@ -10,6 +10,11 @@ const router = express.Router();
 // Catálogo de productos (array de objetos)
 const productos = require("../data/productos.js");
 
+// GET /api/productos
+router.get("/", (req, res) => {
+    res.json(productos);
+});
+
 // T07 - GET /api/productos/:id
 router.get("/:id", (req, res, next) => {
     const id = Number(req.params.id);

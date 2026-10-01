@@ -1,13 +1,17 @@
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const PORT = 3000;
+
+// Middleware de CORS
+app.use(cors());
 
 // Middleware de logging
 const logger = require("./middlewares/logger.js");
 
 // Rutas de la API
 const productRoutes = require("./routes/productRoutes");
-// T08 - Activar middleware 
+// T08 - Activar middleware
 app.use(logger);
 
 // Ruta de prueba

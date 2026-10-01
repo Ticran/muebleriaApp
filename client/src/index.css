@@ -1,111 +1,479 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap");
+
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+    /* ----- Colores ----- */
+    --siena: #a0522d;
+    --siena-oscura: #7a3d1f;
+    --salvia: #87a96b;
+    --oro: #d4a437;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+    --crema: #f5e6d3;
+    --madera: #6b3e26;
+    --lino: #e8dccb;
+    --papel: #fffaf3;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    --tinta: #2c2118;
+    --tinta-suave: #5c4c3d;
+    --borde: #d9cbb8;
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+    /* ----- Estructura ----- */
+    --sombra: 0 12px 32px rgba(44, 33, 24, 0.12);
+    --radio: 12px;
+    --max: 1120px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
+/* ----- Reset ----- */
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 body {
-  margin: 0;
+    font-family: "Inter", system-ui, sans-serif;
+    font-weight: 400;
+    color: var(--tinta);
+    background: var(--crema);
+    line-height: 1.6;
+    min-height: 100vh;
 }
 
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
+/* ----- Elementos generales ----- */
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+ul {
+    list-style: none;
 }
 
 h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+h2,
+h3 {
+    font-family: "Playfair Display", Georgia, serif;
+    line-height: 1.15;
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
+.contenedor {
+    width: min(100% - 2rem, var(--max));
+    margin-inline: auto;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+/* ========================================
+   HEADER
+======================================== */
+
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+
+    background: rgba(244, 238, 228, 0.92);
+    border-bottom: 1px solid var(--borde);
+
+    backdrop-filter: blur(10px);
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+.header .contenedor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 0.75rem;
+    padding-block: 0.85rem;
+}
+
+/* ----- Marca ----- */
+
+.marca {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+    gap: 0.4rem;
+}
+
+.logo img {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+}
+
+.nombre-marca {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    line-height: 1.15;
+}
+
+.nombre-marca h2 {
+    margin: 0;
+
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+
+    color: var(--madera);
+
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.nombre-marca span {
+    margin-top: 0.25rem;
+
+    font-family: "Inter", sans-serif;
+    font-size: 0.75rem;
+    font-weight: 300;
+
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+
+    color: var(--tinta-suave);
+}
+
+/* ----- Menú ----- */
+
+.menu ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    gap: 0.35rem 1.1rem;
+}
+
+.menu a {
+    font-size: 0.92rem;
+    font-weight: 500;
+
+    color: var(--tinta-suave);
+
+    padding: 0.25rem 0;
+
+    border-bottom: 2px solid transparent;
+}
+
+.menu a:hover,
+.menu a:focus-visible {
+    color: var(--siena);
+    border-bottom-color: var(--siena);
+}
+
+/* ========================================
+   CATÁLOGO
+======================================== */
+
+.catalogo {
+    width: min(100% - 2rem, var(--max));
+
+    margin: 0 auto;
+
+    padding: 4rem 0 5rem;
+}
+
+/* ----- Título ----- */
+
+.catalogo h1 {
+    font-family: "Playfair Display", Georgia, serif;
+
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 700;
+
+    color: var(--madera);
+
+    margin-bottom: 2rem;
+
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* ========================================
+   GRILLA DE PRODUCTOS
+======================================== */
+
+.productos-grid {
+    display: grid;
+
+    grid-template-columns: 1fr;
+
+    gap: 1.5rem;
+}
+
+/* ========================================
+   PRODUCT CARD
+======================================== */
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+
+    background: var(--papel);
+
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+
+    overflow: hidden;
+
+    box-shadow: var(--sombra);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+/* ----- Hover ----- */
+
+.product-card:hover {
+    transform: translateY(-6px);
+
+    box-shadow: 0 18px 40px rgba(44, 33, 24, 0.18);
+}
+
+/* ----- Imagen ----- */
+
+.product-card img {
+    width: 100%;
+    height: 250px;
+
+    padding: 1.2rem;
+
+    background: var(--lino);
+
+    object-fit: contain;
+
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover img {
+    transform: scale(1.04);
+}
+
+/* ----- Nombre ----- */
+
+.product-card h3 {
+    font-family: "Playfair Display", Georgia, serif;
+
+    font-size: 1.7rem;
+    font-weight: 700;
+
+    line-height: 1.15;
+
+    color: var(--madera);
+
+    padding: 1.2rem 1.2rem 0.3rem;
+}
+
+/* ----- Precio ----- */
+
+.product-card .precio {
+    font-family: "Inter", sans-serif;
+
+    font-size: 1.15rem;
+    font-weight: 700;
+
+    color: var(--siena);
+
+    padding: 0 1.2rem;
+}
+
+/* ----- Botón ----- */
+
+.product-card button {
+    align-self: flex-start;
+
+    margin: 1rem 1.2rem 1.3rem;
+
+    padding: 0.55rem 1rem;
+
+    font-family: "Inter", sans-serif;
+
+    font-size: 0.9rem;
+    font-weight: 500;
+
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+
+    color: var(--papel);
+    background: var(--siena);
+
+    border: none;
+    border-radius: 999px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.product-card button:hover {
+    background: var(--siena-oscura);
+    transform: translateY(-1px);
+}
+
+/* ========================================
+   MENSAJES
+======================================== */
+
+.mensaje-carga {
+    grid-column: 1 / -1;
+
+    text-align: center;
+
+    font-size: 1.15rem;
+    font-style: italic;
+
+    color: var(--tinta-suave);
+
+    padding: 3rem 1rem;
+}
+
+.sin-resultados {
+    grid-column: 1 / -1;
+
+    padding: 2.5rem 1.5rem;
+
+    text-align: center;
+
+    color: var(--tinta-suave);
+
+    background: var(--papel);
+
+    border: 1px dashed var(--borde);
+
+    border-radius: var(--radio);
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+/* Tablet */
+
+@media (min-width: 600px) {
+    .productos-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Computadora */
+
+@media (min-width: 900px) {
+    .productos-grid {
+        grid-template-columns: repeat(3, 1fr);
+
+        gap: 1.7rem;
+    }
+
+    .header .contenedor {
+        flex-direction: row;
+
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .menu ul {
+        justify-content: flex-end;
+    }
+
+    .nombre-marca h2 {
+        font-size: 1.8rem;
+    }
+}
+/* ========================================
+   FOOTER
+======================================== */
+
+.footer {
+    margin-top: auto;
+
+    background: var(--tinta);
+    color: var(--lino);
+
+    padding: 2.5rem 0 1.25rem;
+}
+
+.footer-grid {
+    display: flex;
+    flex-direction: column;
+
+    gap: 1.75rem;
+}
+
+.footer h3 {
+    font-family: "Playfair Display", Georgia, serif;
+
+    font-size: 1.2rem;
+
+    color: var(--papel);
+
+    margin-bottom: 0.5rem;
+}
+
+.footer a {
+    color: var(--lino);
+
+    transition: color 0.2s ease;
+}
+
+.footer a:hover,
+.footer a:focus-visible {
+    color: #fff;
+}
+
+.footer ul {
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.35rem;
+}
+
+.copyright {
+    width: min(100% - 2rem, var(--max));
+
+    margin: 2rem auto 0;
+
+    padding-top: 1.1rem;
+
+    border-top: 1px solid rgba(232, 220, 203, 0.2);
+
+    font-size: 0.75rem;
+    font-weight: 300;
+
+    letter-spacing: 0.02em;
+
+    text-align: center;
+
+    color: #b8a894;
+}
+
+/* ----- Footer en computadora ----- */
+
+@media (min-width: 768px) {
+    .footer-grid {
+        flex-direction: row;
+
+        flex-wrap: wrap;
+
+        justify-content: space-between;
+    }
+
+    .footer-grid > div {
+        flex: 1 1 200px;
+    }
 }
