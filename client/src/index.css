@@ -477,3 +477,148 @@ h3 {
         flex: 1 1 200px;
     }
 }
+
+/* =========================
+   DETALLE DEL PRODUCTO
+   ========================= */
+
+.producto-detalle {
+    max-width: 1100px;
+    margin: 50px auto;
+    padding: 35px;
+
+    display: flex;
+    align-items: center;
+    gap: 60px;
+
+    background-color: #fffaf3;
+    border: 1px solid #d9cbb8;
+    border-radius: 16px;
+
+    box-shadow: 0 12px 32px rgba(44, 33, 24, 0.12);
+}
+
+.detalle-imagen {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.detalle-imagen img {
+    width: 100%;
+    max-width: 450px;
+    height: 420px;
+    object-fit: contain;
+
+    border-radius: 12px;
+}
+
+.detalle-info {
+    flex: 1;
+}
+
+.detalle-categoria {
+    margin-bottom: 10px;
+
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: #a0522d;
+    font-weight: bold;
+}
+
+.detalle-info h1 {
+    margin: 0 0 20px;
+
+    font-family: "Cormorant Garamond", serif;
+    font-size: 42px;
+    color: #2c2118;
+}
+
+.detalle-precio {
+    margin: 0 0 15px;
+
+    font-size: 30px;
+    font-weight: bold;
+    color: #6b3e26;
+}
+
+.detalle-stock {
+    margin-bottom: 30px;
+
+    font-size: 16px;
+    color: #5c4c3d;
+}
+
+.detalle-botones {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.btn-comprar,
+.btn-volver {
+    padding: 12px 24px;
+
+    border: none;
+    border-radius: 8px;
+
+    font-size: 16px;
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.btn-comprar {
+    background-color: #6b3e26;
+    color: white;
+}
+
+.btn-comprar:hover {
+    background-color: #7a3d1f;
+    transform: translateY(-2px);
+}
+
+.btn-volver {
+    background-color: #e8dccb;
+    color: #2c2118;
+}
+
+.btn-volver:hover {
+    background-color: #d9cbb8;
+    transform: translateY(-2px);
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 768px) {
+    .producto-detalle {
+        margin: 25px 15px;
+        padding: 25px;
+
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .detalle-imagen img {
+        height: 300px;
+    }
+
+    .detalle-info h1 {
+        font-size: 34px;
+    }
+
+    .detalle-precio {
+        font-size: 26px;
+    }
+
+    .detalle-botones {
+        flex-direction: column;
+    }
+
+    .btn-comprar,
+    .btn-volver {
+        width: 100%;
+    }
+}

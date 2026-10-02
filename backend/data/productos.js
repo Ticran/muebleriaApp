@@ -3,7 +3,7 @@ const productos = [
         id: 1,
         nombre: "Silla Córdoba",
         precio: 120000,
-        imagen: "imagenes/Silla Cordoba.png",
+        imagen: "imagenes/Sillas Córdoba.png",
         stock: 20
     },
     {
@@ -17,7 +17,7 @@ const productos = [
         id: 3,
         nombre: "Sillón Copacabana",
         precio: 195000,
-        imagen: "imagenes/Sillon Copacabana.png",
+        imagen: "imagenes/Sillón Copacabana.png",
         stock: 24
     },
     {
@@ -35,10 +35,10 @@ const productos = [
         stock: 7
     },
     {
-        id: 6,
-        nombre: "Cama Patagonia",
-        precio: 420000,
-        imagen: "imagenes/Cama Patagonia.png",
+        id: 5,
+        nombre: "Mesa de Centro Araucaria",
+        precio: 230000,
+        imagen: "imagenes/Mesa de Centro Araucaria.png",
         stock: 10
     }
 ];
