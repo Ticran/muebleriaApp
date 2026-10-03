@@ -1,16 +1,18 @@
-
-function Navbar() {
+function Navbar({ cantidadCarrito = 0, onNavegar }) {
     return (
         <header className="header">
             <div className="contenedor">
-
                 {/* Logo y nombre de la mueblería */}
                 <div className="marca">
-                    <a href="/" className="logo">
-                        <img
-                            src="../imagenes/logo.svg"
-                            alt="Logo Hermanos Jota"
-                        />
+                    <a
+                        href="#catalogo"
+                        className="logo"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            if (onNavegar) onNavegar("catalogo");
+                        }}
+                    >
+                        <img src="/imagenes/logo.svg" alt="Logo Hermanos Jota" />
                     </a>
 
                     <div className="nombre-marca">
@@ -23,27 +25,56 @@ function Navbar() {
                 <nav className="menu">
                     <ul>
                         <li>
-                            <a href="/">Inicio</a>
+                            <a
+                                href="#inicio"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    if (onNavegar) onNavegar("inicio");
+                                }}
+                            >
+                                Inicio
+                            </a>
                         </li>
 
                         <li>
-                            <a href="/catalogo">Catálogo</a>
+                            <a
+                                href="#catalogo"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    if (onNavegar) onNavegar("catalogo");
+                                }}
+                            >
+                                Catálogo
+                            </a>
                         </li>
 
                         <li>
-                            <a href="/nosotros">Nosotros</a>
-                        </li>
-
-                        <li>
-                            <a href="/contacto">Contacto</a>
+                            <a
+                                href="#contacto"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    if (onNavegar) onNavegar("contacto");
+                                }}
+                            >
+                                Contacto
+                            </a>
                         </li>
                     </ul>
                 </nav>
-
+                <div className="carrito">
+                    <a
+                        href="#carrito"
+                        id="carrito-link"
+                        aria-label="Ver carrito"
+                        onClick={(e) => e.preventDefault()}
+                    >
+                        <img src="/imagenes/shopping-cart.svg" alt="Carrito de compras" />
+                        <span id="carrito-contador">{cantidadCarrito}</span>
+                    </a>
+                </div>
             </div>
         </header>
     );
 }
 
 export default Navbar;
-
