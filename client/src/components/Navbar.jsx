@@ -61,6 +61,7 @@ function Navbar({ cantidadCarrito = 0, onNavegar }) {
                         </li>
                     </ul>
                 </nav>
+                {/* Carrito con contador que se actualiza vía props */}
                 <div className="carrito">
                     <a
                         href="#carrito"
