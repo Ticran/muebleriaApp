@@ -1,9 +1,4 @@
-function ProductDetail({ producto, onVolver }) {
-    function comprar() {
-        console.log("Producto comprado:", producto);
-        alert(`Agregaste "${producto.nombre}" al carrito`);
-    }
-
+function ProductDetail({ producto, onAgregar, onVolver }) {
     return (
         <section className="producto-detalle">
             <div className="detalle-imagen">
@@ -20,8 +15,8 @@ function ProductDetail({ producto, onVolver }) {
                 <p className="detalle-stock">Stock disponible: {producto.stock}</p>
 
                 <div className="detalle-botones">
-                    <button className="btn-comprar" onClick={comprar}>
-                        Comprar
+                    <button className="btn-comprar" onClick={() => onAgregar(producto)}>
+                        Agregar al carrito
                     </button>
 
                     <button className="btn-volver" onClick={onVolver}>
