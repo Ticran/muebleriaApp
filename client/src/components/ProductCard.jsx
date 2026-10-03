@@ -1,21 +1,18 @@
-function ProductCard({ producto, onSeleccionar }) {
+function ProductCard({ producto, onSeleccionar, onAgregar }) {
     return (
         <div className="product-card">
-            <img src={producto.imagen} alt={producto.nombre} />
+            <img src={`/${producto.imagen}`} alt={producto.nombre} />
 
             <h3>{producto.nombre}</h3>
 
-            <p className="precio">${producto.precio}</p>
+            <p className="precio">${producto.precio.toLocaleString("es-AR")}</p>
 
-            <button
-                onClick={() => {
-                    console.log("PRODUCTO:", producto);
-                    console.log("FUNCION:", onSeleccionar);
-                    onSeleccionar(producto);
-                }}
-            >
-                Ver Detalle
-            </button>
+            <div className="acciones-card">
+                <button onClick={() => onSeleccionar(producto)}>Ver Detalle</button>
+                {onAgregar && (
+                    <button onClick={() => onAgregar(producto)}>Agregar al carrito</button>
+                )}
+            </div>
         </div>
     );
 }
