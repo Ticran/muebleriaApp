@@ -35,7 +35,7 @@ const productos = [
         stock: 7
     },
     {
-        id: 5,
+        id: 6,
         nombre: "Mesa de Centro Araucaria",
         precio: 230000,
         imagen: "imagenes/Mesa de Centro Araucaria.png",

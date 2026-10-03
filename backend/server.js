@@ -3,6 +3,9 @@ const cors = require("cors");
 const app = express();
 const PORT = 3000;
 
+// Middleware para parsear bodies JSON (futuras peticiones POST)
+app.use(express.json());
+
 // Middleware de CORS
 app.use(cors());
 
@@ -11,18 +14,24 @@ const logger = require("./middlewares/logger.js");
 
 // Rutas de la API
 const productRoutes = require("./routes/productRoutes");
-// T08 - Activar middleware
 app.use(logger);
 
-// Ruta de prueba
+// Ruta de prueba inicial
 app.get("/", (req, res) => {
     res.send("<h1>¡Servidor de Mueblería Hermanos Jota funcionando!</h1>");
 });
 
-// T05 - Montaje del router de productos en /api/productos
+//Montaje del router de productos en /api/productos
 app.use("/api/productos", productRoutes);
 
-// T09 - Middleware centralizado de manejo de errores (404 / 500)
+// Manejador de rutas no encontradas (404)
+app.use((req, res, next) => {
+    const error = new Error("Ruta no encontrada");
+    error.status = 404;
+    next(error);
+});
+
+//Middleware centralizado de manejo de errores (404 / 500)
 app.use((err, req, res, next) => {
     const status = err.status || 500;
     const mensaje = err.message || "Error interno del servidor";
