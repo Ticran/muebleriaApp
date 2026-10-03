@@ -1,47 +1,7 @@
-import { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 
-function ProductList({ onSeleccionarProducto }) {
-    const [productos, setProductos] = useState([]);
-    const [cargando, setCargando] = useState(true);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        fetch("http://localhost:3000/api/productos")
-            .then((respuesta) => {
-                if (!respuesta.ok) {
-                    throw new Error("Error al obtener los productos");
-                }
-
-                return respuesta.json();
-            })
-            .then((datos) => {
-                setProductos(datos);
-                setCargando(false);
-            })
-            .catch((error) => {
-                console.error(error);
-                setError("No se pudieron cargar los productos");
-                setCargando(false);
-            });
-    }, []);
-
-    if (cargando) {
-        return (
-            <section className="catalogo">
-                <h1>Cargando productos...</h1>
-            </section>
-        );
-    }
-
-    if (error) {
-        return (
-            <section className="catalogo">
-                <h1>{error}</h1>
-            </section>
-        );
-    }
-
+function ProductList({ productos, onSeleccionarProducto, onAgregar }) {
+    //Sacamos el fecth de productos, porque ahora los traemos del estado de productos, de la App.jsx.Asi puede verse en el navegador que los productos estan cargados.
     return (
         <section className="catalogo">
             <h1>Catálogo</h1>
@@ -52,6 +12,7 @@ function ProductList({ onSeleccionarProducto }) {
                         key={producto.id}
                         producto={producto}
                         onSeleccionar={onSeleccionarProducto}
+                        onAgregar={onAgregar}
                     />
                 ))}
             </div>
