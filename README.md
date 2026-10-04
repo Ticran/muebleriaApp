@@ -35,10 +35,8 @@ muebleriaApp/
 │   └── routes/
 │
 └── README.md
+```
 ---
-
-## Tecnologías utilizadas
-
 ## Tecnologías utilizadas
 
 - **React** — desarrollo de la interfaz mediante componentes reutilizables y manejo de estados.
