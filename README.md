@@ -21,6 +21,7 @@ El proyecto está dividido en dos partes principales:
 
 La comunicación entre ambas partes se realiza mediante peticiones HTTP utilizando `fetch`.
 
+```text
 muebleriaApp/
 ├── client/
 │   └── src/
@@ -31,9 +32,7 @@ muebleriaApp/
 ├── backend/
 │   ├── data/
 │   ├── middlewares/
-│   ├── node_modules/
-│   ├── routes/
-│   └── ...
+│   └── routes/
 │
 └── README.md
 ---
