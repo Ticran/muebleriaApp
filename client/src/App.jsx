@@ -36,6 +36,11 @@ function App() {
             });
     }, []);
 
+    // Cada vez que cambia la vista o el producto seleccionado, subimos el scroll arriba de todo
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [vista, productoSeleccionado]);
+
     // Función para agregar al carrito
     function agregarAlCarrito(producto) {
         setCarrito((prev) => {
@@ -156,7 +161,7 @@ function App() {
 
             <main>{contenido}</main>
 
-            <Footer />
+            <Footer onNavegar={navegar} />
         </>
     );
 }
