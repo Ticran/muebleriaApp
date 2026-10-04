@@ -1,9 +1,7 @@
-
-function Footer() {
+function Footer({ onNavegar }) {
     return (
         <footer className="footer">
             <div className="contenedor footer-grid">
-
                 {/* Información general de la mueblería */}
                 <div>
                     <p>Más de 30 años ofreciendo muebles de calidad para cada hogar.</p>
@@ -15,15 +13,39 @@ function Footer() {
 
                     <ul>
                         <li>
-                            <a href="/">Inicio</a>
+                            <a
+                                href="#inicio"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    if (onNavegar) onNavegar("inicio");
+                                }}
+                            >
+                                Inicio
+                            </a>
                         </li>
 
                         <li>
-                            <a href="/productos">Productos</a>
+                            <a
+                                href="#catalogo"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    if (onNavegar) onNavegar("catalogo");
+                                }}
+                            >
+                                Catálogo
+                            </a>
                         </li>
 
                         <li>
-                            <a href="/contacto">Contacto</a>
+                            <a
+                                href="#contacto"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    if (onNavegar) onNavegar("contacto");
+                                }}
+                            >
+                                Contacto
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -40,7 +62,9 @@ function Footer() {
                     <p>📞 +54 11 4567-8900</p>
                     <p>✉ info@hermanosjota.com.ar</p>
 
-                    <p><strong>Horarios:</strong></p>
+                    <p>
+                        <strong>Horarios:</strong>
+                    </p>
                     <p>Lun a Vie: 10:00 - 19:00</p>
                     <p>Sáb: 10:00 - 14:00</p>
                 </div>
@@ -71,7 +95,6 @@ function Footer() {
                         </li>
                     </ul>
                 </div>
-
             </div>
 
             {/* Derechos de autor */}
