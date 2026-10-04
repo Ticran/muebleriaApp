@@ -79,13 +79,9 @@ function App() {
     function comprarProducto(producto) {
         // Si se compra un solo producto
         if (producto) {
-            alert(`Compra realizada: ${producto.nombre}`);
             eliminarDelCarrito(producto.id);
             return;
         }
-
-        // Si se compran todos los productos
-        alert("Compra realizada correctamente");
         setCarrito([]);
     }
 
