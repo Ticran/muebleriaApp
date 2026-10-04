@@ -1,4 +1,4 @@
-function ProductCard({ producto, onSeleccionar, onAgregar }) {
+function ProductCard({ producto, onSeleccionar }) {
     return (
         <div className="product-card">
             <img src={`/${producto.imagen}`} alt={producto.nombre} />
@@ -9,9 +9,6 @@ function ProductCard({ producto, onSeleccionar, onAgregar }) {
 
             <div className="acciones-card">
                 <button onClick={() => onSeleccionar(producto)}>Ver Detalle</button>
-                {onAgregar && (
-                    <button onClick={() => onAgregar(producto)}>Agregar al carrito</button>
-                )}
             </div>
         </div>
     );
