@@ -5,6 +5,7 @@ import Home from "./components/Home";
 import ProductList from "./components/ProductList";
 import ProductDetail from "./components/ProductDetail";
 import ContactForm from "./components/ContactForm";
+import Carrito from "./components/Carrito";
 
 function App() {
     // Estado de productos traídos del backend
@@ -13,7 +14,7 @@ function App() {
     const [error, setError] = useState(null);
 
     // Estado de navegación
-    const [vista, setVista] = useState("inicio"); // "inicio" | "catalogo" | "contacto" --> es para saber en que vista estamos
+    const [vista, setVista] = useState("inicio"); // "inicio" | "catalogo" | "contacto" | "carrito" --> es para saber en que vista estamos
     const [productoSeleccionado, setProductoSeleccionado] = useState(null);
     const [carrito, setCarrito] = useState([]); // es para el carrito de compras
 
@@ -37,7 +38,50 @@ function App() {
 
     // Función para agregar al carrito
     function agregarAlCarrito(producto) {
-        setCarrito((prev) => [...prev, producto]);
+        setCarrito((prev) => {
+            // Buscamos si el producto ya existe en el carrito
+            const productoExistente = prev.find((item) => item.id === producto.id);
+
+            // Si ya existe, aumentamos su cantidad
+            if (productoExistente) {
+                return prev.map((item) =>
+                    item.id === producto.id
+                        ? {
+                              ...item,
+                              cantidad: item.cantidad + 1
+                          }
+                        : item
+                );
+            }
+
+            // Si no existe, lo agregamos con cantidad 1
+            return [
+                ...prev,
+                {
+                    ...producto,
+                    cantidad: 1
+                }
+            ];
+        });
+    }
+
+    // Función para eliminar un producto del carrito
+    function eliminarDelCarrito(id) {
+        setCarrito((prev) => prev.filter((producto) => producto.id !== id));
+    }
+
+    // Función para comprar un producto o todos los productos del carrito
+    function comprarProducto(producto) {
+        // Si se compra un solo producto
+        if (producto) {
+            alert(`Compra realizada: ${producto.nombre}`);
+            eliminarDelCarrito(producto.id);
+            return;
+        }
+
+        // Si se compran todos los productos
+        alert("Compra realizada correctamente");
+        setCarrito([]);
     }
 
     // Función para cambiar de sección y cerrar cualquier detalle abierto
@@ -46,8 +90,12 @@ function App() {
         setProductoSeleccionado(null); //cierra cualquier detalle abierto
     }
 
+    // Calculamos la cantidad total de productos que hay en el carrito
+    const cantidadCarrito = carrito.reduce((total, producto) => total + producto.cantidad, 0);
+
     // Renderizado condicional según el estado
     let contenido;
+
     if (cargando) {
         contenido = (
             <section className="catalogo">
@@ -67,6 +115,15 @@ function App() {
                 producto={productoSeleccionado}
                 onAgregar={agregarAlCarrito}
                 onVolver={() => setProductoSeleccionado(null)}
+            />
+        );
+    } else if (vista === "carrito") {
+        // aca estamos en la vista del carrito
+        contenido = (
+            <Carrito
+                carrito={carrito}
+                onEliminar={eliminarDelCarrito}
+                onComprar={comprarProducto}
             />
         );
     } else if (vista === "contacto") {
@@ -92,10 +149,13 @@ function App() {
             />
         );
     }
+
     return (
         <>
-            <Navbar cantidadCarrito={carrito.length} onNavegar={navegar} />
+            <Navbar cantidadCarrito={cantidadCarrito} onNavegar={navegar} />
+
             <main>{contenido}</main>
+
             <Footer />
         </>
     );

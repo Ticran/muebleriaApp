@@ -2,14 +2,16 @@ function Navbar({ cantidadCarrito = 0, onNavegar }) {
     return (
         <header className="header">
             <div className="contenedor">
-                {/* Logo y nombre de la mueblería */}
                 <div className="marca">
                     <a
-                        href="#catalogo"
+                        href="#inicio"
                         className="logo"
                         onClick={(e) => {
                             e.preventDefault();
-                            if (onNavegar) onNavegar("catalogo");
+
+                            if (onNavegar) {
+                                onNavegar("inicio");
+                            }
                         }}
                     >
                         <img src="/imagenes/logo.svg" alt="Logo Hermanos Jota" />
@@ -21,7 +23,6 @@ function Navbar({ cantidadCarrito = 0, onNavegar }) {
                     </div>
                 </div>
 
-                {/* Menú de navegación */}
                 <nav className="menu">
                     <ul>
                         <li>
@@ -29,7 +30,10 @@ function Navbar({ cantidadCarrito = 0, onNavegar }) {
                                 href="#inicio"
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    if (onNavegar) onNavegar("inicio");
+
+                                    if (onNavegar) {
+                                        onNavegar("inicio");
+                                    }
                                 }}
                             >
                                 Inicio
@@ -41,7 +45,10 @@ function Navbar({ cantidadCarrito = 0, onNavegar }) {
                                 href="#catalogo"
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    if (onNavegar) onNavegar("catalogo");
+
+                                    if (onNavegar) {
+                                        onNavegar("catalogo");
+                                    }
                                 }}
                             >
                                 Catálogo
@@ -53,7 +60,10 @@ function Navbar({ cantidadCarrito = 0, onNavegar }) {
                                 href="#contacto"
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    if (onNavegar) onNavegar("contacto");
+
+                                    if (onNavegar) {
+                                        onNavegar("contacto");
+                                    }
                                 }}
                             >
                                 Contacto
@@ -61,15 +71,22 @@ function Navbar({ cantidadCarrito = 0, onNavegar }) {
                         </li>
                     </ul>
                 </nav>
-                {/* Carrito con contador que se actualiza vía props */}
+
                 <div className="carrito">
                     <a
                         href="#carrito"
                         id="carrito-link"
                         aria-label="Ver carrito"
-                        onClick={(e) => e.preventDefault()}
+                        onClick={(e) => {
+                            e.preventDefault();
+
+                            if (onNavegar) {
+                                onNavegar("carrito");
+                            }
+                        }}
                     >
                         <img src="/imagenes/shopping-cart.svg" alt="Carrito de compras" />
+
                         <span id="carrito-contador">{cantidadCarrito}</span>
                     </a>
                 </div>
