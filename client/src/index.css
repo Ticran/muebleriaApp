@@ -1,24 +1,49 @@
+/* =================================================================
+   MUEBLERÍA HERMANOS JOTA — index.css (Mobile First)
+   -----------------------------------------------------------------
+   Estructura del archivo:
+     1. Variables de marca y sistema
+     2. Reset y estilos base      → diseñados para 320px en adelante
+     3. Utilidades y botones
+     4. Header / Navbar           → hamburguesa en mobile
+     5. Hero
+     6. Productos destacados
+     7. Catálogo y buscador
+     8. Grilla y tarjetas de producto
+     9. Detalle del producto
+    10. Formulario de contacto
+    11. Footer
+    12. Carrito
+
+   Breakpoints (solo min-width, nunca max-width):
+     · 600px  → tablet pequeña (2 columnas de productos, fila en
+                el carrito, botones en fila)
+     · 768px  → desktop (navbar horizontal, detalle en 2 columnas,
+                footer en columnas)
+     · 900px  → desktop amplio (3 columnas de productos)
+   ================================================================= */
+
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap");
 
 /* ================================================================
    1. VARIABLES DE MARCA Y SISTEMA
-================================================================ */
+=============================================================== */
 
 :root {
     /* ----- Colores Oficiales (Manual de Marca) ----- */
-    --siena: #a0522d;         /* Color principal de marca */
-    --siena-oscura: #7a3d1f;  /* Hover de botones */
-    --salvia: #87a96b;        /* Acento secundario */
-    --oro: #d4a437;           /* Detalles premium */
-    --madera: #6b3e26;        /* Títulos y acentos oscuros */
+    --siena: #a0522d; /* Color principal de marca */
+    --siena-oscura: #7a3d1f; /* Hover de botones */
+    --salvia: #87a96b; /* Acento secundario */
+    --oro: #d4a437; /* Detalles premium */
+    --madera: #6b3e26; /* Títulos y acentos oscuros */
 
     /* ----- Fondos y Neutros ----- */
-    --crema: #f5e6d3;         /* Fondo principal de la app */
-    --lino: #e8dccb;          /* Fondo secundario de fotos */
-    --papel: #fffaf3;         /* Fondo de tarjetas y contenedores */
-    --tinta: #2c2118;         /* Texto principal */
-    --tinta-suave: #5c4c3d;   /* Texto secundario y subtítulos */
-    --borde: #d9cbb8;         /* Líneas divisorias */
+    --crema: #f5e6d3; /* Fondo principal de la app */
+    --lino: #e8dccb; /* Fondo secundario de fotos */
+    --papel: #fffaf3; /* Fondo de tarjetas y contenedores */
+    --tinta: #2c2118; /* Texto principal */
+    --tinta-suave: #5c4c3d; /* Texto secundario y subtítulos */
+    --borde: #d9cbb8; /* Líneas divisorias */
 
     /* ----- Estructura y Efectos ----- */
     --sombra: 0 12px 32px rgba(44, 33, 24, 0.12);
@@ -27,8 +52,8 @@
 }
 
 /* ================================================================
-   2. RESET Y ESTILOS BASE
-================================================================ */
+   2. RESET Y ESTILOS BASE (mobile)
+=============================================================== */
 
 * {
     box-sizing: border-box;
@@ -59,6 +84,7 @@ body {
 
 main {
     flex: 1;
+    min-width: 0;
 }
 
 img {
@@ -76,19 +102,29 @@ ul {
     list-style: none;
 }
 
+/* Un texto largo nunca debe romper el layout ni generar scroll
+   horizontal: se corta la palabra antes que desbordar el contenedor */
+h1,
+h2,
+h3,
+p {
+    overflow-wrap: break-word;
+}
+
+/* ================================================================
+   3. UTILIDADES Y BOTONES GENERALES
+=============================================================== */
+
 .contenedor {
     width: min(100% - 2rem, var(--max));
     margin-inline: auto;
 }
 
-/* ================================================================
-   3. BOTONES GENERALES (.btn)
-================================================================ */
-
 .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    max-width: 100%;
     padding: 0.8rem 1.6rem;
     background: var(--siena);
     color: #fff;
@@ -108,8 +144,11 @@ ul {
 }
 
 /* ================================================================
-   4. HEADER Y NAVEGACIÓN (NAVBAR)
-================================================================ */
+   4. HEADER Y NAVEGACIÓN (NAVBAR) — BASE MOBILE
+   Fila compacta: marca | carrito | hamburguesa.
+   El menú queda oculto y se despliega como panel vertical al
+   tocar la hamburguesa.
+=============================================================== */
 
 .header {
     background: var(--crema);
@@ -123,48 +162,84 @@ ul {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem 0;
-    gap: 1rem;
+    gap: 0.4rem;
+    padding: 0.6rem 0;
 }
 
 .marca {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.4rem;
+    min-width: 0;
+}
+
+.marca .logo {
+    display: flex;
+    flex-shrink: 0;
 }
 
 .marca .logo img {
-    width: 48px;
-    height: 48px;
+    width: 36px;
+    height: 36px;
+}
+
+.nombre-marca {
+    min-width: 0;
 }
 
 .nombre-marca h2 {
     font-family: "Playfair Display", Georgia, serif;
-    font-size: 1.5rem;
+    font-size: clamp(0.95rem, 4vw, 1.5rem);
     font-weight: 700;
     color: var(--madera);
     line-height: 1.1;
 }
 
 .nombre-marca span {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.15em;
     color: var(--siena);
+    white-space: nowrap;
+}
+
+/* --- Menú mobile: panel vertical desplegable --- */
+
+.menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--papel);
+    border-bottom: 1px solid var(--borde);
+    box-shadow: var(--sombra);
+}
+
+.menu.menu-abierto {
+    display: block;
 }
 
 .menu ul {
     display: flex;
-    align-items: center;
-    gap: 1.5rem;
+    flex-direction: column;
+    width: min(100% - 2rem, var(--max));
+    margin-inline: auto;
+    padding: 0.35rem 0;
+}
+
+.menu li + li {
+    border-top: 1px solid var(--borde);
 }
 
 .menu a {
-    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 0.6rem 0.25rem;
+    font-size: 1rem;
     font-weight: 500;
     color: var(--tinta);
-    transition: color 0.2s ease;
-    padding-bottom: 2px;
     border-bottom: 2px solid transparent;
 }
 
@@ -174,11 +249,53 @@ ul {
     border-bottom-color: var(--siena);
 }
 
-/* Carrito simulado con contador dinámico */
+/* --- Botón hamburguesa (solo mobile) --- */
+
+.btn-menu {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    padding: 0;
+    background: transparent;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn-menu .barra {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--tinta);
+    border-radius: 2px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.btn-menu[aria-expanded="true"] .barra:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.btn-menu[aria-expanded="true"] .barra:nth-child(2) {
+    opacity: 0;
+}
+
+.btn-menu[aria-expanded="true"] .barra:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+/* --- Carrito con contador --- */
+
 .carrito a {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.45rem;
+    min-height: 44px;
     padding: 0.35rem 0.9rem;
     font-size: 0.92rem;
     font-weight: 500;
@@ -214,15 +331,70 @@ ul {
     border-radius: 999px;
 }
 
+/* --- Tablet / Desktop: navbar horizontal original --- */
+
+@media (min-width: 600px) {
+    .nombre-marca h2 {
+        font-size: 1.5rem;
+    }
+
+    .nombre-marca span {
+        font-size: 0.8rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .header .contenedor {
+        gap: 1rem;
+        padding: 1rem 0;
+    }
+
+    .marca .logo img {
+        width: 48px;
+        height: 48px;
+    }
+
+    .menu {
+        display: block;
+        position: static;
+        background: none;
+        border-bottom: none;
+        box-shadow: none;
+    }
+
+    .menu ul {
+        flex-direction: row;
+        align-items: center;
+        width: auto;
+        margin-inline: 0;
+        padding: 0;
+        gap: 1.5rem;
+    }
+
+    .menu li + li {
+        border-top: none;
+    }
+
+    .menu a {
+        min-height: 0;
+        padding: 0 0 2px;
+        font-size: 0.95rem;
+    }
+
+    .btn-menu {
+        display: none;
+    }
+}
+
 /* ================================================================
-   5. PORTADA: HERO (PRESENTACIÓN)
-================================================================ */
+   5. PORTADA: HERO (PRESENTACIÓN) — BASE MOBILE
+=============================================================== */
 
 .hero {
     display: flex;
     align-items: center;
     min-height: 75vh;
-    padding: 3.5rem 1.25rem;
+    padding: 2.5rem 1.25rem;
     background:
         linear-gradient(
             160deg,
@@ -232,13 +404,6 @@ ul {
         ),
         radial-gradient(circle at 20% 20%, #c4a574 0%, #6b3e26 45%, #2c2118 100%);
     color: var(--papel);
-}
-
-@media (min-width: 768px) {
-    .hero {
-        padding-inline: max(1.25rem, calc((100% - var(--max)) / 2));
-        min-height: 78vh;
-    }
 }
 
 .hero-contenido {
@@ -251,21 +416,42 @@ ul {
 
 .hero h1 {
     font-family: "Playfair Display", Georgia, serif;
-    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-size: clamp(1.35rem, 6.5vw, 3.2rem);
     text-transform: uppercase;
     letter-spacing: 0.1em;
 }
 
 .hero p {
-    font-size: 1.05rem;
+    font-size: clamp(0.95rem, 3.5vw, 1.05rem);
     font-weight: 300;
     max-width: 34ch;
     color: var(--lino);
 }
 
+@media (min-width: 600px) {
+    .hero {
+        padding-block: 3.5rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .hero {
+        padding-inline: max(1.25rem, calc((100% - var(--max)) / 2));
+        min-height: 78vh;
+    }
+
+    .hero h1 {
+        font-size: clamp(2rem, 5vw, 3.2rem);
+    }
+
+    .hero p {
+        font-size: 1.05rem;
+    }
+}
+
 /* ================================================================
    6. SECCIÓN: PRODUCTOS DESTACADOS
-================================================================ */
+=============================================================== */
 
 #productos-destacados {
     width: min(100% - 2rem, var(--max));
@@ -274,7 +460,7 @@ ul {
 
 #productos-destacados h2 {
     font-family: "Playfair Display", Georgia, serif;
-    font-size: clamp(1.8rem, 4vw, 2.4rem);
+    font-size: clamp(1.6rem, 6vw, 2.4rem);
     margin-bottom: 1.5rem;
     color: var(--madera);
     text-transform: uppercase;
@@ -282,21 +468,21 @@ ul {
 }
 
 /* ================================================================
-   7. CATÁLOGO Y BUSCADOR
-================================================================ */
+   7. CATÁLOGO Y BUSCADOR — BASE MOBILE
+=============================================================== */
 
 .catalogo {
     width: min(100% - 2rem, var(--max));
     margin: 0 auto;
-    padding: 3rem 0 5rem;
+    padding: 2rem 0 4rem;
 }
 
 .catalogo h1 {
     font-family: "Playfair Display", Georgia, serif;
-    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-size: clamp(2rem, 8vw, 4rem);
     font-weight: 700;
     color: var(--madera);
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
 }
@@ -319,13 +505,14 @@ ul {
 
 .buscador input {
     width: 100%;
+    min-width: 0;
     padding: 0.85rem 1rem;
     background: var(--papel);
     color: var(--tinta);
     border: 1px solid var(--borde);
     border-radius: 8px;
     font-family: "Inter", sans-serif;
-    font-size: 1rem;
+    font-size: 16px; /* Evita el zoom automático de iOS al enfocar */
     outline: none;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
@@ -341,14 +528,14 @@ ul {
 
 .sin-resultados {
     color: var(--tinta-suave);
-    font-size: 1.1rem;
+    font-size: clamp(1rem, 4vw, 1.1rem);
     font-style: italic;
     padding: 2rem 0;
 }
 
 .mensaje-carga,
 .mensaje-error {
-    font-size: 1.2rem;
+    font-size: clamp(1.05rem, 4vw, 1.2rem);
     color: var(--tinta-suave);
     padding: 2rem 0;
 }
@@ -357,9 +544,19 @@ ul {
     color: #d32f2f;
 }
 
+@media (min-width: 768px) {
+    .catalogo {
+        padding: 3rem 0 5rem;
+    }
+
+    .catalogo h1 {
+        margin-bottom: 2rem;
+    }
+}
+
 /* ================================================================
-   8. GRILLA Y TARJETAS DE PRODUCTO (.product-card)
-================================================================ */
+   8. GRILLA Y TARJETAS DE PRODUCTO — BASE MOBILE (1 columna)
+=============================================================== */
 
 .productos-grid {
     display: grid;
@@ -382,6 +579,7 @@ ul {
 .product-card {
     display: flex;
     flex-direction: column;
+    min-width: 0;
     background: var(--papel);
     border: 1px solid var(--borde);
     border-radius: var(--radio);
@@ -397,7 +595,7 @@ ul {
 
 .product-card img {
     width: 100%;
-    height: 250px;
+    height: 220px;
     padding: 1.2rem;
     background: var(--lino);
     object-fit: contain;
@@ -410,7 +608,7 @@ ul {
 
 .product-card h3 {
     font-family: "Playfair Display", Georgia, serif;
-    font-size: 1.5rem;
+    font-size: clamp(1.25rem, 5vw, 1.5rem);
     font-weight: 700;
     line-height: 1.2;
     color: var(--madera);
@@ -425,10 +623,17 @@ ul {
     padding: 0 1.2rem;
 }
 
+.acciones-card {
+    margin-top: auto;
+}
+
 .product-card button {
-    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
     margin: 1rem 1.2rem 1.3rem;
-    padding: 0.55rem 1.2rem;
+    padding: 0.55rem 1.4rem;
     font-family: "Inter", sans-serif;
     font-size: 0.9rem;
     font-weight: 500;
@@ -445,33 +650,32 @@ ul {
     transform: translateY(-1px);
 }
 
+@media (min-width: 600px) {
+    .product-card img {
+        height: 250px;
+    }
+}
+
 /* ================================================================
-   9. DETALLE DEL PRODUCTO (.producto-detalle)
-================================================================ */
+   9. DETALLE DEL PRODUCTO — BASE MOBILE (vertical)
+=============================================================== */
 
 .producto-detalle {
     width: min(100% - 2rem, var(--max));
-    margin: 3rem auto 5rem;
-    padding: 2.5rem;
+    margin: 1.5rem auto 3rem;
+    padding: clamp(1rem, 4vw, 2.5rem);
     display: flex;
     flex-direction: column;
-    gap: 2.5rem;
+    gap: 1.5rem;
     background-color: var(--papel);
     border: 1px solid var(--borde);
     border-radius: 16px;
     box-shadow: var(--sombra);
 }
 
-@media (min-width: 768px) {
-    .producto-detalle {
-        flex-direction: row;
-        align-items: center;
-        gap: 3.5rem;
-    }
-}
-
 .detalle-imagen {
     flex: 1;
+    min-width: 0;
     display: flex;
     justify-content: center;
 }
@@ -483,11 +687,12 @@ ul {
     object-fit: contain;
     background: var(--lino);
     border-radius: var(--radio);
-    padding: 1.5rem;
+    padding: clamp(0.75rem, 3vw, 1.5rem);
 }
 
 .detalle-info {
     flex: 1;
+    min-width: 0;
 }
 
 .detalle-categoria {
@@ -501,7 +706,7 @@ ul {
 
 .detalle-info h1 {
     font-family: "Playfair Display", Georgia, serif;
-    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-size: clamp(1.6rem, 6vw, 2.8rem);
     color: var(--madera);
     line-height: 1.2;
     margin-bottom: 1rem;
@@ -509,7 +714,7 @@ ul {
 
 .detalle-precio {
     font-family: "Inter", sans-serif;
-    font-size: 1.8rem;
+    font-size: clamp(1.5rem, 6vw, 1.8rem);
     font-weight: 700;
     color: var(--siena);
     margin-bottom: 0.75rem;
@@ -518,17 +723,21 @@ ul {
 .detalle-stock {
     font-size: 1rem;
     color: var(--tinta-suave);
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 .detalle-botones {
     display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
 .btn-comprar,
 .btn-volver {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
     padding: 0.85rem 1.6rem;
     border: none;
     border-radius: 999px;
@@ -537,6 +746,11 @@ ul {
     font-weight: 500;
     cursor: pointer;
     transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.detalle-botones .btn-comprar,
+.detalle-botones .btn-volver {
+    width: 100%;
 }
 
 .btn-comprar {
@@ -559,19 +773,40 @@ ul {
     transform: translateY(-2px);
 }
 
+@media (min-width: 600px) {
+    .detalle-botones {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .detalle-botones .btn-comprar,
+    .detalle-botones .btn-volver {
+        width: auto;
+    }
+}
+
+@media (min-width: 768px) {
+    .producto-detalle {
+        flex-direction: row;
+        align-items: center;
+        gap: 3.5rem;
+        margin: 3rem auto 5rem;
+    }
+}
+
 /* ================================================================
-   10. FORMULARIO DE CONTACTO (.contacto)
-================================================================ */
+   10. FORMULARIO DE CONTACTO — BASE MOBILE
+=============================================================== */
 
 .contacto {
-    width: min(100% - 2rem, var(--max));
-    margin: 0 auto;
-    padding: 3rem 0 5rem;
+    width: 100%;
+    padding: 2rem 0 4rem;
 }
 
 .contacto h1 {
     font-family: "Playfair Display", Georgia, serif;
-    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-size: clamp(2rem, 8vw, 4rem);
     color: var(--madera);
     margin-bottom: 1rem;
     text-transform: uppercase;
@@ -579,15 +814,16 @@ ul {
 }
 
 .contacto p {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     color: var(--tinta-suave);
     max-width: 60ch;
 }
 
 #form-contacto {
+    width: 100%;
     max-width: 600px;
     background: var(--papel);
-    padding: 2rem;
+    padding: clamp(1.25rem, 5vw, 2rem);
     border: 1px solid var(--borde);
     border-radius: var(--radio);
     box-shadow: var(--sombra);
@@ -597,6 +833,7 @@ ul {
     display: flex;
     flex-direction: column;
     margin-bottom: 1.5rem;
+    min-width: 0;
 }
 
 .campo label {
@@ -607,13 +844,15 @@ ul {
 
 .campo input,
 .campo textarea {
+    width: 100%;
+    min-width: 0;
     font-family: inherit;
     padding: 0.75rem 1rem;
     border: 1px solid var(--borde);
     border-radius: 8px;
     background: var(--crema);
     color: var(--tinta);
-    font-size: 1rem;
+    font-size: 16px; /* Evita el zoom automático de iOS al enfocar */
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -624,9 +863,23 @@ ul {
     box-shadow: 0 0 0 3px rgba(160, 82, 45, 0.15);
 }
 
+@media (min-width: 768px) {
+    .contacto {
+        padding: 3rem 0 5rem;
+    }
+
+    .contacto h1 {
+        margin-bottom: 1rem;
+    }
+
+    .contacto p {
+        margin-bottom: 2rem;
+    }
+}
+
 /* ================================================================
-   11. FOOTER
-================================================================ */
+   11. FOOTER — BASE MOBILE (columnas apiladas)
+=============================================================== */
 
 .footer {
     margin-top: auto;
@@ -641,16 +894,8 @@ ul {
     gap: 2rem;
 }
 
-@media (min-width: 768px) {
-    .footer-grid {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: space-between;
-    }
-
-    .footer-grid > div {
-        flex: 1 1 200px;
-    }
+.footer-grid > div {
+    min-width: 0;
 }
 
 .footer h3 {
@@ -665,25 +910,53 @@ ul {
     font-size: 0.9rem;
     color: var(--lino);
     line-height: 1.8;
+    overflow-wrap: anywhere;
 }
 
 .footer a:hover {
     color: var(--oro);
 }
+
+.copyright {
+    width: min(100% - 2rem, var(--max));
+    margin: 2rem auto 0;
+    padding-top: 1.1rem;
+    border-top: 1px solid rgba(232, 220, 203, 0.2);
+    font-size: 0.75rem;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+    text-align: center;
+    color: #b8a894;
+}
+
+@media (min-width: 768px) {
+    .footer-grid {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .footer-grid > div {
+        flex: 1 1 200px;
+    }
+}
+
 /* ================================================================
-   12. PÁGINA DEL CARRITO (.carrito-pagina)
-================================================================ */
+   12. PÁGINA DEL CARRITO — BASE MOBILE
+   Sin tablas: tarjetas apiladas + resumen debajo. La fila con
+   miniatura y el resumen lateral se habilitan en tablet/desktop.
+=============================================================== */
 
 .carrito-pagina {
     width: min(100% - 2rem, var(--max));
-    margin: 3rem auto 5rem;
+    margin: 1.5rem auto 3rem;
 }
 
 .carrito-pagina h1 {
     font-family: "Playfair Display", Georgia, serif;
-    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-size: clamp(2rem, 8vw, 4rem);
     color: var(--madera);
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
 }
@@ -692,39 +965,36 @@ ul {
     display: grid;
     grid-template-columns: 1fr;
     gap: 2rem;
-}
-
-@media (min-width: 800px) {
-    .carrito-contenido {
-        grid-template-columns: 2fr 1fr;
-    }
+    min-width: 0;
 }
 
 .carrito-productos {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    min-width: 0;
 }
 
 .carrito-producto {
     display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    padding: 1.25rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    padding: clamp(1rem, 4vw, 1.25rem);
     background: var(--papel);
     border: 1px solid var(--borde);
     border-radius: var(--radio);
     box-shadow: var(--sombra);
+    min-width: 0;
 }
 
 .carrito-producto img {
-    width: 140px;
-    height: 140px;
+    width: 100%;
+    height: 200px;
     object-fit: contain;
     background: var(--lino);
     border-radius: var(--radio);
     padding: 0.75rem;
-    flex-shrink: 0;
 }
 
 .carrito-producto-info {
@@ -732,11 +1002,13 @@ ul {
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
+    min-width: 0;
 }
 
 .carrito-producto-info h2 {
     font-family: "Playfair Display", Georgia, serif;
-    font-size: 1.3rem;
+    font-size: clamp(1.15rem, 5vw, 1.3rem);
+    line-height: 1.25;
     color: var(--madera);
 }
 
@@ -748,17 +1020,22 @@ ul {
 
 .carrito-acciones {
     display: flex;
+    flex-wrap: wrap;
     gap: 0.75rem;
     margin-top: 0.5rem;
-    flex-wrap: wrap;
 }
 
 .carrito-acciones .btn-comprar {
+    min-height: 44px;
     padding: 0.5rem 1.2rem;
     font-size: 0.85rem;
 }
 
 .btn-eliminar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
     padding: 0.5rem 1.2rem;
     background: transparent;
     color: #c62828;
@@ -780,11 +1057,12 @@ ul {
     background: var(--papel);
     border: 1px solid var(--borde);
     border-radius: var(--radio);
-    padding: 1.75rem;
+    padding: clamp(1.25rem, 5vw, 1.75rem);
     height: fit-content;
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    min-width: 0;
     box-shadow: var(--sombra);
 }
 
@@ -797,13 +1075,14 @@ ul {
 }
 
 .carrito-total {
-    font-size: 1.35rem;
+    font-size: clamp(1.2rem, 5vw, 1.35rem);
     font-weight: 700;
     color: var(--madera);
 }
 
 .btn-comprar-todo {
     width: 100%;
+    min-height: 44px;
     padding: 0.85rem 1.5rem;
     background: var(--siena);
     color: #fff;
@@ -823,7 +1102,7 @@ ul {
 
 /* Mensaje cuando el carrito está vacío */
 .carrito-vacio {
-    padding: 4rem 2rem;
+    padding: clamp(2rem, 8vw, 4rem) clamp(1rem, 5vw, 2rem);
     text-align: center;
     background: var(--papel);
     border: 1px dashed var(--borde);
@@ -831,7 +1110,7 @@ ul {
 }
 
 .carrito-vacio p:first-child {
-    font-size: 1.4rem;
+    font-size: clamp(1.2rem, 5vw, 1.4rem);
     font-weight: 600;
     color: var(--madera);
     margin-bottom: 0.5rem;
@@ -841,14 +1120,32 @@ ul {
     color: var(--tinta-suave);
 }
 
-@media (max-width: 600px) {
+/* Tablet: producto en fila con miniatura a la izquierda */
+@media (min-width: 600px) {
     .carrito-producto {
-        flex-direction: column;
-        align-items: stretch;
+        flex-direction: row;
+        align-items: center;
+        gap: 1.5rem;
     }
 
     .carrito-producto img {
-        width: 100%;
-        height: 200px;
+        width: 140px;
+        height: 140px;
+        flex-shrink: 0;
+    }
+}
+
+/* Desktop: productos (2/3) + resumen (1/3) en paralelo */
+@media (min-width: 800px) {
+    .carrito-contenido {
+        grid-template-columns: 2fr 1fr;
+    }
+
+    .carrito-pagina {
+        margin: 3rem auto 5rem;
+    }
+
+    .carrito-pagina h1 {
+        margin-bottom: 2rem;
     }
 }
