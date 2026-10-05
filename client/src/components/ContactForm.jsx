@@ -21,7 +21,6 @@ function ContactForm() {
     // Maneja el envío del formulario
     function handleSubmit(e) {
         e.preventDefault(); // Evita que la página se recargue
-        console.log("Formulario enviado con éxito:", formulario);
         setEnviado(true);
         // Limpiamos los campos
         setFormulario({
