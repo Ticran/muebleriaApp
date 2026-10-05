@@ -49,6 +49,7 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden; /* Evita cualquier desborde lateral */
 }
 
 #root {
@@ -251,9 +252,25 @@ ul {
 
 .hero h1 {
     font-family: "Playfair Display", Georgia, serif;
-    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-size: clamp(1.4rem, 5vw, 3.2rem);
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
+    overflow-wrap: break-word;
+}
+
+.hero h1 {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: clamp(1.4rem, 5vw, 3.2rem);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    overflow-wrap: break-word;
+}
+
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size: clamp(1.25rem, 5.5vw, 1.6rem);
+        letter-spacing: 0.04em;
+    }
 }
 
 .hero p {
