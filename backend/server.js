@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const conectarDB = require("./db");
 const PORT = 3000;
 
 // Middleware para parsear bodies JSON (futuras peticiones POST)
@@ -39,6 +40,8 @@ app.use((err, req, res, next) => {
 });
 
 // Levantar el servidor
-app.listen(PORT, () => {
-    console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+conectarDB().then(() => {
+    app.listen(PORT, () => {
+        console.log(`Servidor en puerto ${PORT}`);
+    });
 });
