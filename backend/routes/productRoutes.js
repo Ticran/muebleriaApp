@@ -54,4 +54,14 @@ router.get("/:id", async (req, res, next) => {
     }
 });
 
+// POST /api/productos
+router.post("/", async (req, res, next) => {
+    try {
+        const nuevoProducto = await Product.create(req.body);
+        res.status(201).json(nuevoProducto);
+    } catch (err) {
+        next(err);
+    }
+});
+
 module.exports = router;
