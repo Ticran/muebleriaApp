@@ -89,4 +89,26 @@ router.put("/:id", async (req, res, next) => {
     }
 });
 
+// DELETE /api/productos/:id
+router.delete("/:id", async (req, res, next) => {
+    try {
+        const productoEliminado = await Product.findByIdAndDelete(req.params.id);
+
+        if (!productoEliminado) {
+            const error = new Error("Producto no encontrado");
+            error.status = 404;
+            return next(error);
+        }
+
+        res.json(productoEliminado);
+    } catch (err) {
+        if (err.name === "CastError") {
+            const error = new Error("Producto no encontrado");
+            error.status = 404;
+            return next(error);
+        }
+        next(err);
+    }
+});
+
 module.exports = router;
