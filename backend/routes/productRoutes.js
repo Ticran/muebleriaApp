@@ -64,4 +64,29 @@ router.post("/", async (req, res, next) => {
     }
 });
 
+// PUT /api/productos/:id
+router.put("/:id", async (req, res, next) => {
+    try {
+        const productoActualizado = await Product.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+            runValidators: true
+        });
+
+        if (!productoActualizado) {
+            const error = new Error("Producto no encontrado");
+            error.status = 404;
+            return next(error);
+        }
+
+        res.json(productoActualizado);
+    } catch (err) {
+        if (err.name === "CastError") {
+            const error = new Error("Producto no encontrado");
+            error.status = 404;
+            return next(error);
+        }
+        next(err);
+    }
+});
+
 module.exports = router;
