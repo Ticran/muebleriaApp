@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { Routes, Route, useNavigate, useLocation, useParams, Navigate } from "react-router-dom";
+
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./components/Home";
@@ -7,18 +9,60 @@ import ProductDetail from "./components/ProductDetail";
 import ContactForm from "./components/ContactForm";
 import Carrito from "./components/Carrito";
 
+// Componente auxiliar para mostrar el detalle según el ID de la URL
+function DetalleProductoRuta({ productos, cargando, error, onAgregar }) {
+    // Obtenemos el ID del producto desde los parámetros de la ruta
+    const { id } = useParams();
+
+    // Buscamos el producto correspondiente al ID recibido
+    const producto = productos.find((item) => String(item.id) === id);
+
+    // Mostramos un mensaje mientras se cargan los productos
+    if (cargando) {
+        return (
+            <section className="catalogo">
+                <p className="mensaje-carga">Cargando productos...</p>
+            </section>
+        );
+    }
+
+    // Mostramos un mensaje si ocurrió un error al cargar los productos
+    if (error) {
+        return (
+            <section className="catalogo">
+                <p className="mensaje-error">{error}</p>
+            </section>
+        );
+    }
+
+    // Si no encontramos el producto, mostramos un mensaje
+    if (!producto) {
+        return (
+            <section className="catalogo">
+                <p className="mensaje-error">No se encontró el producto solicitado.</p>
+            </section>
+        );
+    }
+
+    // Si encontramos el producto, mostramos su detalle
+    return <ProductDetail producto={producto} onAgregar={onAgregar} />;
+}
+
 function App() {
     // Estado de productos traídos del backend
     const [productos, setProductos] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
 
-    // Estado de navegación
-    const [vista, setVista] = useState("inicio"); // "inicio" | "catalogo" | "contacto" | "carrito" --> es para saber en que vista estamos
-    const [productoSeleccionado, setProductoSeleccionado] = useState(null);
-    const [carrito, setCarrito] = useState([]); // es para el carrito de compras
+    // Estado del carrito de compras
+    const [carrito, setCarrito] = useState([]);
 
-    // Fetch a GET /api/productos al montar el componente --> carga los productos del backend, antes lo teniamos en el estado de productos
+    // Hooks de React Router para navegar y detectar cambios de ruta
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    // Fetch a GET /api/productos al montar el componente
+    // Carga los productos desde el backend
     useEffect(() => {
         fetch("http://localhost:3000/api/productos")
             .then((res) => {
@@ -36,12 +80,12 @@ function App() {
             });
     }, []);
 
-    // Cada vez que cambia la vista o el producto seleccionado, subimos el scroll arriba de todo
+    // Cada vez que cambia la ruta, subimos el scroll arriba de todo
     useEffect(() => {
         window.scrollTo(0, 0);
-    }, [vista, productoSeleccionado]);
+    }, [location.pathname]);
 
-    // Función para agregar al carrito
+    // Función para agregar un producto al carrito
     function agregarAlCarrito(producto) {
         setCarrito((prev) => {
             // Buscamos si el producto ya existe en el carrito
@@ -82,82 +126,113 @@ function App() {
             eliminarDelCarrito(producto.id);
             return;
         }
-        setCarrito([]);
-    }
 
-    // Función para cambiar de sección y cerrar cualquier detalle abierto
-    function navegar(seccion) {
-        setVista(seccion);
-        setProductoSeleccionado(null); //cierra cualquier detalle abierto
+        // Si se compra todo el carrito, lo vaciamos
+        setCarrito([]);
     }
 
     // Calculamos la cantidad total de productos que hay en el carrito
     const cantidadCarrito = carrito.reduce((total, producto) => total + producto.cantidad, 0);
 
-    // Renderizado condicional según el estado
-    let contenido;
-
-    if (cargando) {
-        contenido = (
-            <section className="catalogo">
-                <p className="mensaje-carga">Cargando productos...</p>
-            </section>
-        );
-    } else if (error) {
-        contenido = (
-            <section className="catalogo">
-                <p className="mensaje-error">{error}</p>
-            </section>
-        );
-    } else if (productoSeleccionado) {
-        // Si hay un producto elegido, mostramos su detalle
-        contenido = (
-            <ProductDetail
-                producto={productoSeleccionado}
-                onAgregar={agregarAlCarrito}
-                onVolver={() => setProductoSeleccionado(null)}
-            />
-        );
-    } else if (vista === "carrito") {
-        // aca estamos en la vista del carrito
-        contenido = (
-            <Carrito
-                carrito={carrito}
-                onEliminar={eliminarDelCarrito}
-                onComprar={comprarProducto}
-            />
-        );
-    } else if (vista === "contacto") {
-        // aca estamos en la vista de contacto
-        contenido = <ContactForm />;
-    } else if (vista === "catalogo") {
-        // aca estamos en la vista de catalogo
-        contenido = (
-            <ProductList
-                productos={productos}
-                onSeleccionarProducto={setProductoSeleccionado}
-                onAgregar={agregarAlCarrito}
-            />
-        );
-    } else {
-        // Por defecto: vista === "inicio"
-        contenido = (
-            <Home
-                productos={productos}
-                onSeleccionarProducto={setProductoSeleccionado}
-                onAgregar={agregarAlCarrito}
-                onNavegar={navegar}
-            />
-        );
+    // Función para navegar al detalle de un producto desde la página de inicio
+    function seleccionarProducto(producto) {
+        navigate(`/productos/${producto.id}`);
     }
 
     return (
         <>
-            <Navbar cantidadCarrito={cantidadCarrito} onNavegar={navegar} />
+            {/* Barra de navegación: muestra la cantidad de productos del carrito */}
+            <Navbar cantidadCarrito={cantidadCarrito} />
 
-            <main>{contenido}</main>
+            {/* Definición de las rutas de la aplicación */}
+            <main>
+                <Routes>
+                    {/* Página de inicio */}
+                    <Route
+                        path="/"
+                        element={
+                            cargando ? (
+                                <section className="catalogo">
+                                    <p className="mensaje-carga">Cargando productos...</p>
+                                </section>
+                            ) : error ? (
+                                <section className="catalogo">
+                                    <p className="mensaje-error">{error}</p>
+                                </section>
+                            ) : (
+                                <Home
+                                    productos={productos}
+                                    onSeleccionarProducto={seleccionarProducto}
+                                    onAgregar={agregarAlCarrito}
+                                />
+                            )
+                        }
+                    />
 
-            <Footer onNavegar={navegar} />
+                    {/* Catálogo de productos */}
+                    <Route
+                        path="/productos"
+                        element={
+                            cargando ? (
+                                <section className="catalogo">
+                                    <p className="mensaje-carga">Cargando productos...</p>
+                                </section>
+                            ) : error ? (
+                                <section className="catalogo">
+                                    <p className="mensaje-error">{error}</p>
+                                </section>
+                            ) : (
+                                <ProductList productos={productos} />
+                            )
+                        }
+                    />
+
+                    {/* Detalle de un producto según su ID */}
+                    <Route
+                        path="/productos/:id"
+                        element={
+                            <DetalleProductoRuta
+                                productos={productos}
+                                cargando={cargando}
+                                error={error}
+                                onAgregar={agregarAlCarrito}
+                            />
+                        }
+                    />
+
+                    {/* Página de contacto */}
+                    <Route path="/contacto" element={<ContactForm />} />
+
+                    {/* Página de administración: pendiente de implementar el formulario T11 */}
+                    <Route
+                        path="/admin/crear-producto"
+                        element={
+                            <section className="catalogo">
+                                <h1>Crear producto</h1>
+                                <p>Formulario de creación de productos próximamente.</p>
+                            </section>
+                        }
+                    />
+
+                    {/* Página del carrito de compras */}
+                    <Route
+                        path="/carrito"
+                        element={
+                            <Carrito
+                                carrito={carrito}
+                                onEliminar={eliminarDelCarrito}
+                                onComprar={comprarProducto}
+                            />
+                        }
+                    />
+
+                    {/* Si la URL no existe, redirigimos al inicio */}
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+            </main>
+
+            {/* Pie de página */}
+            <Footer />
         </>
     );
 }

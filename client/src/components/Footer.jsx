@@ -1,4 +1,6 @@
-function Footer({ onNavegar }) {
+import { Link } from "react-router-dom";
+
+function Footer() {
     return (
         <footer className="footer">
             <div className="contenedor footer-grid">
@@ -13,39 +15,16 @@ function Footer({ onNavegar }) {
 
                     <ul>
                         <li>
-                            <a
-                                href="#inicio"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    if (onNavegar) onNavegar("inicio");
-                                }}
-                            >
-                                Inicio
-                            </a>
+                            {/* Link permite navegar sin recargar toda la aplicación */}
+                            <Link to="/">Inicio</Link>
                         </li>
 
                         <li>
-                            <a
-                                href="#catalogo"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    if (onNavegar) onNavegar("catalogo");
-                                }}
-                            >
-                                Catálogo
-                            </a>
+                            <Link to="/productos">Catálogo</Link>
                         </li>
 
                         <li>
-                            <a
-                                href="#contacto"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    if (onNavegar) onNavegar("contacto");
-                                }}
-                            >
-                                Contacto
-                            </a>
+                            <Link to="/contacto">Contacto</Link>
                         </li>
                     </ul>
                 </div>
@@ -75,6 +54,7 @@ function Footer({ onNavegar }) {
 
                     <ul>
                         <li>
+                            {/* Enlaces externos: se mantienen con la etiqueta <a> */}
                             <a
                                 href="https://instagram.com/hermanosjota_ba"
                                 target="_blank"

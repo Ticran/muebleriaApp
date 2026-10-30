@@ -1,10 +1,17 @@
-function ProductDetail({ producto, onAgregar, onVolver }) {
+import { useNavigate } from "react-router-dom";
+
+function ProductDetail({ producto, onAgregar }) {
+    // Hook de React Router para navegar entre las distintas rutas
+    const navigate = useNavigate();
+
     return (
         <section className="producto-detalle">
+            {/* Imagen del producto */}
             <div className="detalle-imagen">
                 <img src={`/${producto.imagen}`} alt={producto.nombre} />
             </div>
 
+            {/* Información y características del producto */}
             <div className="detalle-info">
                 <p className="detalle-categoria">MUEBLES HERMANOS JOTA</p>
 
@@ -15,11 +22,13 @@ function ProductDetail({ producto, onAgregar, onVolver }) {
                 <p className="detalle-stock">Stock disponible: {producto.stock}</p>
 
                 <div className="detalle-botones">
+                    {/* Permite agregar el producto seleccionado al carrito */}
                     <button className="btn-comprar" onClick={() => onAgregar(producto)}>
                         Agregar al carrito
                     </button>
 
-                    <button className="btn-volver" onClick={onVolver}>
+                    {/* navigate permite volver al catálogo sin recargar la aplicación */}
+                    <button className="btn-volver" onClick={() => navigate("/productos")}>
                         Volver al catálogo
                     </button>
                 </div>
