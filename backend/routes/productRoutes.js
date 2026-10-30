@@ -1,33 +1,67 @@
 // ================================================================
 // productRoutes.js
 // Rutas de productos de Mueblería Hermanos Jota.
-// Sprint 3 - T05: se monta desde server.js en /api/productos.
+// Sprint 5 - T04: migradas a Mongoose (GET / y GET /:id).
 // ================================================================
 
 const express = require("express");
 const router = express.Router();
 
-// Catálogo de productos (array de objetos)
-const productos = require("../data/productos.js");
+const Product = require("../models/Product");
 
 // GET /api/productos
-router.get("/", (req, res) => {
-    res.json(productos);
+router.get("/", async (req, res, next) => {
+    try {
+        const productos = await Product.find();
+        // Se mantiene compatibilidad con el frontend (id/imagen) sin perder
+        // los campos nativos de Mongo (_id/imagenUrl).
+        res.json(
+            productos.map((p) => ({
+                ...p.toObject(),
+                id: p._id,
+                imagen: p.imagenUrl
+            }))
+        );
+    } catch (err) {
+        next(err);
+    }
 });
 
-// T07 - GET /api/productos/:id
-router.get("/:id", (req, res, next) => {
-    const id = Number(req.params.id);
-    const producto = productos.find((p) => p.id === id);
+// GET /api/productos/:id
+router.get("/:id", async (req, res, next) => {
+    try {
+        const producto = await Product.findById(req.params.id);
 
-    if (!producto) {
-        // Se delega el error al middleware centralizado de server.js
-        const error = new Error("Producto no encontrado");
-        error.status = 404;
-        return next(error);
+        if (!producto) {
+            const error = new Error("Producto no encontrado");
+            error.status = 404;
+            return next(error);
+        }
+
+        res.json({
+            ...producto.toObject(),
+            id: producto._id,
+            imagen: producto.imagenUrl
+        });
+    } catch (err) {
+        // id inválido (CastError) -> 404 para mantener el contrato
+        if (err.name === "CastError") {
+            const error = new Error("Producto no encontrado");
+            error.status = 404;
+            return next(error);
+        }
+        next(err);
     }
+});
 
-    res.json(producto);
+// POST /api/productos
+router.post("/", async (req, res, next) => {
+    try {
+        const nuevoProducto = await Product.create(req.body);
+        res.status(201).json(nuevoProducto);
+    } catch (err) {
+        next(err);
+    }
 });
 
 module.exports = router;
