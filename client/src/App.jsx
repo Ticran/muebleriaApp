@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./components/Home";
@@ -6,15 +7,17 @@ import ProductList from "./components/ProductList";
 import ProductDetail from "./components/ProductDetail";
 import ContactForm from "./components/ContactForm";
 import Carrito from "./components/Carrito";
+import ProductForm from "./components/ProductForm";
 
 function App() {
+    const location = useLocation();
+    const navigate = useNavigate();
+
     // Estado de productos traídos del backend
     const [productos, setProductos] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
 
-    // Estado de navegación
-    const [vista, setVista] = useState("inicio"); // "inicio" | "catalogo" | "contacto" | "carrito" --> es para saber en que vista estamos
     const [productoSeleccionado, setProductoSeleccionado] = useState(null);
     const [carrito, setCarrito] = useState([]); // es para el carrito de compras
 
@@ -36,10 +39,10 @@ function App() {
             });
     }, []);
 
-    // Cada vez que cambia la vista o el producto seleccionado, subimos el scroll arriba de todo
+    // Cada vez que cambia la ruta o el producto seleccionado, subimos el scroll arriba de todo
     useEffect(() => {
         window.scrollTo(0, 0);
-    }, [vista, productoSeleccionado]);
+    }, [location.pathname, productoSeleccionado]);
 
     // Función para agregar al carrito
     function agregarAlCarrito(producto) {
@@ -87,75 +90,143 @@ function App() {
 
     // Función para cambiar de sección y cerrar cualquier detalle abierto
     function navegar(seccion) {
-        setVista(seccion);
-        setProductoSeleccionado(null); //cierra cualquier detalle abierto
+        const rutas = {
+            inicio: "/",
+            catalogo: "/productos",
+            contacto: "/contacto",
+            carrito: "/carrito",
+            crearProducto: "/admin/crear-producto"
+        };
+
+        if (rutas[seccion]) {
+            setProductoSeleccionado(null);
+            navigate(rutas[seccion]);
+        }
+    }
+
+    function agregarProductoAlCatalogo(producto) {
+        const productoNormalizado = {
+            ...producto,
+            id: producto.id ?? producto._id,
+            imagen: producto.imagen ?? producto.imagenUrl
+        };
+
+        setProductos((productosActuales) => [...productosActuales, productoNormalizado]);
+    }
+
+    function actualizarProductoEnCatalogo(producto) {
+        const productoNormalizado = {
+            ...producto,
+            id: producto.id ?? producto._id,
+            imagen: producto.imagen ?? producto.imagenUrl
+        };
+        const idActualizado = String(productoNormalizado.id);
+
+        setProductoSeleccionado(null);
+        setProductos((productosActuales) =>
+            productosActuales.map((productoActual) =>
+                String(productoActual.id ?? productoActual._id) === idActualizado
+                    ? { ...productoActual, ...productoNormalizado }
+                    : productoActual
+            )
+        );
     }
 
     // Calculamos la cantidad total de productos que hay en el carrito
     const cantidadCarrito = carrito.reduce((total, producto) => total + producto.cantidad, 0);
 
-    // Renderizado condicional según el estado
-    let contenido;
-
-    if (cargando) {
-        contenido = (
-            <section className="catalogo">
-                <p className="mensaje-carga">Cargando productos...</p>
-            </section>
-        );
-    } else if (error) {
-        contenido = (
-            <section className="catalogo">
-                <p className="mensaje-error">{error}</p>
-            </section>
-        );
-    } else if (productoSeleccionado) {
-        // Si hay un producto elegido, mostramos su detalle
-        contenido = (
-            <ProductDetail
-                producto={productoSeleccionado}
-                onAgregar={agregarAlCarrito}
-                onVolver={() => setProductoSeleccionado(null)}
-            />
-        );
-    } else if (vista === "carrito") {
-        // aca estamos en la vista del carrito
-        contenido = (
-            <Carrito
-                carrito={carrito}
-                onEliminar={eliminarDelCarrito}
-                onComprar={comprarProducto}
-            />
-        );
-    } else if (vista === "contacto") {
-        // aca estamos en la vista de contacto
-        contenido = <ContactForm />;
-    } else if (vista === "catalogo") {
-        // aca estamos en la vista de catalogo
-        contenido = (
-            <ProductList
-                productos={productos}
-                onSeleccionarProducto={setProductoSeleccionado}
-                onAgregar={agregarAlCarrito}
-            />
-        );
-    } else {
-        // Por defecto: vista === "inicio"
-        contenido = (
-            <Home
-                productos={productos}
-                onSeleccionarProducto={setProductoSeleccionado}
-                onAgregar={agregarAlCarrito}
-                onNavegar={navegar}
-            />
-        );
-    }
+    const estadoProductos = cargando ? (
+        <section className="catalogo">
+            <p className="mensaje-carga">Cargando productos...</p>
+        </section>
+    ) : error ? (
+        <section className="catalogo">
+            <p className="mensaje-error">{error}</p>
+        </section>
+    ) : null;
 
     return (
         <>
             <Navbar cantidadCarrito={cantidadCarrito} onNavegar={navegar} />
 
-            <main>{contenido}</main>
+            <main>
+                <Routes>
+                    <Route
+                        path="/"
+                        element={
+                            estadoProductos || (
+                                <Home
+                                    productos={productos}
+                                    onSeleccionarProducto={setProductoSeleccionado}
+                                    onAgregar={agregarAlCarrito}
+                                    onNavegar={navegar}
+                                />
+                            )
+                        }
+                    />
+                    <Route
+                        path="/productos"
+                        element={
+                            estadoProductos ||
+                            (productoSeleccionado ? (
+                                <ProductDetail
+                                    producto={productoSeleccionado}
+                                    onAgregar={agregarAlCarrito}
+                                    onVolver={() => {
+                                        setProductoSeleccionado(null);
+                                        navigate("/productos");
+                                    }}
+                                />
+                            ) : (
+                                <>
+                                    {location.state?.mensaje && (
+                                        <p className="mensaje-exito contenedor" role="status">
+                                            {location.state.mensaje}
+                                        </p>
+                                    )}
+                                    <ProductList
+                                        productos={productos}
+                                        onSeleccionarProducto={setProductoSeleccionado}
+                                        onAgregar={agregarAlCarrito}
+                                    />
+                                </>
+                            ))
+                        }
+                    />
+                    <Route path="/contacto" element={estadoProductos || <ContactForm />} />
+                    <Route
+                        path="/carrito"
+                        element={
+                            estadoProductos || (
+                                <Carrito
+                                    carrito={carrito}
+                                    onEliminar={eliminarDelCarrito}
+                                    onComprar={comprarProducto}
+                                />
+                            )
+                        }
+                    />
+                    <Route
+                        path="/admin/crear-producto"
+                        element={
+                            <ProductForm
+                                key={location.pathname}
+                                onCreated={agregarProductoAlCatalogo}
+                            />
+                        }
+                    />
+                    <Route
+                        path="/admin/editar-producto/:id"
+                        element={
+                            <ProductForm
+                                key={location.pathname}
+                                onUpdated={actualizarProductoEnCatalogo}
+                            />
+                        }
+                    />
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+            </main>
 
             <Footer onNavegar={navegar} />
         </>

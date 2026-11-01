@@ -71,6 +71,18 @@ function Navbar({ cantidadCarrito = 0, onNavegar }) {
                                 Contacto
                             </a>
                         </li>
+
+                        <li>
+                            <a
+                                href="/admin/crear-producto"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    navegarYCerrar("crearProducto");
+                                }}
+                            >
+                                Crear producto
+                            </a>
+                        </li>
                     </ul>
                 </nav>
 

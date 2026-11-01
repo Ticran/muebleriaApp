@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 function ProductDetail({ producto, onAgregar, onVolver }) {
+    const navigate = useNavigate();
+
     return (
         <section className="producto-detalle">
             <div className="detalle-imagen">
@@ -21,6 +25,19 @@ function ProductDetail({ producto, onAgregar, onVolver }) {
 
                     <button className="btn-volver" onClick={onVolver}>
                         Volver al catálogo
+                    </button>
+
+                    <button
+                        className="btn-volver"
+                        onClick={() =>
+                            navigate(
+                                `/admin/editar-producto/${encodeURIComponent(
+                                    producto.id ?? producto._id
+                                )}`
+                            )
+                        }
+                    >
+                        Editar producto
                     </button>
                 </div>
             </div>
