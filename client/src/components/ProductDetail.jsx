@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-function ProductDetail({ producto, onAgregar }) {
+function ProductDetail({ producto, onAgregar, onEliminar }) {
     // Hook de React Router para navegar entre las distintas rutas
     const navigate = useNavigate();
 
@@ -30,6 +30,20 @@ function ProductDetail({ producto, onAgregar }) {
                     {/* Volver al catálogo */}
                     <button className="btn-volver" onClick={() => navigate("/productos")}>
                         Volver al catálogo
+                    </button>
+
+                    {/* Eliminar */}
+                    <button className="btn-eliminar" onClick={
+                        () => {
+                            const confirmar = window.confirm(
+                                "¿Estás seguro de que deseas eliminar este producto?"
+                            );
+                            if (confirmar) {
+                                onEliminar(producto._id);
+                            }
+                        }
+                    }
+                    > Eliminar
                     </button>
                 </div>
             </div>

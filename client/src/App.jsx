@@ -10,7 +10,7 @@ import ContactForm from "./components/ContactForm";
 import Carrito from "./components/Carrito";
 
 // Componente auxiliar para mostrar el detalle según el ID de la URL
-function DetalleProductoRuta({ onAgregar }) {
+function DetalleProductoRuta({ onAgregar, onEliminar }) {
     const { id } = useParams();
 
     const [producto, setProducto] = useState(null);
@@ -60,7 +60,13 @@ function DetalleProductoRuta({ onAgregar }) {
         );
     }
 
-    return <ProductDetail producto={producto} onAgregar={onAgregar} />;
+    return (
+        <ProductDetail
+            producto={producto}
+            onAgregar={onAgregar}
+            onEliminar={onEliminar}
+        />
+    );
 }
 
 function App() {
@@ -150,6 +156,36 @@ function App() {
         navigate(`/productos/${producto._id}`);
     }
 
+    //Eliminar producto
+    async function eliminarProducto(id) {
+        try {
+            const respuesta = await fetch(
+                `http://localhost:3000/api/productos/${id}`,
+                {
+                    method: "DELETE"
+                }
+            );
+    
+            if (!respuesta.ok) {
+                throw new Error("Error al eliminar el producto");
+            }
+    
+            // Actualizar la lista de productos
+            setProductos((productosActuales) =>
+                productosActuales.filter((producto) => producto._id !== id)
+            );
+    
+            // Volver al catálogo
+            navigate("/productos");
+    
+        } catch (error) {
+            console.error("Error al eliminar el producto:", error);
+            setError("No se pudo eliminar el producto");
+        }
+    }
+        
+        
+
     return (
         <>
             <Navbar cantidadCarrito={cantidadCarrito} />
@@ -199,7 +235,7 @@ function App() {
                     {/* Detalle de un producto */}
                     <Route
                         path="/productos/:id"
-                        element={<DetalleProductoRuta onAgregar={agregarAlCarrito} />}
+                        element={<DetalleProductoRuta onAgregar={agregarAlCarrito} onEliminar={eliminarProducto} />}
                     />
 
                     {/* Contacto */}
