@@ -1,8 +1,9 @@
 import { useState } from "react";
 import ProductCard from "./ProductCard";
 
-function ProductList({ productos, onSeleccionarProducto }) {
+function ProductList({ productos }) {
     const [busqueda, setBusqueda] = useState("");
+
     // Filtramos en tiempo real según lo que escribe el usuario
     const productosFiltrados = productos.filter((producto) =>
         producto.nombre.toLowerCase().includes(busqueda.toLowerCase())
@@ -15,6 +16,7 @@ function ProductList({ productos, onSeleccionarProducto }) {
             {/* Buscador en tiempo real */}
             <div className="buscador">
                 <label htmlFor="buscador">Buscar producto:</label>
+
                 <input
                     type="text"
                     id="buscador"
@@ -23,7 +25,8 @@ function ProductList({ productos, onSeleccionarProducto }) {
                     onChange={(e) => setBusqueda(e.target.value)}
                 />
             </div>
-            {/* Si no hay coincidencias mostramos el mensaje, si hay mostramos la grilla */}
+
+            {/* Mostramos los resultados */}
             {productosFiltrados.length === 0 ? (
                 <p className="sin-resultados">
                     No se encontraron productos que coincidan con la búsqueda.
@@ -31,11 +34,7 @@ function ProductList({ productos, onSeleccionarProducto }) {
             ) : (
                 <div className="productos-grid">
                     {productosFiltrados.map((producto) => (
-                        <ProductCard
-                            key={producto.id}
-                            producto={producto}
-                            onSeleccionar={onSeleccionarProducto}
-                        />
+                        <ProductCard key={producto._id} producto={producto} />
                     ))}
                 </div>
             )}

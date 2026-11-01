@@ -1,9 +1,11 @@
 function Carrito({ carrito, onEliminar, onComprar }) {
+    // Calculamos el total de la compra
     const total = carrito.reduce(
         (acumulado, producto) => acumulado + producto.precio * producto.cantidad,
         0
     );
 
+    // Si el carrito está vacío
     if (carrito.length === 0) {
         return (
             <section className="carrito-pagina">
@@ -24,8 +26,8 @@ function Carrito({ carrito, onEliminar, onComprar }) {
             <div className="carrito-contenido">
                 <div className="carrito-productos">
                     {carrito.map((producto) => (
-                        <article className="carrito-producto" key={producto.id}>
-                            <img src={`/${producto.imagen}`} alt={producto.nombre} />
+                        <article className="carrito-producto" key={producto._id}>
+                            <img src={`/${producto.imagenUrl}`} alt={producto.nombre} />
 
                             <div className="carrito-producto-info">
                                 <h2>{producto.nombre}</h2>
@@ -51,7 +53,7 @@ function Carrito({ carrito, onEliminar, onComprar }) {
 
                                     <button
                                         className="btn-eliminar"
-                                        onClick={() => onEliminar(producto.id)}
+                                        onClick={() => onEliminar(producto._id)}
                                     >
                                         Eliminar del carrito
                                     </button>

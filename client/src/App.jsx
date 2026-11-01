@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Navigate, Route, Routes, useLocation, useParams } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./components/Home";
@@ -9,24 +9,82 @@ import ContactForm from "./components/ContactForm";
 import Carrito from "./components/Carrito";
 import ProductForm from "./components/ProductForm";
 
-function App() {
-    const location = useLocation();
-    const navigate = useNavigate();
-
-    // Estado de productos traídos del backend
-    const [productos, setProductos] = useState([]);
+function DetalleProductoRuta({ onAgregar }) {
+    const { id } = useParams();
+    const [producto, setProducto] = useState(null);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
 
-    const [productoSeleccionado, setProductoSeleccionado] = useState(null);
-    const [carrito, setCarrito] = useState([]); // es para el carrito de compras
+    useEffect(() => {
+        const controller = new AbortController();
 
-    // Fetch a GET /api/productos al montar el componente --> carga los productos del backend, antes lo teniamos en el estado de productos
+        async function obtenerProducto() {
+            setCargando(true);
+            setError(null);
+            setProducto(null);
+
+            try {
+                const respuesta = await fetch(
+                    `http://localhost:3000/api/productos/${encodeURIComponent(id)}`,
+                    { signal: controller.signal }
+                );
+                const datos = await respuesta.json();
+
+                if (!respuesta.ok) {
+                    throw new Error(datos.error?.mensaje || "No se encontró el producto.");
+                }
+
+                setProducto(datos);
+            } catch (err) {
+                if (!controller.signal.aborted) {
+                    console.error(err);
+                    setError(err instanceof Error ? err.message : "No se encontró el producto.");
+                }
+            } finally {
+                if (!controller.signal.aborted) {
+                    setCargando(false);
+                }
+            }
+        }
+
+        obtenerProducto();
+
+        return () => controller.abort();
+    }, [id]);
+
+    if (cargando) {
+        return (
+            <section className="catalogo">
+                <p className="mensaje-carga">Cargando producto...</p>
+            </section>
+        );
+    }
+
+    if (error) {
+        return (
+            <section className="catalogo">
+                <p className="mensaje-error">{error}</p>
+            </section>
+        );
+    }
+
+    return <ProductDetail producto={producto} onAgregar={onAgregar} />;
+}
+
+function App() {
+    const location = useLocation();
+    const [productos, setProductos] = useState([]);
+    const [cargando, setCargando] = useState(true);
+    const [error, setError] = useState(null);
+    const [carrito, setCarrito] = useState([]);
+
     useEffect(() => {
         fetch("http://localhost:3000/api/productos")
-            .then((res) => {
-                if (!res.ok) throw new Error("Error al obtener los productos");
-                return res.json();
+            .then((respuesta) => {
+                if (!respuesta.ok) {
+                    throw new Error("Error al obtener los productos");
+                }
+                return respuesta.json();
             })
             .then((datos) => {
                 setProductos(datos);
@@ -39,102 +97,68 @@ function App() {
             });
     }, []);
 
-    // Cada vez que cambia la ruta o el producto seleccionado, subimos el scroll arriba de todo
     useEffect(() => {
         window.scrollTo(0, 0);
-    }, [location.pathname, productoSeleccionado]);
+    }, [location.pathname]);
 
-    // Función para agregar al carrito
     function agregarAlCarrito(producto) {
-        setCarrito((prev) => {
-            // Buscamos si el producto ya existe en el carrito
-            const productoExistente = prev.find((item) => item.id === producto.id);
+        setCarrito((actual) => {
+            const idProducto = producto._id ?? producto.id;
+            const existente = actual.find((item) => (item._id ?? item.id) === idProducto);
 
-            // Si ya existe, aumentamos su cantidad
-            if (productoExistente) {
-                return prev.map((item) =>
-                    item.id === producto.id
-                        ? {
-                              ...item,
-                              cantidad: item.cantidad + 1
-                          }
+            if (existente) {
+                return actual.map((item) =>
+                    (item._id ?? item.id) === idProducto
+                        ? { ...item, cantidad: item.cantidad + 1 }
                         : item
                 );
             }
 
-            // Si no existe, lo agregamos con cantidad 1
-            return [
-                ...prev,
-                {
-                    ...producto,
-                    cantidad: 1
-                }
-            ];
+            return [...actual, { ...producto, cantidad: 1 }];
         });
     }
 
-    // Función para eliminar un producto del carrito
     function eliminarDelCarrito(id) {
-        setCarrito((prev) => prev.filter((producto) => producto.id !== id));
+        setCarrito((actual) => actual.filter((producto) => (producto._id ?? producto.id) !== id));
     }
 
-    // Función para comprar un producto o todos los productos del carrito
     function comprarProducto(producto) {
-        // Si se compra un solo producto
         if (producto) {
-            eliminarDelCarrito(producto.id);
+            eliminarDelCarrito(producto._id ?? producto.id);
             return;
         }
+
         setCarrito([]);
-    }
-
-    // Función para cambiar de sección y cerrar cualquier detalle abierto
-    function navegar(seccion) {
-        const rutas = {
-            inicio: "/",
-            catalogo: "/productos",
-            contacto: "/contacto",
-            carrito: "/carrito",
-            crearProducto: "/admin/crear-producto"
-        };
-
-        if (rutas[seccion]) {
-            setProductoSeleccionado(null);
-            navigate(rutas[seccion]);
-        }
     }
 
     function agregarProductoAlCatalogo(producto) {
         const productoNormalizado = {
             ...producto,
-            id: producto.id ?? producto._id,
-            imagen: producto.imagen ?? producto.imagenUrl
+            _id: producto._id ?? producto.id,
+            imagenUrl: producto.imagenUrl ?? producto.imagen
         };
 
-        setProductos((productosActuales) => [...productosActuales, productoNormalizado]);
+        setProductos((actuales) => [...actuales, productoNormalizado]);
     }
 
     function actualizarProductoEnCatalogo(producto) {
         const productoNormalizado = {
             ...producto,
-            id: producto.id ?? producto._id,
-            imagen: producto.imagen ?? producto.imagenUrl
+            _id: producto._id ?? producto.id,
+            imagenUrl: producto.imagenUrl ?? producto.imagen
         };
-        const idActualizado = String(productoNormalizado.id);
+        const idActualizado = String(productoNormalizado._id);
 
-        setProductoSeleccionado(null);
-        setProductos((productosActuales) =>
-            productosActuales.map((productoActual) =>
-                String(productoActual.id ?? productoActual._id) === idActualizado
-                    ? { ...productoActual, ...productoNormalizado }
-                    : productoActual
+        setProductos((actuales) =>
+            actuales.map((actual) =>
+                String(actual._id ?? actual.id) === idActualizado
+                    ? { ...actual, ...productoNormalizado }
+                    : actual
             )
         );
     }
 
-    // Calculamos la cantidad total de productos que hay en el carrito
     const cantidadCarrito = carrito.reduce((total, producto) => total + producto.cantidad, 0);
-
     const estadoProductos = cargando ? (
         <section className="catalogo">
             <p className="mensaje-carga">Cargando productos...</p>
@@ -147,65 +171,31 @@ function App() {
 
     return (
         <>
-            <Navbar cantidadCarrito={cantidadCarrito} onNavegar={navegar} />
+            <Navbar cantidadCarrito={cantidadCarrito} />
 
             <main>
                 <Routes>
-                    <Route
-                        path="/"
-                        element={
-                            estadoProductos || (
-                                <Home
-                                    productos={productos}
-                                    onSeleccionarProducto={setProductoSeleccionado}
-                                    onAgregar={agregarAlCarrito}
-                                    onNavegar={navegar}
-                                />
-                            )
-                        }
-                    />
+                    <Route path="/" element={estadoProductos || <Home productos={productos} />} />
                     <Route
                         path="/productos"
                         element={
-                            estadoProductos ||
-                            (productoSeleccionado ? (
-                                <ProductDetail
-                                    producto={productoSeleccionado}
-                                    onAgregar={agregarAlCarrito}
-                                    onVolver={() => {
-                                        setProductoSeleccionado(null);
-                                        navigate("/productos");
-                                    }}
-                                />
-                            ) : (
+                            estadoProductos || (
                                 <>
                                     {location.state?.mensaje && (
                                         <p className="mensaje-exito contenedor" role="status">
                                             {location.state.mensaje}
                                         </p>
                                     )}
-                                    <ProductList
-                                        productos={productos}
-                                        onSeleccionarProducto={setProductoSeleccionado}
-                                        onAgregar={agregarAlCarrito}
-                                    />
+                                    <ProductList productos={productos} />
                                 </>
-                            ))
-                        }
-                    />
-                    <Route path="/contacto" element={estadoProductos || <ContactForm />} />
-                    <Route
-                        path="/carrito"
-                        element={
-                            estadoProductos || (
-                                <Carrito
-                                    carrito={carrito}
-                                    onEliminar={eliminarDelCarrito}
-                                    onComprar={comprarProducto}
-                                />
                             )
                         }
                     />
+                    <Route
+                        path="/productos/:id"
+                        element={<DetalleProductoRuta onAgregar={agregarAlCarrito} />}
+                    />
+                    <Route path="/contacto" element={<ContactForm />} />
                     <Route
                         path="/admin/crear-producto"
                         element={
@@ -224,11 +214,21 @@ function App() {
                             />
                         }
                     />
+                    <Route
+                        path="/carrito"
+                        element={
+                            <Carrito
+                                carrito={carrito}
+                                onEliminar={eliminarDelCarrito}
+                                onComprar={comprarProducto}
+                            />
+                        }
+                    />
                     <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
             </main>
 
-            <Footer onNavegar={navegar} />
+            <Footer />
         </>
     );
 }
