@@ -544,6 +544,12 @@ p {
     color: #d32f2f;
 }
 
+.mensaje-exito {
+    padding-top: 1.5rem;
+    color: #2e7d32;
+    font-weight: 600;
+}
+
 @media (min-width: 768px) {
     .catalogo {
         padding: 3rem 0 5rem;
@@ -829,6 +835,22 @@ p {
     box-shadow: var(--sombra);
 }
 
+#form-producto {
+    width: 100%;
+    max-width: 600px;
+    background: var(--papel);
+    padding: clamp(1.25rem, 5vw, 2rem);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+}
+
+#form-producto fieldset {
+    min-width: 0;
+    padding: 0;
+    border: 0;
+}
+
 .campo {
     display: flex;
     flex-direction: column;
@@ -843,7 +865,8 @@ p {
 }
 
 .campo input,
-.campo textarea {
+.campo textarea,
+.campo input[type="number"] {
     width: 100%;
     min-width: 0;
     font-family: inherit;

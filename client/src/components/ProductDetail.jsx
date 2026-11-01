@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 function ProductDetail({ producto, onAgregar }) {
     // Hook de React Router para navegar entre las distintas rutas
     const navigate = useNavigate();
+    const idProducto = producto.id ?? producto._id;
 
     return (
         <section className="producto-detalle">
             {/* Imagen del producto */}
             <div className="detalle-imagen">
-                <img src={`/${producto.imagenUrl}`} alt={producto.nombre} />
+                <img src={`/${producto.imagenUrl ?? producto.imagen}`} alt={producto.nombre} />
             </div>
 
             {/* Información y características del producto */}
@@ -30,6 +31,19 @@ function ProductDetail({ producto, onAgregar }) {
                     {/* Volver al catálogo */}
                     <button className="btn-volver" onClick={() => navigate("/productos")}>
                         Volver al catálogo
+                    </button>
+
+                    <button
+                        className="btn-volver"
+                        disabled={!idProducto}
+                        onClick={() =>
+                            idProducto &&
+                            navigate(
+                                `/admin/editar-producto/${encodeURIComponent(String(idProducto))}`
+                            )
+                        }
+                    >
+                        Editar producto
                     </button>
                 </div>
             </div>
