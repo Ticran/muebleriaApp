@@ -1,7 +1,7 @@
 import ProductCard from "./ProductCard";
 import { useNavigate } from "react-router-dom";
 
-function Home({ productos, onSeleccionarProducto, onAgregar }) {
+function Home({ productos }) {
     // Hook de React Router para navegar entre las distintas rutas
     const navigate = useNavigate();
 
@@ -14,13 +14,13 @@ function Home({ productos, onSeleccionarProducto, onAgregar }) {
             <section className="hero">
                 <div className="hero-contenido">
                     <h1>El redescubrimiento de un arte noble</h1>
+
                     <p>
                         Creamos muebles pensados para trascender el tiempo y acompañar tu vida.
                         Piezas únicas que combinan diseño consciente, manos expertas y materiales
                         nobles.
                     </p>
 
-                    {/* navigate permite dirigirse al catálogo sin recargar la aplicación */}
                     <button className="btn" onClick={() => navigate("/productos")}>
                         Ver Catálogo
                     </button>
@@ -30,14 +30,10 @@ function Home({ productos, onSeleccionarProducto, onAgregar }) {
             {/* Sección de productos destacados */}
             <section id="productos-destacados">
                 <h2>Productos destacados</h2>
+
                 <div className="productos-grid">
                     {productosDestacados.map((producto) => (
-                        <ProductCard
-                            key={producto.id}
-                            producto={producto}
-                            onSeleccionar={onSeleccionarProducto}
-                            onAgregar={onAgregar}
-                        />
+                        <ProductCard key={producto._id} producto={producto} />
                     ))}
                 </div>
             </section>

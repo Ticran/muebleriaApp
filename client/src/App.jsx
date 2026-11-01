@@ -11,10 +11,8 @@ import Carrito from "./components/Carrito";
 
 // Componente auxiliar para mostrar el detalle según el ID de la URL
 function DetalleProductoRuta({ onAgregar }) {
-    // Obtenemos el ID del producto desde la URL
     const { id } = useParams();
 
-    // Estados del detalle
     const [producto, setProducto] = useState(null);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
@@ -27,9 +25,7 @@ function DetalleProductoRuta({ onAgregar }) {
             setProducto(null);
 
             try {
-                const respuesta = await fetch(
-                    `http://localhost:3000/api/productos/${id}`
-                );
+                const respuesta = await fetch(`http://localhost:3000/api/productos/${id}`);
 
                 if (!respuesta.ok) {
                     throw new Error("No se encontró el producto");
@@ -37,11 +33,9 @@ function DetalleProductoRuta({ onAgregar }) {
 
                 const datos = await respuesta.json();
                 setProducto(datos);
-
             } catch (err) {
                 console.error(err);
                 setError(err.message);
-
             } finally {
                 setCargando(false);
             }
@@ -50,7 +44,6 @@ function DetalleProductoRuta({ onAgregar }) {
         obtenerProducto();
     }, [id]);
 
-    // Mostramos el estado de carga
     if (cargando) {
         return (
             <section className="catalogo">
@@ -59,7 +52,6 @@ function DetalleProductoRuta({ onAgregar }) {
         );
     }
 
-    // Mostramos el estado de error
     if (error) {
         return (
             <section className="catalogo">
@@ -68,7 +60,6 @@ function DetalleProductoRuta({ onAgregar }) {
         );
     }
 
-    // Mostramos el detalle del producto
     return <ProductDetail producto={producto} onAgregar={onAgregar} />;
 }
 
@@ -78,19 +69,20 @@ function App() {
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
 
-    // Estado del carrito de compras
+    // Estado del carrito
     const [carrito, setCarrito] = useState([]);
 
-    // Hooks de React Router para navegar y detectar cambios de ruta
+    // Hooks de React Router
     const navigate = useNavigate();
     const location = useLocation();
 
-    // Fetch a GET /api/productos al montar el componente
-    // Carga los productos desde el backend
+    // Carga de productos desde MongoDB a través del backend
     useEffect(() => {
         fetch("http://localhost:3000/api/productos")
             .then((res) => {
-                if (!res.ok) throw new Error("Error al obtener los productos");
+                if (!res.ok) {
+                    throw new Error("Error al obtener los productos");
+                }
                 return res.json();
             })
             .then((datos) => {
@@ -104,21 +96,19 @@ function App() {
             });
     }, []);
 
-    // Cada vez que cambia la ruta, subimos el scroll arriba de todo
+    // Subir el scroll al cambiar de ruta
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [location.pathname]);
 
-    // Función para agregar un producto al carrito
+    // Agregar un producto al carrito
     function agregarAlCarrito(producto) {
         setCarrito((prev) => {
-            // Buscamos si el producto ya existe en el carrito
-            const productoExistente = prev.find((item) => item.id === producto.id);
+            const productoExistente = prev.find((item) => item._id === producto._id);
 
-            // Si ya existe, aumentamos su cantidad
             if (productoExistente) {
                 return prev.map((item) =>
-                    item.id === producto.id
+                    item._id === producto._id
                         ? {
                               ...item,
                               cantidad: item.cantidad + 1
@@ -127,7 +117,6 @@ function App() {
                 );
             }
 
-            // Si no existe, lo agregamos con cantidad 1
             return [
                 ...prev,
                 {
@@ -138,37 +127,33 @@ function App() {
         });
     }
 
-    // Función para eliminar un producto del carrito
+    // Eliminar un producto del carrito
     function eliminarDelCarrito(id) {
-        setCarrito((prev) => prev.filter((producto) => producto.id !== id));
+        setCarrito((prev) => prev.filter((producto) => producto._id !== id));
     }
 
-    // Función para comprar un producto o todos los productos del carrito
+    // Comprar un producto o todo el carrito
     function comprarProducto(producto) {
-        // Si se compra un solo producto
         if (producto) {
-            eliminarDelCarrito(producto.id);
+            eliminarDelCarrito(producto._id);
             return;
         }
 
-        // Si se compra todo el carrito, lo vaciamos
         setCarrito([]);
     }
 
-    // Calculamos la cantidad total de productos que hay en el carrito
+    // Cantidad total de productos en el carrito
     const cantidadCarrito = carrito.reduce((total, producto) => total + producto.cantidad, 0);
 
-    // Función para navegar al detalle de un producto desde la página de inicio
+    // Navegar al detalle de un producto
     function seleccionarProducto(producto) {
-        navigate(`/productos/${producto.id}`);
+        navigate(`/productos/${producto._id}`);
     }
 
     return (
         <>
-            {/* Barra de navegación: muestra la cantidad de productos del carrito */}
             <Navbar cantidadCarrito={cantidadCarrito} />
 
-            {/* Definición de las rutas de la aplicación */}
             <main>
                 <Routes>
                     {/* Página de inicio */}
@@ -211,20 +196,16 @@ function App() {
                         }
                     />
 
-                    {/* Detalle de un producto según su ID */}
+                    {/* Detalle de un producto */}
                     <Route
                         path="/productos/:id"
-                        element={
-                            <DetalleProductoRuta
-                                onAgregar={agregarAlCarrito}
-                            />
-                        }
+                        element={<DetalleProductoRuta onAgregar={agregarAlCarrito} />}
                     />
 
-                    {/* Página de contacto */}
+                    {/* Contacto */}
                     <Route path="/contacto" element={<ContactForm />} />
 
-                    {/* Página de administración: pendiente de implementar el formulario T11 */}
+                    {/* Administración: pendiente T11 */}
                     <Route
                         path="/admin/crear-producto"
                         element={
@@ -235,7 +216,7 @@ function App() {
                         }
                     />
 
-                    {/* Página del carrito de compras */}
+                    {/* Carrito */}
                     <Route
                         path="/carrito"
                         element={
@@ -247,12 +228,11 @@ function App() {
                         }
                     />
 
-                    {/* Si la URL no existe, redirigimos al inicio */}
+                    {/* Redirección de rutas inexistentes */}
                     <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
             </main>
 
-            {/* Pie de página */}
             <Footer />
         </>
     );
