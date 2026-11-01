@@ -1,9 +1,8 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 
 function ProductDetail({ producto, onAgregar }) {
     // Hook de React Router para navegar entre las distintas rutas
     const navigate = useNavigate();
-
     return (
         <section className="producto-detalle">
             {/* Imagen del producto */}

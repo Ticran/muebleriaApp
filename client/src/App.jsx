@@ -10,23 +10,56 @@ import ContactForm from "./components/ContactForm";
 import Carrito from "./components/Carrito";
 
 // Componente auxiliar para mostrar el detalle según el ID de la URL
-function DetalleProductoRuta({ productos, cargando, error, onAgregar }) {
-    // Obtenemos el ID del producto desde los parámetros de la ruta
+function DetalleProductoRuta({ onAgregar }) {
+    // Obtenemos el ID del producto desde la URL
     const { id } = useParams();
 
-    // Buscamos el producto correspondiente al ID recibido
-    const producto = productos.find((item) => String(item.id) === id);
+    // Estados del detalle
+    const [producto, setProducto] = useState(null);
+    const [cargando, setCargando] = useState(true);
+    const [error, setError] = useState(null);
 
-    // Mostramos un mensaje mientras se cargan los productos
+    // Consultamos el producto al backend
+    useEffect(() => {
+        async function obtenerProducto() {
+            setCargando(true);
+            setError(null);
+            setProducto(null);
+
+            try {
+                const respuesta = await fetch(
+                    `http://localhost:3000/api/productos/${id}`
+                );
+
+                if (!respuesta.ok) {
+                    throw new Error("No se encontró el producto");
+                }
+
+                const datos = await respuesta.json();
+                setProducto(datos);
+
+            } catch (err) {
+                console.error(err);
+                setError(err.message);
+
+            } finally {
+                setCargando(false);
+            }
+        }
+
+        obtenerProducto();
+    }, [id]);
+
+    // Mostramos el estado de carga
     if (cargando) {
         return (
             <section className="catalogo">
-                <p className="mensaje-carga">Cargando productos...</p>
+                <p className="mensaje-carga">Cargando producto...</p>
             </section>
         );
     }
 
-    // Mostramos un mensaje si ocurrió un error al cargar los productos
+    // Mostramos el estado de error
     if (error) {
         return (
             <section className="catalogo">
@@ -35,16 +68,7 @@ function DetalleProductoRuta({ productos, cargando, error, onAgregar }) {
         );
     }
 
-    // Si no encontramos el producto, mostramos un mensaje
-    if (!producto) {
-        return (
-            <section className="catalogo">
-                <p className="mensaje-error">No se encontró el producto solicitado.</p>
-            </section>
-        );
-    }
-
-    // Si encontramos el producto, mostramos su detalle
+    // Mostramos el detalle del producto
     return <ProductDetail producto={producto} onAgregar={onAgregar} />;
 }
 
@@ -192,9 +216,6 @@ function App() {
                         path="/productos/:id"
                         element={
                             <DetalleProductoRuta
-                                productos={productos}
-                                cargando={cargando}
-                                error={error}
                                 onAgregar={agregarAlCarrito}
                             />
                         }

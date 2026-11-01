@@ -1,4 +1,6 @@
-function ProductCard({ producto, onSeleccionar }) {
+import { useNavigate } from "react-router-dom";
+function ProductCard({ producto }) {
+    const navigate = useNavigate();
     return (
         <div className="product-card">
             {/* Imagen del producto */}
@@ -12,7 +14,7 @@ function ProductCard({ producto, onSeleccionar }) {
             {/* Acciones disponibles para cada producto */}
             <div className="acciones-card">
                 {/* Al hacer clic se ejecuta la función de selección recibida por props */}
-                <button onClick={() => onSeleccionar(producto)}>Ver Detalle</button>
+                <button onClick={() => navigate(`/productos/${producto._id}`)}>Ver Detalle</button>
             </div>
         </div>
     );
