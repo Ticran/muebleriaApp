@@ -34,7 +34,6 @@ function ProductList({ productos, onSeleccionarProducto }) {
                         <ProductCard
                             key={producto.id}
                             producto={producto}
-                            onSeleccionar={onSeleccionarProducto}
                         />
                     ))}
                 </div>

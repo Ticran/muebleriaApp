@@ -1,6 +1,10 @@
 import ProductCard from "./ProductCard";
+import { useNavigate } from "react-router-dom";
 
-function Home({ productos, onSeleccionarProducto, onAgregar, onNavegar }) {
+function Home({ productos, onSeleccionarProducto, onAgregar }) {
+    // Hook de React Router para navegar entre las distintas rutas
+    const navigate = useNavigate();
+
     // Tomamos los primeros 5 productos para la sección de destacados
     const productosDestacados = productos.slice(0, 5);
 
@@ -15,7 +19,9 @@ function Home({ productos, onSeleccionarProducto, onAgregar, onNavegar }) {
                         Piezas únicas que combinan diseño consciente, manos expertas y materiales
                         nobles.
                     </p>
-                    <button className="btn" onClick={() => onNavegar("catalogo")}>
+
+                    {/* navigate permite dirigirse al catálogo sin recargar la aplicación */}
+                    <button className="btn" onClick={() => navigate("/productos")}>
                         Ver Catálogo
                     </button>
                 </div>

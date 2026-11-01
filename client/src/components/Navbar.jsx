@@ -1,32 +1,18 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
-function Navbar({ cantidadCarrito = 0, onNavegar }) {
+function Navbar({ cantidadCarrito = 0 }) {
     // Estado del menú mobile (hamburguesa)
     const [menuAbierto, setMenuAbierto] = useState(false);
-
-    // Navega a la sección y cierra el menú mobile si está abierto
-    function navegarYCerrar(seccion) {
-        setMenuAbierto(false);
-
-        if (onNavegar) {
-            onNavegar(seccion);
-        }
-    }
 
     return (
         <header className="header">
             <div className="contenedor">
                 <div className="marca">
-                    <a
-                        href="#inicio"
-                        className="logo"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            navegarYCerrar("inicio");
-                        }}
-                    >
+                    {/* Link permite volver a la página de inicio sin recargar la aplicación */}
+                    <Link to="/" className="logo" onClick={() => setMenuAbierto(false)}>
                         <img src="/imagenes/logo.svg" alt="Logo Hermanos Jota" />
-                    </a>
+                    </Link>
 
                     <div className="nombre-marca">
                         <h2>Hermanos Jota</h2>
@@ -34,60 +20,42 @@ function Navbar({ cantidadCarrito = 0, onNavegar }) {
                     </div>
                 </div>
 
+                {/* Menú de navegación principal */}
                 <nav className={`menu${menuAbierto ? " menu-abierto" : ""}`} id="menu-principal">
                     <ul>
                         <li>
-                            <a
-                                href="#inicio"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    navegarYCerrar("inicio");
-                                }}
-                            >
+                            {/* Link reemplaza la navegación anterior mediante onNavegar */}
+                            <Link to="/" onClick={() => setMenuAbierto(false)}>
                                 Inicio
-                            </a>
+                            </Link>
                         </li>
 
                         <li>
-                            <a
-                                href="#catalogo"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    navegarYCerrar("catalogo");
-                                }}
-                            >
+                            <Link to="/productos" onClick={() => setMenuAbierto(false)}>
                                 Catálogo
-                            </a>
+                            </Link>
                         </li>
 
                         <li>
-                            <a
-                                href="#contacto"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    navegarYCerrar("contacto");
-                                }}
-                            >
+                            <Link to="/contacto" onClick={() => setMenuAbierto(false)}>
                                 Contacto
-                            </a>
+                            </Link>
                         </li>
                     </ul>
                 </nav>
 
+                {/* Acceso al carrito y contador de productos */}
                 <div className="carrito">
-                    <a
-                        href="#carrito"
+                    <Link
+                        to="/carrito"
                         id="carrito-link"
                         aria-label="Ver carrito"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            navegarYCerrar("carrito");
-                        }}
+                        onClick={() => setMenuAbierto(false)}
                     >
                         <img src="/imagenes/shopping-cart.svg" alt="Carrito de compras" />
 
                         <span id="carrito-contador">{cantidadCarrito}</span>
-                    </a>
+                    </Link>
                 </div>
 
                 {/* Botón hamburguesa: solo visible en mobile (oculto ≥768px) */}
