@@ -15,7 +15,7 @@ La aplicación permite visualizar el catálogo de productos en tiempo real, cons
 
 ## Deploy en Producción
 
-- 🌐 **Frontend (Vercel):** [https://muebleria-app-omega.vercel.app/](https://muebleria-app-omega.vercel.app/)
+- 🌐 **Frontend (Vercel):** [https://muebleria-hermanos-jota-g11.vercel.app/](https://muebleria-hermanos-jota-g11.vercel.app/)
 - 🚀 **Backend API (Render):** [https://muebleria-hermanos-jota-api-g37f.onrender.com/](https://muebleria-hermanos-jota-api-g37f.onrender.com/)
   - Endpoint de productos: [https://muebleria-hermanos-jota-api-g37f.onrender.com/api/productos](https://muebleria-hermanos-jota-api-g37f.onrender.com/api/productos)
 
