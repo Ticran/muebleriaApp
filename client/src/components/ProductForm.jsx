@@ -100,7 +100,7 @@ function ProductForm({ onCreated, onUpdated }) {
         try {
             const respuesta = await fetch(
                 modoEdicion
-                    ? `http://localhost:3000/api/productos/${encodeURIComponent(id)}`
+                    ? `${API_URL}/api/productos/${encodeURIComponent(id)}`
                     : `${API_URL}/api/productos`,
                 {
                     method: modoEdicion ? "PUT" : "POST",
