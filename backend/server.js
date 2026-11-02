@@ -15,6 +15,7 @@ const logger = require("./middlewares/logger.js");
 
 // Rutas de la API
 const productRoutes = require("./routes/productRoutes");
+const categoriasRoutes = require("./routes/categorias");
 app.use(logger);
 
 // Ruta de prueba inicial
@@ -24,6 +25,7 @@ app.get("/", (req, res) => {
 
 //Montaje del router de productos en /api/productos
 app.use("/api/productos", productRoutes);
+app.use("/api/categorias", categoriasRoutes);
 
 // Manejador de rutas no encontradas (404)
 app.use((req, res, next) => {
@@ -32,11 +34,20 @@ app.use((req, res, next) => {
     next(error);
 });
 
-//Middleware centralizado de manejo de errores (404 / 500)
+//Middleware centralizado de manejo de errores
 app.use((err, req, res, next) => {
+    if (err.name === "ValidationError") {
+        return res.status(400).json({ error: err.message });
+    }
+    if (err.name === "CastError") {
+        return res.status(400).json({ error: "ID con formato inválido" });
+    }
+    if (err.code === 11000) {
+        return res.status(409).json({ error: "El registro ya existe" });
+    }
     const status = err.status || 500;
     const mensaje = err.message || "Error interno del servidor";
-    res.status(status).json({ error: { mensaje, status } });
+    res.status(status).json({ error: mensaje });
 });
 
 // Levantar el servidor

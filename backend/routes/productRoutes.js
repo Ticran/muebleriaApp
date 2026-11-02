@@ -8,107 +8,81 @@ const express = require("express");
 const router = express.Router();
 
 const Product = require("../models/Product");
+const Categoria = require("../models/Categoria");
 
 // GET /api/productos
-router.get("/", async (req, res, next) => {
-    try {
-        const productos = await Product.find();
-        // Se mantiene compatibilidad con el frontend (id/imagen) sin perder
-        // los campos nativos de Mongo (_id/imagenUrl).
-        res.json(
-            productos.map((p) => ({
-                ...p.toObject(),
-                id: p._id,
-                imagen: p.imagenUrl
-            }))
-        );
-    } catch (err) {
-        next(err);
-    }
+router.get("/", async (req, res) => {
+    const filtro = req.query.categoria ? { categoria: req.query.categoria } : {};
+    const productos = await Product.find(filtro).populate("categoria", "nombre");
+    // Se mantiene compatibilidad con el frontend (id/imagen) sin perder
+    // los campos nativos de Mongo (_id/imagenUrl).
+    res.json(
+        productos.map((p) => ({
+            ...p.toObject(),
+            id: p._id,
+            imagen: p.imagenUrl
+        }))
+    );
 });
 
 // GET /api/productos/:id
-router.get("/:id", async (req, res, next) => {
-    try {
-        const producto = await Product.findById(req.params.id);
+router.get("/:id", async (req, res) => {
+    const producto = await Product.findById(req.params.id).populate("categoria", "nombre");
 
-        if (!producto) {
-            const error = new Error("Producto no encontrado");
-            error.status = 404;
-            return next(error);
-        }
-
-        res.json({
-            ...producto.toObject(),
-            id: producto._id,
-            imagen: producto.imagenUrl
-        });
-    } catch (err) {
-        // id inválido (CastError) -> 404 para mantener el contrato
-        if (err.name === "CastError") {
-            const error = new Error("Producto no encontrado");
-            error.status = 404;
-            return next(error);
-        }
-        next(err);
+    if (!producto) {
+        return res.status(404).json({ error: "Producto no encontrado" });
     }
+
+    res.json({
+        ...producto.toObject(),
+        id: producto._id,
+        imagen: producto.imagenUrl
+    });
 });
 
 // POST /api/productos
-router.post("/", async (req, res, next) => {
-    try {
-        const nuevoProducto = await Product.create(req.body);
-        res.status(201).json(nuevoProducto);
-    } catch (err) {
-        next(err);
+router.post("/", async (req, res) => {
+    if (req.body.categoria) {
+        const existeCategoria = await Categoria.findById(req.body.categoria);
+        if (!existeCategoria) {
+            return res.status(400).json({ error: "La categoría no existe" });
+        }
     }
+
+    const nuevoProducto = await Product.create(req.body);
+    res.status(201).json(nuevoProducto);
 });
 
 // PUT /api/productos/:id
-router.put("/:id", async (req, res, next) => {
-    try {
-        const productoActualizado = await Product.findByIdAndUpdate(req.params.id, req.body, {
-            new: true,
-            runValidators: true
-        });
-
-        if (!productoActualizado) {
-            const error = new Error("Producto no encontrado");
-            error.status = 404;
-            return next(error);
+router.put("/:id", async (req, res) => {
+    if (req.body.categoria) {
+        const existeCategoria = await Categoria.findById(req.body.categoria);
+        if (!existeCategoria) {
+            return res.status(400).json({ error: "La categoría no existe" });
         }
-
-        res.json(productoActualizado);
-    } catch (err) {
-        if (err.name === "CastError") {
-            const error = new Error("Producto no encontrado");
-            error.status = 404;
-            return next(error);
-        }
-        next(err);
     }
+
+    const productoActualizado = await Product.findByIdAndUpdate(req.params.id, req.body, {
+        returnDocument: "after",
+        runValidators: true
+    });
+
+    if (!productoActualizado) {
+        return res.status(404).json({ error: "Producto no encontrado" });
+    }
+
+    res.json(productoActualizado);
 });
 
 // DELETE /api/productos/:id
-router.delete("/:id", async (req, res, next) => {
-    try {
-        const productoEliminado = await Product.findByIdAndDelete(req.params.id);
+router.delete("/:id", async (req, res) => {
+    const productoEliminado = await Product.findByIdAndDelete(req.params.id);
 
-        if (!productoEliminado) {
-            const error = new Error("Producto no encontrado");
-            error.status = 404;
-            return next(error);
-        }
-
-        res.json(productoEliminado);
-    } catch (err) {
-        if (err.name === "CastError") {
-            const error = new Error("Producto no encontrado");
-            error.status = 404;
-            return next(error);
-        }
-        next(err);
+    if (!productoEliminado) {
+        return res.status(404).json({ error: "Producto no encontrado" });
     }
+
+    res.json(productoEliminado);
 });
 
 module.exports = router;
