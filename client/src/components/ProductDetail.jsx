@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 function ProductDetail({ producto, onAgregar, onEliminar }) {
     // Hook de React Router para navegar entre las distintas rutas
     const navigate = useNavigate();
+    const idProducto = producto.id ?? producto._id;
 
     return (
         <section className="producto-detalle">
             {/* Imagen del producto */}
             <div className="detalle-imagen">
-                <img src={`/${producto.imagenUrl}`} alt={producto.nombre} />
+                <img src={`/${producto.imagenUrl ?? producto.imagen}`} alt={producto.nombre} />
             </div>
 
             {/* Información y características del producto */}
@@ -32,18 +33,37 @@ function ProductDetail({ producto, onAgregar, onEliminar }) {
                         Volver al catálogo
                     </button>
 
-                    {/* Eliminar */}
-                    <button className="btn-eliminar" onClick={
-                        () => {
+                    <button
+                        className="btn-volver"
+                        disabled={!idProducto}
+                        onClick={() =>
+                            idProducto &&
+                            navigate(
+                                `/admin/editar-producto/${encodeURIComponent(String(idProducto))}`
+                            )
+                        }
+                    >
+                        Editar producto
+                    </button>
+
+                    <button
+                        className="btn-eliminar"
+                        disabled={!idProducto}
+                        onClick={() => {
+                            if (!idProducto) {
+                                return;
+                            }
+
                             const confirmar = window.confirm(
                                 "¿Estás seguro de que deseas eliminar este producto?"
                             );
+
                             if (confirmar) {
-                                onEliminar(producto._id);
+                                onEliminar(idProducto);
                             }
-                        }
-                    }
-                    > Eliminar
+                        }}
+                    >
+                        Eliminar
                     </button>
                 </div>
             </div>

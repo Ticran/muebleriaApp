@@ -41,6 +41,12 @@ function Navbar({ cantidadCarrito = 0 }) {
                                 Contacto
                             </Link>
                         </li>
+
+                        <li>
+                            <Link to="/admin/crear-producto" onClick={() => setMenuAbierto(false)}>
+                                Crear producto
+                            </Link>
+                        </li>
                     </ul>
                 </nav>
 

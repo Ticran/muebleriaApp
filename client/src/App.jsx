@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
-import { Routes, Route, useNavigate, useLocation, useParams, Navigate } from "react-router-dom";
-
+import { useEffect, useState } from "react";
+import { Navigate, Route, Routes, useLocation, useNavigate, useParams } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./components/Home";
@@ -8,40 +7,49 @@ import ProductList from "./components/ProductList";
 import ProductDetail from "./components/ProductDetail";
 import ContactForm from "./components/ContactForm";
 import Carrito from "./components/Carrito";
+import ProductForm from "./components/ProductForm";
 
-// Componente auxiliar para mostrar el detalle según el ID de la URL
 function DetalleProductoRuta({ onAgregar, onEliminar }) {
     const { id } = useParams();
-
     const [producto, setProducto] = useState(null);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
 
-    // Consultamos el producto al backend
     useEffect(() => {
+        const controller = new AbortController();
+
         async function obtenerProducto() {
             setCargando(true);
             setError(null);
             setProducto(null);
 
             try {
-                const respuesta = await fetch(`http://localhost:3000/api/productos/${id}`);
+                const respuesta = await fetch(
+                    `http://localhost:3000/api/productos/${encodeURIComponent(id)}`,
+                    { signal: controller.signal }
+                );
+                const datos = await respuesta.json();
 
                 if (!respuesta.ok) {
-                    throw new Error("No se encontró el producto");
+                    throw new Error(datos.error?.mensaje || "No se encontró el producto.");
                 }
 
-                const datos = await respuesta.json();
                 setProducto(datos);
             } catch (err) {
-                console.error(err);
-                setError(err.message);
+                if (!controller.signal.aborted) {
+                    console.error(err);
+                    setError(err instanceof Error ? err.message : "No se encontró el producto.");
+                }
             } finally {
-                setCargando(false);
+                if (!controller.signal.aborted) {
+                    setCargando(false);
+                }
             }
         }
 
         obtenerProducto();
+
+        return () => controller.abort();
     }, [id]);
 
     if (cargando) {
@@ -70,26 +78,20 @@ function DetalleProductoRuta({ onAgregar, onEliminar }) {
 }
 
 function App() {
-    // Estado de productos traídos del backend
+    const location = useLocation();
+    const navigate = useNavigate();
     const [productos, setProductos] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
-
-    // Estado del carrito
     const [carrito, setCarrito] = useState([]);
 
-    // Hooks de React Router
-    const navigate = useNavigate();
-    const location = useLocation();
-
-    // Carga de productos desde MongoDB a través del backend
     useEffect(() => {
         fetch("http://localhost:3000/api/productos")
-            .then((res) => {
-                if (!res.ok) {
+            .then((respuesta) => {
+                if (!respuesta.ok) {
                     throw new Error("Error al obtener los productos");
                 }
-                return res.json();
+                return respuesta.json();
             })
             .then((datos) => {
                 setProductos(datos);
@@ -102,89 +104,106 @@ function App() {
             });
     }, []);
 
-    // Subir el scroll al cambiar de ruta
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [location.pathname]);
 
-    // Agregar un producto al carrito
     function agregarAlCarrito(producto) {
-        setCarrito((prev) => {
-            const productoExistente = prev.find((item) => item._id === producto._id);
+        setCarrito((actual) => {
+            const idProducto = producto._id ?? producto.id;
+            const existente = actual.find((item) => (item._id ?? item.id) === idProducto);
 
-            if (productoExistente) {
-                return prev.map((item) =>
-                    item._id === producto._id
-                        ? {
-                              ...item,
-                              cantidad: item.cantidad + 1
-                          }
+            if (existente) {
+                return actual.map((item) =>
+                    (item._id ?? item.id) === idProducto
+                        ? { ...item, cantidad: item.cantidad + 1 }
                         : item
                 );
             }
 
-            return [
-                ...prev,
-                {
-                    ...producto,
-                    cantidad: 1
-                }
-            ];
+            return [...actual, { ...producto, cantidad: 1 }];
         });
     }
 
-    // Eliminar un producto del carrito
     function eliminarDelCarrito(id) {
-        setCarrito((prev) => prev.filter((producto) => producto._id !== id));
+        setCarrito((actual) => actual.filter((producto) => (producto._id ?? producto.id) !== id));
     }
 
-    // Comprar un producto o todo el carrito
     function comprarProducto(producto) {
         if (producto) {
-            eliminarDelCarrito(producto._id);
+            eliminarDelCarrito(producto._id ?? producto.id);
             return;
         }
 
         setCarrito([]);
     }
 
-    // Cantidad total de productos en el carrito
-    const cantidadCarrito = carrito.reduce((total, producto) => total + producto.cantidad, 0);
+    function agregarProductoAlCatalogo(producto) {
+        const productoNormalizado = {
+            ...producto,
+            _id: producto._id ?? producto.id,
+            imagenUrl: producto.imagenUrl ?? producto.imagen
+        };
 
-    // Navegar al detalle de un producto
-    function seleccionarProducto(producto) {
-        navigate(`/productos/${producto._id}`);
+        setProductos((actuales) => [...actuales, productoNormalizado]);
     }
 
-    //Eliminar producto
+    function actualizarProductoEnCatalogo(producto) {
+        const productoNormalizado = {
+            ...producto,
+            _id: producto._id ?? producto.id,
+            imagenUrl: producto.imagenUrl ?? producto.imagen
+        };
+        const idActualizado = String(productoNormalizado._id);
+
+        setProductos((actuales) =>
+            actuales.map((actual) =>
+                String(actual._id ?? actual.id) === idActualizado
+                    ? { ...actual, ...productoNormalizado }
+                    : actual
+            )
+        );
+    }
+
     async function eliminarProducto(id) {
+        const idEliminado = String(id);
+
         try {
             const respuesta = await fetch(
-                `http://localhost:3000/api/productos/${id}`,
-                {
-                    method: "DELETE"
-                }
+                `http://localhost:3000/api/productos/${encodeURIComponent(idEliminado)}`,
+                { method: "DELETE" }
             );
-    
+
             if (!respuesta.ok) {
                 throw new Error("Error al eliminar el producto");
             }
-    
-            // Actualizar la lista de productos
-            setProductos((productosActuales) =>
-                productosActuales.filter((producto) => producto._id !== id)
+
+            setProductos((actuales) =>
+                actuales.filter((producto) => String(producto._id ?? producto.id) !== idEliminado)
             );
-    
-            // Volver al catálogo
-            navigate("/productos");
-    
-        } catch (error) {
-            console.error("Error al eliminar el producto:", error);
+            setCarrito((actual) =>
+                actual.filter((producto) => String(producto._id ?? producto.id) !== idEliminado)
+            );
+
+            navigate("/productos", {
+                state: { mensaje: "Producto eliminado correctamente." }
+            });
+        } catch (err) {
+            console.error("Error al eliminar el producto:", err);
             setError("No se pudo eliminar el producto");
         }
     }
-        
-        
+
+    const cantidadCarrito = carrito.reduce((total, producto) => total + producto.cantidad, 0);
+    const estadoProductos = cargando ? (
+        <section className="catalogo">
+            <p className="mensaje-carga">Cargando productos...</p>
+        </section>
+    ) : error ? (
+        <section className="catalogo">
+            <p className="mensaje-error">{error}</p>
+        </section>
+    ) : null;
 
     return (
         <>
@@ -192,67 +211,45 @@ function App() {
 
             <main>
                 <Routes>
-                    {/* Página de inicio */}
-                    <Route
-                        path="/"
-                        element={
-                            cargando ? (
-                                <section className="catalogo">
-                                    <p className="mensaje-carga">Cargando productos...</p>
-                                </section>
-                            ) : error ? (
-                                <section className="catalogo">
-                                    <p className="mensaje-error">{error}</p>
-                                </section>
-                            ) : (
-                                <Home
-                                    productos={productos}
-                                    onSeleccionarProducto={seleccionarProducto}
-                                    onAgregar={agregarAlCarrito}
-                                />
-                            )
-                        }
-                    />
-
-                    {/* Catálogo de productos */}
+                    <Route path="/" element={estadoProductos || <Home productos={productos} />} />
                     <Route
                         path="/productos"
                         element={
-                            cargando ? (
-                                <section className="catalogo">
-                                    <p className="mensaje-carga">Cargando productos...</p>
-                                </section>
-                            ) : error ? (
-                                <section className="catalogo">
-                                    <p className="mensaje-error">{error}</p>
-                                </section>
-                            ) : (
-                                <ProductList productos={productos} />
+                            estadoProductos || (
+                                <>
+                                    {location.state?.mensaje && (
+                                        <p className="mensaje-exito contenedor" role="status">
+                                            {location.state.mensaje}
+                                        </p>
+                                    )}
+                                    <ProductList productos={productos} />
+                                </>
                             )
                         }
                     />
-
-                    {/* Detalle de un producto */}
                     <Route
                         path="/productos/:id"
                         element={<DetalleProductoRuta onAgregar={agregarAlCarrito} onEliminar={eliminarProducto} />}
                     />
-
-                    {/* Contacto */}
                     <Route path="/contacto" element={<ContactForm />} />
-
-                    {/* Administración: pendiente T11 */}
                     <Route
                         path="/admin/crear-producto"
                         element={
-                            <section className="catalogo">
-                                <h1>Crear producto</h1>
-                                <p>Formulario de creación de productos próximamente.</p>
-                            </section>
+                            <ProductForm
+                                key={location.pathname}
+                                onCreated={agregarProductoAlCatalogo}
+                            />
                         }
                     />
-
-                    {/* Carrito */}
+                    <Route
+                        path="/admin/editar-producto/:id"
+                        element={
+                            <ProductForm
+                                key={location.pathname}
+                                onUpdated={actualizarProductoEnCatalogo}
+                            />
+                        }
+                    />
                     <Route
                         path="/carrito"
                         element={
@@ -263,8 +260,6 @@ function App() {
                             />
                         }
                     />
-
-                    {/* Redirección de rutas inexistentes */}
                     <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
             </main>
