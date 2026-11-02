@@ -27,7 +27,14 @@ function Carrito({ carrito, onEliminar, onComprar }) {
                 <div className="carrito-productos">
                     {carrito.map((producto) => (
                         <article className="carrito-producto" key={producto._id}>
-                            <img src={`/${producto.imagenUrl}`} alt={producto.nombre} />
+                            <img
+                                src={
+                                    (producto.imagenUrl ?? producto.imagen ?? "").startsWith("http")
+                                        ? (producto.imagenUrl ?? producto.imagen)
+                                        : `/${(producto.imagenUrl ?? producto.imagen ?? "").replace(/^\//, "")}`
+                                }
+                                alt={producto.nombre}
+                            />
 
                             <div className="carrito-producto-info">
                                 <h2>{producto.nombre}</h2>

@@ -9,6 +9,8 @@ import ContactForm from "./components/ContactForm";
 import Carrito from "./components/Carrito";
 import ProductForm from "./components/ProductForm";
 
+const API_URL = (import.meta.env.VITE_API_URL || "http://localhost:3000").replace(/\/$/, "");
+
 function DetalleProductoRuta({ onAgregar, onEliminar }) {
     const { id } = useParams();
     const [producto, setProducto] = useState(null);
@@ -25,7 +27,7 @@ function DetalleProductoRuta({ onAgregar, onEliminar }) {
 
             try {
                 const respuesta = await fetch(
-                    `http://localhost:3000/api/productos/${encodeURIComponent(id)}`,
+                    `${API_URL}/api/productos/${encodeURIComponent(id)}`,
                     { signal: controller.signal }
                 );
                 const datos = await respuesta.json();
@@ -68,13 +70,7 @@ function DetalleProductoRuta({ onAgregar, onEliminar }) {
         );
     }
 
-    return (
-        <ProductDetail
-            producto={producto}
-            onAgregar={onAgregar}
-            onEliminar={onEliminar}
-        />
-    );
+    return <ProductDetail producto={producto} onAgregar={onAgregar} onEliminar={onEliminar} />;
 }
 
 function App() {
@@ -86,7 +82,7 @@ function App() {
     const [carrito, setCarrito] = useState([]);
 
     useEffect(() => {
-        fetch("http://localhost:3000/api/productos")
+        fetch(`${API_URL}/api/productos`)
             .then((respuesta) => {
                 if (!respuesta.ok) {
                     throw new Error("Error al obtener los productos");
@@ -170,7 +166,7 @@ function App() {
 
         try {
             const respuesta = await fetch(
-                `http://localhost:3000/api/productos/${encodeURIComponent(idEliminado)}`,
+                `${API_URL}/api/productos/${encodeURIComponent(idEliminado)}`,
                 { method: "DELETE" }
             );
 
@@ -211,7 +207,10 @@ function App() {
 
             <main>
                 <Routes>
-                    <Route path="/" element={estadoProductos || <Home productos={productos} />} />
+                    <Route
+                        path="/"
+                        element={<Home productos={productos} cargando={cargando} error={error} />}
+                    />
                     <Route
                         path="/productos"
                         element={
@@ -229,7 +228,12 @@ function App() {
                     />
                     <Route
                         path="/productos/:id"
-                        element={<DetalleProductoRuta onAgregar={agregarAlCarrito} onEliminar={eliminarProducto} />}
+                        element={
+                            <DetalleProductoRuta
+                                onAgregar={agregarAlCarrito}
+                                onEliminar={eliminarProducto}
+                            />
+                        }
                     />
                     <Route path="/contacto" element={<ContactForm />} />
                     <Route

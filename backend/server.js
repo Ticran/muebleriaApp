@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const conectarDB = require("./db");
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // Middleware para parsear bodies JSON (futuras peticiones POST)
 app.use(express.json());

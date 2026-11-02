@@ -2,11 +2,18 @@ import { useNavigate } from "react-router-dom";
 
 function ProductCard({ producto }) {
     const navigate = useNavigate();
+    const rutaImagen = producto.imagenUrl ?? producto.imagen ?? "";
+    const srcImagen =
+        rutaImagen.startsWith("http://") ||
+        rutaImagen.startsWith("https://") ||
+        rutaImagen.startsWith("/")
+            ? rutaImagen
+            : `/${rutaImagen}`;
 
     return (
         <div className="product-card">
             {/* Imagen del producto */}
-            <img src={`/${producto.imagenUrl}`} alt={producto.nombre} />
+            <img src={srcImagen} alt={producto.nombre} />
 
             {/* Nombre y precio del producto */}
             <h3>{producto.nombre}</h3>

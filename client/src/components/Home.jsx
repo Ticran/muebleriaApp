@@ -1,7 +1,7 @@
 import ProductCard from "./ProductCard";
 import { useNavigate } from "react-router-dom";
 
-function Home({ productos }) {
+function Home({ productos, cargando = false, error = null }) {
     // Hook de React Router para navegar entre las distintas rutas
     const navigate = useNavigate();
 
@@ -31,11 +31,17 @@ function Home({ productos }) {
             <section id="productos-destacados">
                 <h2>Productos destacados</h2>
 
-                <div className="productos-grid">
-                    {productosDestacados.map((producto) => (
-                        <ProductCard key={producto._id} producto={producto} />
-                    ))}
-                </div>
+                {cargando ? (
+                    <p className="mensaje-carga">Cargando productos...</p>
+                ) : error ? (
+                    <p className="mensaje-error">{error}</p>
+                ) : (
+                    <div className="productos-grid">
+                        {productosDestacados.map((producto) => (
+                            <ProductCard key={producto._id} producto={producto} />
+                        ))}
+                    </div>
+                )}
             </section>
         </>
     );

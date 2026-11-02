@@ -4,12 +4,19 @@ function ProductDetail({ producto, onAgregar, onEliminar }) {
     // Hook de React Router para navegar entre las distintas rutas
     const navigate = useNavigate();
     const idProducto = producto.id ?? producto._id;
+    const rutaImagen = producto.imagenUrl ?? producto.imagen ?? "";
+    const srcImagen =
+        rutaImagen.startsWith("http://") ||
+        rutaImagen.startsWith("https://") ||
+        rutaImagen.startsWith("/")
+            ? rutaImagen
+            : `/${rutaImagen}`;
 
     return (
         <section className="producto-detalle">
             {/* Imagen del producto */}
             <div className="detalle-imagen">
-                <img src={`/${producto.imagenUrl ?? producto.imagen}`} alt={producto.nombre} />
+                <img src={srcImagen} alt={producto.nombre} />
             </div>
 
             {/* Información y características del producto */}
@@ -17,6 +24,10 @@ function ProductDetail({ producto, onAgregar, onEliminar }) {
                 <p className="detalle-categoria">MUEBLES HERMANOS JOTA</p>
 
                 <h1>{producto.nombre}</h1>
+
+                {producto.descripcion && (
+                    <p className="detalle-descripcion">{producto.descripcion}</p>
+                )}
 
                 <p className="detalle-precio">${producto.precio.toLocaleString("es-AR")}</p>
 
