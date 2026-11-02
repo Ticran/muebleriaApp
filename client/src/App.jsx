@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Navigate, Route, Routes, useLocation, useParams } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation, useNavigate, useParams } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./components/Home";
@@ -9,7 +9,7 @@ import ContactForm from "./components/ContactForm";
 import Carrito from "./components/Carrito";
 import ProductForm from "./components/ProductForm";
 
-function DetalleProductoRuta({ onAgregar }) {
+function DetalleProductoRuta({ onAgregar, onEliminar }) {
     const { id } = useParams();
     const [producto, setProducto] = useState(null);
     const [cargando, setCargando] = useState(true);
@@ -68,11 +68,18 @@ function DetalleProductoRuta({ onAgregar }) {
         );
     }
 
-    return <ProductDetail producto={producto} onAgregar={onAgregar} />;
+    return (
+        <ProductDetail
+            producto={producto}
+            onAgregar={onAgregar}
+            onEliminar={onEliminar}
+        />
+    );
 }
 
 function App() {
     const location = useLocation();
+    const navigate = useNavigate();
     const [productos, setProductos] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
@@ -158,6 +165,35 @@ function App() {
         );
     }
 
+    async function eliminarProducto(id) {
+        const idEliminado = String(id);
+
+        try {
+            const respuesta = await fetch(
+                `http://localhost:3000/api/productos/${encodeURIComponent(idEliminado)}`,
+                { method: "DELETE" }
+            );
+
+            if (!respuesta.ok) {
+                throw new Error("Error al eliminar el producto");
+            }
+
+            setProductos((actuales) =>
+                actuales.filter((producto) => String(producto._id ?? producto.id) !== idEliminado)
+            );
+            setCarrito((actual) =>
+                actual.filter((producto) => String(producto._id ?? producto.id) !== idEliminado)
+            );
+
+            navigate("/productos", {
+                state: { mensaje: "Producto eliminado correctamente." }
+            });
+        } catch (err) {
+            console.error("Error al eliminar el producto:", err);
+            setError("No se pudo eliminar el producto");
+        }
+    }
+
     const cantidadCarrito = carrito.reduce((total, producto) => total + producto.cantidad, 0);
     const estadoProductos = cargando ? (
         <section className="catalogo">
@@ -193,7 +229,7 @@ function App() {
                     />
                     <Route
                         path="/productos/:id"
-                        element={<DetalleProductoRuta onAgregar={agregarAlCarrito} />}
+                        element={<DetalleProductoRuta onAgregar={agregarAlCarrito} onEliminar={eliminarProducto} />}
                     />
                     <Route path="/contacto" element={<ContactForm />} />
                     <Route
