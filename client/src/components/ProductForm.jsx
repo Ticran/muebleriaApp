@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+const API_URL = (import.meta.env.VITE_API_URL || "http://localhost:3000").replace(/\/$/, "");
+
 const formularioInicial = {
     nombre: "",
     descripcion: "",
@@ -29,7 +31,7 @@ function ProductForm({ onCreated, onUpdated }) {
         async function cargarProducto() {
             try {
                 const respuesta = await fetch(
-                    `http://localhost:3000/api/productos/${encodeURIComponent(id)}`,
+                    `${API_URL}/api/productos/${encodeURIComponent(id)}`,
                     { signal: controller.signal }
                 );
                 const producto = await respuesta.json();
@@ -99,7 +101,7 @@ function ProductForm({ onCreated, onUpdated }) {
             const respuesta = await fetch(
                 modoEdicion
                     ? `http://localhost:3000/api/productos/${encodeURIComponent(id)}`
-                    : "http://localhost:3000/api/productos",
+                    : `${API_URL}/api/productos`,
                 {
                     method: modoEdicion ? "PUT" : "POST",
                     headers: { "Content-Type": "application/json" },

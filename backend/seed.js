@@ -20,6 +20,6 @@ async function seed() {
 }
 
 seed().catch((error) => {
-    console.error(":x: Falló el seed:", error.message);
+    console.error("❌ Falló el seed:", error.message);
     process.exit(1);
 });
