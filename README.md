@@ -1,52 +1,70 @@
 # Mueblería Hermanos Jota
 
 Curso de Desarrollo Web | ITBA  
-Sprint 3 y 4 · Grupo 11 · Turno Mañana
+Sprint 5 y 6 · Grupo 11 · Turno Mañana
 
 ---
 
 ## Descripción
 
-Sitio web e-commerce para la mueblería **Hermanos Jota**, construido utilizando React para el frontend y Node.js con Express para el backend. 
-La aplicacion permite visualizar el catálogo de productos, consultar el detalle de cada mueble, agregar productos al carrito y completar formulario de contacto.
+Aplicación web fullstack e-commerce para la mueblería **Hermanos Jota**, construida utilizando **React** (con React Router DOM) para el frontend, **Node.js con Express** para el backend y **MongoDB Atlas con Mongoose** para la persistencia de datos en la nube.
+
+La aplicación permite visualizar el catálogo de productos en tiempo real, consultar el detalle de cada mueble, dar de alta nuevos productos, editar o eliminar productos existentes (CRUD completo), gestionar el carrito de compras y completar el formulario de contacto.
+
+---
+
+## Deploy en Producción
+
+- 🌐 **Frontend (Vercel):** [https://muebleria-app-omega.vercel.app/](https://muebleria-app-omega.vercel.app/)
+- 🚀 **Backend API (Render):** [https://muebleria-hermanos-jota-api-g37f.onrender.com/](https://muebleria-hermanos-jota-api-g37f.onrender.com/)
+  - Endpoint de productos: [https://muebleria-hermanos-jota-api-g37f.onrender.com/api/productos](https://muebleria-hermanos-jota-api-g37f.onrender.com/api/productos)
 
 ---
 
 ## Arquitectura del proyecto
 
-El proyecto está dividido en dos partes principales:
+El proyecto está dividido en tres capas principales:
 
-- **Frontend:** aplicación desarrollada con React y Vite.
-- **Backend:** servidor desarrollado con Node.js y Express, encargado de proporcionar la API de productos.
-
-La comunicación entre ambas partes se realiza mediante peticiones HTTP utilizando `fetch`.
+- **Frontend (`/client`):** aplicación SPA desarrollada con React, Vite y React Router DOM.
+- **Backend (`/backend`):** API RESTful desarrollada con Node.js y Express.
+- **Persistencia (MongoDB Atlas):** base de datos NoSQL en la nube modelada mediante esquemas de Mongoose.
 
 ```text
 muebleriaApp/
 ├── client/
-│   └── src/
-│       ├── components/
-│       ├── App.jsx
-│       └── index.css
+│   ├── src/
+│   │   ├── components/
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   │   └── index.css
+│   ├── .env.example
+│   └── vercel.json
 │
 ├── backend/
 │   ├── data/
 │   ├── middlewares/
-│   └── routes/
+│   ├── models/
+│   ├── routes/
+│   ├── db.js
+│   ├── seed.js
+│   ├── server.js
+│   └── .env.example
 │
 └── README.md
 ```
+
 ---
+
 ## Tecnologías utilizadas
 
-- **React** — desarrollo de la interfaz mediante componentes reutilizables y manejo de estados.
-- **Vite** — herramienta utilizada para crear y ejecutar el frontend en entorno de desarrollo.
-- **JavaScript** — lógica de la aplicación, manejo de eventos, estados y comunicación con la API.
-- **CSS3** — diseño responsivo mediante Flexbox, CSS Grid, variables CSS y media queries.
-- **Node.js** — entorno de ejecución utilizado para desarrollar el backend.
-- **Express** — framework utilizado para crear el servidor y las rutas de la API REST.
-- **Fetch API** — comunicación entre el frontend y el backend mediante peticiones HTTP.
-- **Git y GitHub** — control de versiones y colaboración en equipo.
+- **React** — desarrollo de la interfaz mediante componentes reutilizables y formularios controlados.
+- **React Router DOM** — ruteo dinámico (`useParams`) y navegación programática (`useNavigate`).
+- **Vite** — entorno de desarrollo y empaquetado del frontend.
+- **CSS3** — diseño responsivo (Mobile First) mediante Flexbox, CSS Grid y variables CSS.
+- **Node.js y Express** — servidor y rutas de la API RESTful (`GET`, `POST`, `PUT`, `DELETE`).
+- **MongoDB Atlas y Mongoose** — base de datos en la nube, esquemas y validaciones del modelo `Product`.
+- **Render y Vercel** — despliegue en la nube del backend y frontend respectivamente.
+- **Git y GitHub** — control de versiones y trabajo colaborativo mediante ramas y Pull Requests.
 
 ---
 
@@ -62,52 +80,58 @@ muebleriaApp/
 
 ---
 
-## Instrucciones de instalación y ejecución
+## Instrucciones de instalación y ejecución local
 
-### Backend
+### 1. Backend
 
-Ingresar a la carpeta del backend:
+Ingresar a la carpeta del backend e instalar las dependencias:
 
+```bash
 cd backend
-
-Instalar las dependencias:
-
 npm install
+```
 
-Iniciar el servidor:
+Crear un archivo `.env` en `backend/` (siguiendo el formato de `.env.example`) con la cadena de conexión a MongoDB:
 
+```env
+MONGO_URI=mongodb+srv://usuario:password@cluster.mongodb.net/muebleriaJotaDB
+```
+
+(Opcional) Cargar el catálogo inicial de productos en la base de datos:
+
+```bash
+npm run seed
+```
+
+Iniciar el servidor en modo desarrollo:
+
+```bash
 npm run dev
+```
 
-El backend se ejecuta en:
+El backend se ejecuta en `http://localhost:3000`.
 
-http://localhost:3000
+### 2. Frontend
 
+Abrir una nueva terminal, ingresar a la carpeta del frontend e instalar las dependencias:
 
-### Frontend
-
-Abrir una nueva terminal e ingresar a la carpeta del frontend:
-
+```bash
 cd client
-
-Instalar las dependencias:
-
 npm install
+```
 
 Iniciar el servidor de desarrollo:
 
+```bash
 npm run dev
+```
 
-El frontend se ejecuta en:
+El frontend se ejecuta en `http://localhost:5173`.
 
-http://localhost:5173
+> **IMPORTANTE:** Para utilizar la aplicación localmente, deben estar ejecutándose ambos servidores simultáneamente.
 
-IMPORTANTE: Para utilizar la aplicación correctamente, deben estar ejecutándose ambos servidores simultáneamente.
 ---
 
 ## Repositorio
 
 🔗 [github.com/Ticran/muebleriaApp](https://github.com/Ticran/muebleriaApp)
-
-## Deploy
-
-🌐 Sitio web: [Hermanos Jota](https://ticran.github.io/muebleriaApp/)
