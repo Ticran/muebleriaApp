@@ -132,6 +132,25 @@ El frontend se ejecuta en `http://localhost:5173`.
 
 ---
 
+## Usuarios de prueba (seed de autenticación)
+
+Para crear o actualizar los usuarios con los que se prueba el login, ejecutar desde `backend/`:
+
+```bash
+node --env-file=.env seedUsuario.js
+```
+
+El script es idempotente (si los usuarios ya existen, los actualiza) y deja disponibles estas credenciales de prueba:
+
+| Rol            | Email                      | Contraseña |
+| -------------- | -------------------------- | ---------- |
+| Cliente        | `prueba@hermanosjota.test` | `clave123` |
+| Administrador  | `admin@hermanosjota.test`  | `clave123` |
+
+Son credenciales **solo de prueba**, no se usan en producción. Los valores se pueden personalizar con las variables `SEED_USUARIO_EMAIL`, `SEED_USUARIO_PASSWORD`, `SEED_USUARIO_NOMBRE`, `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD` y `SEED_ADMIN_NOMBRE` antes de correr el seed.
+
+---
+
 ## Repositorio
 
 🔗 [github.com/Ticran/muebleriaApp](https://github.com/Ticran/muebleriaApp)

@@ -14,6 +14,7 @@
     10. Formulario de contacto
     11. Footer
     12. Carrito
+    13. Login
 
    Breakpoints (solo min-width, nunca max-width):
      · 600px  → tablet pequeña (2 columnas de productos, fila en
@@ -249,6 +250,32 @@ p {
     border-bottom-color: var(--siena);
 }
 
+/* Cerrar sesión: mismo tratamiento que los links del menú */
+.menu .btn-cerrar-sesion {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 48px;
+    padding: 0.6rem 0.25rem;
+    font-family: "Inter", sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--tinta);
+    text-align: left;
+    background: transparent;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.menu .btn-cerrar-sesion:hover,
+.menu .btn-cerrar-sesion:focus-visible {
+    color: var(--siena);
+    border-bottom-color: var(--siena);
+    outline: none;
+}
+
 /* --- Botón hamburguesa (solo mobile) --- */
 
 .btn-menu {
@@ -381,6 +408,13 @@ p {
         font-size: 0.95rem;
     }
 
+    .menu .btn-cerrar-sesion {
+        width: auto;
+        min-height: 0;
+        padding: 0 0 2px;
+        font-size: 0.95rem;
+    }
+
     .btn-menu {
         display: none;
     }
@@ -426,6 +460,26 @@ p {
     font-weight: 300;
     max-width: 34ch;
     color: var(--lino);
+}
+
+/* Botones del hero: en fila y con ajuste automático en pantallas chicas */
+.hero-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+/* Variante secundaria sobre el fondo oscuro del hero */
+.hero .btn-acceder {
+    background: transparent;
+    color: var(--papel);
+    border: 1px solid var(--papel);
+}
+
+.hero .btn-acceder:hover,
+.hero .btn-acceder:focus-visible {
+    background: var(--papel);
+    color: var(--tinta);
 }
 
 @media (min-width: 600px) {
@@ -1172,5 +1226,258 @@ p {
 
     .carrito-pagina h1 {
         margin-bottom: 2rem;
+    }
+}
+
+/* ================================================================
+   13. LOGIN — BASE MOBILE (solo el formulario)
+================================================================ */
+
+.login {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    width: 100%;
+}
+
+.login-formulario {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(2rem, 8vw, 3.5rem) 1.25rem;
+    background: var(--crema);
+}
+
+.login-contenido {
+    width: min(100%, 26rem);
+    display: flex;
+    flex-direction: column;
+}
+
+.login-cabecera {
+    margin-bottom: 2rem;
+}
+
+.login-kicker {
+    margin-bottom: 0.35rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--siena);
+}
+
+.login-cabecera h1 {
+    margin-bottom: 0.9rem;
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: clamp(2rem, 8vw, 2.75rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--madera);
+}
+
+.login-descripcion {
+    max-width: 38ch;
+    color: var(--tinta-suave);
+    font-size: 0.95rem;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    padding: clamp(1.25rem, 5vw, 2rem);
+    background: var(--papel);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+}
+
+.login-form .campo {
+    margin-bottom: 1.25rem;
+}
+
+.login-form .campo label {
+    font-size: 0.9rem;
+}
+
+.login-form .campo input {
+    min-height: 48px;
+    background: var(--crema);
+}
+
+.login-form .campo input:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.login-input-con-icono {
+    position: relative;
+    display: flex;
+}
+
+.login-form .login-input-con-icono input {
+    padding-right: 3.25rem;
+}
+
+.login-toggle {
+    position: absolute;
+    top: 50%;
+    right: 0.35rem;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    color: var(--tinta-suave);
+    background: transparent;
+    border: 0;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: color 0.2s ease, background 0.2s ease;
+}
+
+.login-toggle:hover,
+.login-toggle:focus-visible {
+    color: var(--siena);
+    background: rgba(160, 82, 45, 0.08);
+    outline: none;
+}
+
+.login-toggle:focus-visible {
+    box-shadow: 0 0 0 3px rgba(160, 82, 45, 0.2);
+}
+
+.login-toggle:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.login .login-mensaje {
+    margin-bottom: 1rem;
+    padding: 0.85rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.login .login-mensaje.mensaje-error {
+    background: rgba(211, 47, 47, 0.08);
+    border: 1px solid rgba(211, 47, 47, 0.3);
+}
+
+.login-boton {
+    width: 100%;
+    min-height: 48px;
+}
+
+.login-boton:disabled {
+    background: var(--siena-oscura);
+    opacity: 0.65;
+    transform: none;
+    cursor: progress;
+}
+
+/* El panel visual solo se muestra a partir de tablet. */
+.login-panel {
+    display: none;
+}
+
+/* En el login no van ni la navegación ni el pie global: así el
+   formulario queda centrado de punta a punta, sin scroll extra. */
+body:has(.login) .header,
+body:has(.login) .footer {
+    display: none;
+}
+
+/* --- Tablet y desktop: dos columnas --- */
+@media (min-width: 768px) {
+    .login {
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+        min-height: 100vh;
+    }
+
+    .login-formulario {
+        padding: clamp(1.5rem, 4vh, 3rem) clamp(2rem, 5vw, 4rem);
+    }
+
+    .login-panel {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        padding: clamp(2rem, 5vw, 4rem);
+        background:
+            radial-gradient(circle at 50% 25%, rgba(212, 164, 55, 0.18), transparent 60%),
+            linear-gradient(155deg, var(--madera) 0%, var(--siena-oscura) 100%);
+    }
+
+    .login-panel-contenido {
+        max-width: 32rem;
+        margin-inline: auto;
+        color: var(--papel);
+        text-align: center;
+    }
+
+    .login-logo {
+        display: grid;
+        place-items: center;
+        width: clamp(96px, 12vw, 160px);
+        aspect-ratio: 1;
+        margin: 0 auto 2rem;
+        padding: 1rem;
+        background: var(--papel);
+        border-radius: 50%;
+        box-shadow: var(--sombra);
+    }
+
+    .login-logo img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .login-panel-contenido::before {
+        content: "";
+        display: block;
+        width: 48px;
+        height: 2px;
+        margin: 0 auto 1.25rem;
+        background: var(--oro);
+    }
+
+    .login-panel-kicker {
+        margin-bottom: 1rem;
+        font-size: 0.75rem;
+        font-weight: 500;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--oro);
+    }
+
+    .login-panel blockquote {
+        margin-bottom: 1rem;
+        font-family: "Playfair Display", Georgia, serif;
+        font-size: clamp(1.5rem, 3vw, 2.4rem);
+        line-height: 1.2;
+    }
+
+    .login-panel-texto {
+        max-width: 40ch;
+        color: var(--lino);
+        font-size: 0.95rem;
+    }
+}
+
+/* --- Desktop amplio: columnas equilibradas --- */
+@media (min-width: 1200px) {
+    .login {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+
+    .login-formulario {
+        padding-inline: clamp(3rem, 7vw, 7rem);
     }
 }

@@ -1,9 +1,18 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext.js";
 
 function Navbar({ cantidadCarrito = 0 }) {
     // Estado del menú mobile (hamburguesa)
     const [menuAbierto, setMenuAbierto] = useState(false);
+    const { usuario, cerrarSesion } = useAuth();
+    const navigate = useNavigate();
+
+    function handleCerrarSesion() {
+        cerrarSesion();
+        setMenuAbierto(false);
+        navigate("/", { replace: true });
+    }
 
     return (
         <header className="header">
@@ -47,6 +56,18 @@ function Navbar({ cantidadCarrito = 0 }) {
                                 Crear producto
                             </Link>
                         </li>
+
+                        {usuario && (
+                            <li>
+                                <button
+                                    type="button"
+                                    className="btn-cerrar-sesion"
+                                    onClick={handleCerrarSesion}
+                                >
+                                    Cerrar sesión
+                                </button>
+                            </li>
+                        )}
                     </ul>
                 </nav>
 

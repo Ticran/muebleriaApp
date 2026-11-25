@@ -1,9 +1,11 @@
 import ProductCard from "./ProductCard";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext.js";
 
 function Home({ productos, cargando = false, error = null }) {
     // Hook de React Router para navegar entre las distintas rutas
     const navigate = useNavigate();
+    const { token } = useAuth();
 
     // Tomamos los primeros 5 productos para la sección de destacados
     const productosDestacados = productos.slice(0, 5);
@@ -21,9 +23,17 @@ function Home({ productos, cargando = false, error = null }) {
                         nobles.
                     </p>
 
-                    <button className="btn" onClick={() => navigate("/productos")}>
-                        Ver Catálogo
-                    </button>
+                    <div className="hero-acciones">
+                        <button className="btn" onClick={() => navigate("/productos")}>
+                            Ver Catálogo
+                        </button>
+
+                        {!token && (
+                            <Link to="/login" className="btn btn-acceder">
+                                Acceder
+                            </Link>
+                        )}
+                    </div>
                 </div>
             </section>
 
