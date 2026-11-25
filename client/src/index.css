@@ -250,6 +250,32 @@ p {
     border-bottom-color: var(--siena);
 }
 
+/* Cerrar sesión: mismo tratamiento que los links del menú */
+.menu .btn-cerrar-sesion {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 48px;
+    padding: 0.6rem 0.25rem;
+    font-family: "Inter", sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--tinta);
+    text-align: left;
+    background: transparent;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.menu .btn-cerrar-sesion:hover,
+.menu .btn-cerrar-sesion:focus-visible {
+    color: var(--siena);
+    border-bottom-color: var(--siena);
+    outline: none;
+}
+
 /* --- Botón hamburguesa (solo mobile) --- */
 
 .btn-menu {
@@ -382,6 +408,13 @@ p {
         font-size: 0.95rem;
     }
 
+    .menu .btn-cerrar-sesion {
+        width: auto;
+        min-height: 0;
+        padding: 0 0 2px;
+        font-size: 0.95rem;
+    }
+
     .btn-menu {
         display: none;
     }
@@ -427,6 +460,26 @@ p {
     font-weight: 300;
     max-width: 34ch;
     color: var(--lino);
+}
+
+/* Botones del hero: en fila y con ajuste automático en pantallas chicas */
+.hero-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+/* Variante secundaria sobre el fondo oscuro del hero */
+.hero .btn-acceder {
+    background: transparent;
+    color: var(--papel);
+    border: 1px solid var(--papel);
+}
+
+.hero .btn-acceder:hover,
+.hero .btn-acceder:focus-visible {
+    background: var(--papel);
+    color: var(--tinta);
 }
 
 @media (min-width: 600px) {
