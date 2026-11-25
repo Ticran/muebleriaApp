@@ -8,6 +8,7 @@ import ProductDetail from "./components/ProductDetail";
 import ContactForm from "./components/ContactForm";
 import Carrito from "./components/Carrito";
 import ProductForm from "./components/ProductForm";
+import Login from "./components/Login";
 
 const API_URL = (import.meta.env.VITE_API_URL || "http://localhost:3000").replace(/\/$/, "");
 
@@ -236,6 +237,7 @@ function App() {
                         }
                     />
                     <Route path="/contacto" element={<ContactForm />} />
+                    <Route path="/login" element={<Login />} />
                     <Route
                         path="/admin/crear-producto"
                         element={
