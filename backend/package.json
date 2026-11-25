@@ -7,15 +7,18 @@
     "start": "node server.js",
     "dev": "node --env-file=.env --watch server.js",
     "seed": "node --env-file=.env seed.js",
-    "test": "node --test tests/contrato.test.js"
+    "test": "node --test tests/contrato.test.js",
+    "test:auth": "node --test tests/auth.test.cjs"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
     "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.11.4"
   },
   "devDependencies": {

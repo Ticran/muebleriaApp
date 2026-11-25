@@ -16,6 +16,7 @@ const logger = require("./middlewares/logger.js");
 // Rutas de la API
 const productRoutes = require("./routes/productRoutes");
 const categoriasRoutes = require("./routes/categorias");
+const usuariosRoutes = require("./routes/usuarios");
 app.use(logger);
 
 // Ruta de prueba inicial
@@ -26,6 +27,7 @@ app.get("/", (req, res) => {
 //Montaje del router de productos en /api/productos
 app.use("/api/productos", productRoutes);
 app.use("/api/categorias", categoriasRoutes);
+app.use("/api/usuarios", usuariosRoutes);
 
 // Manejador de rutas no encontradas (404)
 app.use((req, res, next) => {

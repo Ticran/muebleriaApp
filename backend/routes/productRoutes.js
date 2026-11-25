@@ -9,6 +9,7 @@ const router = express.Router();
 
 const Product = require("../models/Product");
 const Categoria = require("../models/Categoria");
+const { verificarToken, soloAdmin } = require("../middleware/auth");
 
 // GET /api/productos
 router.get("/", async (req, res) => {
@@ -41,7 +42,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // POST /api/productos
-router.post("/", async (req, res) => {
+router.post("/", verificarToken, soloAdmin, async (req, res) => {
     if (req.body.categoria) {
         const existeCategoria = await Categoria.findById(req.body.categoria);
         if (!existeCategoria) {
@@ -54,7 +55,7 @@ router.post("/", async (req, res) => {
 });
 
 // PUT /api/productos/:id
-router.put("/:id", async (req, res) => {
+router.put("/:id", verificarToken, soloAdmin, async (req, res) => {
     if (req.body.categoria) {
         const existeCategoria = await Categoria.findById(req.body.categoria);
         if (!existeCategoria) {
@@ -75,7 +76,7 @@ router.put("/:id", async (req, res) => {
 });
 
 // DELETE /api/productos/:id
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", verificarToken, soloAdmin, async (req, res) => {
     const productoEliminado = await Product.findByIdAndDelete(req.params.id);
 
     if (!productoEliminado) {
