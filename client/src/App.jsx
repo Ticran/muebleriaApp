@@ -9,6 +9,7 @@ import ContactForm from "./components/ContactForm";
 import Carrito from "./components/Carrito";
 import ProductForm from "./components/ProductForm";
 import Login from "./components/Login";
+import { useCart } from "./context/useCart";
 
 const API_URL = (import.meta.env.VITE_API_URL || "http://localhost:3000").replace(/\/$/, "");
 
@@ -75,12 +76,13 @@ function DetalleProductoRuta({ onAgregar, onEliminar }) {
 }
 
 function App() {
+    const { agregarAlCarrito, eliminarDelCarrito } = useCart();
     const location = useLocation();
     const navigate = useNavigate();
     const [productos, setProductos] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
-    const [carrito, setCarrito] = useState([]);
+    
 
     useEffect(() => {
         fetch(`${API_URL}/api/productos`)
@@ -105,35 +107,7 @@ function App() {
         window.scrollTo(0, 0);
     }, [location.pathname]);
 
-    function agregarAlCarrito(producto) {
-        setCarrito((actual) => {
-            const idProducto = producto._id ?? producto.id;
-            const existente = actual.find((item) => (item._id ?? item.id) === idProducto);
-
-            if (existente) {
-                return actual.map((item) =>
-                    (item._id ?? item.id) === idProducto
-                        ? { ...item, cantidad: item.cantidad + 1 }
-                        : item
-                );
-            }
-
-            return [...actual, { ...producto, cantidad: 1 }];
-        });
-    }
-
-    function eliminarDelCarrito(id) {
-        setCarrito((actual) => actual.filter((producto) => (producto._id ?? producto.id) !== id));
-    }
-
-    function comprarProducto(producto) {
-        if (producto) {
-            eliminarDelCarrito(producto._id ?? producto.id);
-            return;
-        }
-
-        setCarrito([]);
-    }
+    
 
     function agregarProductoAlCatalogo(producto) {
         const productoNormalizado = {
@@ -178,9 +152,8 @@ function App() {
             setProductos((actuales) =>
                 actuales.filter((producto) => String(producto._id ?? producto.id) !== idEliminado)
             );
-            setCarrito((actual) =>
-                actual.filter((producto) => String(producto._id ?? producto.id) !== idEliminado)
-            );
+            eliminarDelCarrito(idEliminado);
+            
 
             navigate("/productos", {
                 state: { mensaje: "Producto eliminado correctamente." }
@@ -191,7 +164,7 @@ function App() {
         }
     }
 
-    const cantidadCarrito = carrito.reduce((total, producto) => total + producto.cantidad, 0);
+    
     const estadoProductos = cargando ? (
         <section className="catalogo">
             <p className="mensaje-carga">Cargando productos...</p>
@@ -204,7 +177,7 @@ function App() {
 
     return (
         <>
-            <Navbar cantidadCarrito={cantidadCarrito} />
+            <Navbar />
 
             <main>
                 <Routes>
@@ -260,9 +233,7 @@ function App() {
                         path="/carrito"
                         element={
                             <Carrito
-                                carrito={carrito}
-                                onEliminar={eliminarDelCarrito}
-                                onComprar={comprarProducto}
+                                
                             />
                         }
                     />
