@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.js";
+import { useCart } from "../context/useCart";
 
-function Navbar({ cantidadCarrito = 0 }) {
+function Navbar() {
+    
+    // Estado del menú mobile (hamburguesa)
+    const { cantidadCarrito } = useCart();
     const [menuAbierto, setMenuAbierto] = useState(false);
     const { usuario, cerrarSesion } = useAuth();
     const navigate = useNavigate();

@@ -1,4 +1,6 @@
-function Carrito({ carrito, onEliminar, onComprar }) {
+import { useCart } from "../context/useCart";
+function Carrito() {
+    const { carrito, eliminarDelCarrito, comprarProducto } = useCart();
     // Calculamos el total de la compra
     const total = carrito.reduce(
         (acumulado, producto) => acumulado + producto.precio * producto.cantidad,
@@ -27,14 +29,7 @@ function Carrito({ carrito, onEliminar, onComprar }) {
                 <div className="carrito-productos">
                     {carrito.map((producto) => (
                         <article className="carrito-producto" key={producto._id}>
-                            <img
-                                src={
-                                    (producto.imagenUrl ?? producto.imagen ?? "").startsWith("http")
-                                        ? (producto.imagenUrl ?? producto.imagen)
-                                        : `/${(producto.imagenUrl ?? producto.imagen ?? "").replace(/^\//, "")}`
-                                }
-                                alt={producto.nombre}
-                            />
+                            <img src={`/${producto.imagenUrl}`} alt={producto.nombre} />
 
                             <div className="carrito-producto-info">
                                 <h2>{producto.nombre}</h2>
@@ -53,14 +48,14 @@ function Carrito({ carrito, onEliminar, onComprar }) {
                                 <div className="carrito-acciones">
                                     <button
                                         className="btn-comprar"
-                                        onClick={() => onComprar(producto)}
+                                        onClick={() => comprarProducto(producto)}
                                     >
                                         Comprar
                                     </button>
 
                                     <button
                                         className="btn-eliminar"
-                                        onClick={() => onEliminar(producto._id)}
+                                        onClick={() => eliminarDelCarrito(producto._id ?? producto.id)}
                                     >
                                         Eliminar del carrito
                                     </button>
@@ -80,7 +75,7 @@ function Carrito({ carrito, onEliminar, onComprar }) {
 
                     <p className="carrito-total">Total: ${total.toLocaleString("es-AR")}</p>
 
-                    <button className="btn-comprar-todo" onClick={() => onComprar(null)}>
+                    <button className="btn-comprar-todo" onClick={() => comprarProducto(null)}>
                         Comprar todo
                     </button>
                 </aside>
