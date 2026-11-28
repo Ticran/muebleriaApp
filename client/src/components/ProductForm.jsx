@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useAuth } from "../context/AuthContext.js";
 
 const API_URL = (import.meta.env.VITE_API_URL || "http://localhost:3000").replace(/\/$/, "");
 
@@ -20,6 +21,7 @@ function ProductForm({ onCreated, onUpdated }) {
     const [productoCargado, setProductoCargado] = useState(!modoEdicion);
     const [error, setError] = useState("");
     const navigate = useNavigate();
+    const { token } = useAuth();
 
     useEffect(() => {
         if (!id) {
@@ -104,7 +106,10 @@ function ProductForm({ onCreated, onUpdated }) {
                     : `${API_URL}/api/productos`,
                 {
                     method: modoEdicion ? "PUT" : "POST",
-                    headers: { "Content-Type": "application/json" },
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    },
                     body: JSON.stringify({
                         nombre: formulario.nombre.trim(),
                         descripcion: formulario.descripcion.trim(),
@@ -118,7 +123,8 @@ function ProductForm({ onCreated, onUpdated }) {
 
             if (!respuesta.ok) {
                 throw new Error(
-                    productoGuardado.error?.mensaje ||
+                    productoGuardado.error ||
+                        productoGuardado.message ||
                         `No se pudo ${modoEdicion ? "actualizar" : "crear"} el producto.`
                 );
             }

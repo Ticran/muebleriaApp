@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.js";
 
 function Navbar({ cantidadCarrito = 0 }) {
-    // Estado del menú mobile (hamburguesa)
     const [menuAbierto, setMenuAbierto] = useState(false);
     const { usuario, cerrarSesion } = useAuth();
     const navigate = useNavigate();
@@ -11,15 +10,18 @@ function Navbar({ cantidadCarrito = 0 }) {
     function handleCerrarSesion() {
         cerrarSesion();
         setMenuAbierto(false);
-        navigate("/", { replace: true });
+        navigate("/login", { replace: true });
+    }
+
+    function cerrarMenu() {
+        setMenuAbierto(false);
     }
 
     return (
         <header className="header">
             <div className="contenedor">
                 <div className="marca">
-                    {/* Link permite volver a la página de inicio sin recargar la aplicación */}
-                    <Link to="/" className="logo" onClick={() => setMenuAbierto(false)}>
+                    <Link to="/" className="logo" onClick={cerrarMenu}>
                         <img src="/imagenes/logo.svg" alt="Logo Hermanos Jota" />
                     </Link>
 
@@ -29,63 +31,90 @@ function Navbar({ cantidadCarrito = 0 }) {
                     </div>
                 </div>
 
-                {/* Menú de navegación principal */}
                 <nav className={`menu${menuAbierto ? " menu-abierto" : ""}`} id="menu-principal">
                     <ul>
                         <li>
-                            {/* Link reemplaza la navegación anterior mediante onNavegar */}
-                            <Link to="/" onClick={() => setMenuAbierto(false)}>
+                            <Link to="/" onClick={cerrarMenu}>
                                 Inicio
                             </Link>
                         </li>
 
                         <li>
-                            <Link to="/productos" onClick={() => setMenuAbierto(false)}>
+                            <Link to="/productos" onClick={cerrarMenu}>
                                 Catálogo
                             </Link>
                         </li>
 
                         <li>
-                            <Link to="/contacto" onClick={() => setMenuAbierto(false)}>
+                            <Link to="/contacto" onClick={cerrarMenu}>
                                 Contacto
                             </Link>
                         </li>
 
-                        <li>
-                            <Link to="/admin/crear-producto" onClick={() => setMenuAbierto(false)}>
-                                Crear producto
-                            </Link>
-                        </li>
+                        {!usuario && (
+                            <>
+                                <li>
+                                    <Link to="/login" onClick={cerrarMenu}>
+                                        Acceder
+                                    </Link>
+                                </li>
+
+                                <li>
+                                    <Link to="/registro" onClick={cerrarMenu}>
+                                        Registrarse
+                                    </Link>
+                                </li>
+                            </>
+                        )}
 
                         {usuario && (
-                            <li>
-                                <button
-                                    type="button"
-                                    className="btn-cerrar-sesion"
-                                    onClick={handleCerrarSesion}
-                                >
-                                    Cerrar sesión
-                                </button>
-                            </li>
+                            <>
+                                <li>
+                                    <Link to="/perfil" onClick={cerrarMenu}>
+                                        Mi perfil
+                                    </Link>
+                                </li>
+
+                                <li>
+                                    <Link to="/mis-pedidos" onClick={cerrarMenu}>
+                                        Mis pedidos
+                                    </Link>
+                                </li>
+
+                                {usuario.rol === "admin" && (
+                                    <li>
+                                        <Link to="/admin/crear-producto" onClick={cerrarMenu}>
+                                            Crear producto
+                                        </Link>
+                                    </li>
+                                )}
+
+                                <li>
+                                    <button
+                                        type="button"
+                                        className="btn-cerrar-sesion"
+                                        onClick={handleCerrarSesion}
+                                    >
+                                        Cerrar sesión
+                                    </button>
+                                </li>
+                            </>
                         )}
                     </ul>
                 </nav>
 
-                {/* Acceso al carrito y contador de productos */}
                 <div className="carrito">
                     <Link
                         to="/carrito"
                         id="carrito-link"
                         aria-label="Ver carrito"
-                        onClick={() => setMenuAbierto(false)}
+                        onClick={cerrarMenu}
                     >
                         <img src="/imagenes/shopping-cart.svg" alt="Carrito de compras" />
-
                         <span id="carrito-contador">{cantidadCarrito}</span>
                     </Link>
                 </div>
 
-                {/* Botón hamburguesa: solo visible en mobile (oculto ≥768px) */}
                 <button
                     type="button"
                     className="btn-menu"

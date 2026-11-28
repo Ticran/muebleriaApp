@@ -9,6 +9,10 @@ import ContactForm from "./components/ContactForm";
 import Carrito from "./components/Carrito";
 import ProductForm from "./components/ProductForm";
 import Login from "./components/Login";
+import Registro from "./components/Registro";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import Perfil from "./components/Perfil";
+import { useAuth } from "./context/AuthContext.js";
 
 const API_URL = (import.meta.env.VITE_API_URL || "http://localhost:3000").replace(/\/$/, "");
 
@@ -77,6 +81,7 @@ function DetalleProductoRuta({ onAgregar, onEliminar }) {
 function App() {
     const location = useLocation();
     const navigate = useNavigate();
+    const { token } = useAuth();
     const [productos, setProductos] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
@@ -168,16 +173,24 @@ function App() {
         try {
             const respuesta = await fetch(
                 `${API_URL}/api/productos/${encodeURIComponent(idEliminado)}`,
-                { method: "DELETE" }
+                {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
             );
 
+            const datos = await respuesta.json().catch(() => ({}));
+
             if (!respuesta.ok) {
-                throw new Error("Error al eliminar el producto");
+                throw new Error(datos.error || datos.message || "No se pudo eliminar el producto.");
             }
 
             setProductos((actuales) =>
                 actuales.filter((producto) => String(producto._id ?? producto.id) !== idEliminado)
             );
+
             setCarrito((actual) =>
                 actual.filter((producto) => String(producto._id ?? producto.id) !== idEliminado)
             );
@@ -187,7 +200,7 @@ function App() {
             });
         } catch (err) {
             console.error("Error al eliminar el producto:", err);
-            setError("No se pudo eliminar el producto");
+            setError(err.message || "No se pudo eliminar el producto.");
         }
     }
 
@@ -238,22 +251,27 @@ function App() {
                     />
                     <Route path="/contacto" element={<ContactForm />} />
                     <Route path="/login" element={<Login />} />
+                    <Route path="/registro" element={<Registro />} />
                     <Route
                         path="/admin/crear-producto"
                         element={
-                            <ProductForm
-                                key={location.pathname}
-                                onCreated={agregarProductoAlCatalogo}
-                            />
+                            <ProtectedRoute soloAdmin>
+                                <ProductForm
+                                    key={location.pathname}
+                                    onCreated={agregarProductoAlCatalogo}
+                                />
+                            </ProtectedRoute>
                         }
                     />
                     <Route
                         path="/admin/editar-producto/:id"
                         element={
-                            <ProductForm
-                                key={location.pathname}
-                                onUpdated={actualizarProductoEnCatalogo}
-                            />
+                            <ProtectedRoute soloAdmin>
+                                <ProductForm
+                                    key={location.pathname}
+                                    onUpdated={actualizarProductoEnCatalogo}
+                                />
+                            </ProtectedRoute>
                         }
                     />
                     <Route
@@ -264,6 +282,14 @@ function App() {
                                 onEliminar={eliminarDelCarrito}
                                 onComprar={comprarProducto}
                             />
+                        }
+                    />
+                    <Route
+                        path="/perfil"
+                        element={
+                            <ProtectedRoute>
+                                <Perfil />
+                            </ProtectedRoute>
                         }
                     />
                     <Route path="*" element={<Navigate to="/" replace />} />
