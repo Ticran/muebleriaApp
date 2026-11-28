@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.js";
 
 const API_URL = (import.meta.env.VITE_API_URL || "http://localhost:3000").replace(/\/$/, "");
@@ -47,37 +48,72 @@ function Perfil() {
 
     if (cargando) {
         return (
-            <section className="catalogo">
-                <p>Cargando perfil...</p>
+            <section className="perfil-pagina contenedor">
+                <p className="mensaje-carga">Cargando perfil...</p>
             </section>
         );
     }
 
     if (error) {
         return (
-            <section className="catalogo">
+            <section className="perfil-pagina contenedor">
                 <p className="mensaje-error">{error}</p>
             </section>
         );
     }
 
-    return (
-        <section className="catalogo">
-            <h1>Mi perfil</h1>
+    const esAdmin = usuario?.rol === "admin";
 
-            {usuario && (
-                <div>
-                    <p>
-                        <strong>Nombre:</strong> {usuario.nombre}
-                    </p>
-                    <p>
-                        <strong>Correo electrónico:</strong> {usuario.email}
-                    </p>
-                    <p>
-                        <strong>Rol:</strong> {usuario.rol}
-                    </p>
+    return (
+        <section className="perfil-pagina contenedor">
+            <div className="perfil-card">
+                <p className="admin-kicker">Mi Cuenta</p>
+                <div className="perfil-cabecera">
+                    <h1>{usuario?.nombre || "Mi perfil"}</h1>
+                    <span className={`perfil-rol-badge${esAdmin ? " rol-admin" : ""}`}>
+                        {esAdmin ? "Administrador" : "Cliente"}
+                    </span>
                 </div>
-            )}
+
+                {usuario && (
+                    <dl className="perfil-datos">
+                        <div>
+                            <dt>Nombre</dt>
+                            <dd>{usuario.nombre}</dd>
+                        </div>
+                        <div>
+                            <dt>Correo electrónico</dt>
+                            <dd>{usuario.email}</dd>
+                        </div>
+                        <div>
+                            <dt>Tipo de cuenta</dt>
+                            <dd>{esAdmin ? "Administrador del catálogo" : "Cliente"}</dd>
+                        </div>
+                    </dl>
+                )}
+
+                <div className="perfil-acciones">
+                    {esAdmin ? (
+                        <>
+                            <Link to="/admin" className="btn">
+                                Ir al Panel
+                            </Link>
+                            <Link to="/admin/crear-producto" className="btn-volver">
+                                + Nuevo producto
+                            </Link>
+                        </>
+                    ) : (
+                        <>
+                            <Link to="/mis-pedidos" className="btn-volver">
+                                Ver mis pedidos
+                            </Link>
+                            <Link to="/productos" className="btn-volver">
+                                Ir al catálogo
+                            </Link>
+                        </>
+                    )}
+                </div>
+            </div>
         </section>
     );
 }
