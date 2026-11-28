@@ -197,7 +197,7 @@ function App() {
             );
 
             if (redirigir) {
-                navigate("/productos", {
+                navigate("/admin", {
                     state: { mensaje: "Producto eliminado correctamente." }
                 });
             }

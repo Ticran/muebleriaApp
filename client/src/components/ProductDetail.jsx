@@ -37,12 +37,17 @@ function ProductDetail({ producto, onAgregar, onEliminar }) {
                 <p className="detalle-stock">Stock disponible: {producto.stock}</p>
 
                 <div className="detalle-botones">
-                    <button className="btn-comprar" onClick={() => onAgregar(producto)}>
-                        Agregar al carrito
-                    </button>
+                    {!esAdmin && (
+                        <button className="btn-comprar" onClick={() => onAgregar(producto)}>
+                            Agregar al carrito
+                        </button>
+                    )}
 
-                    <button className="btn-volver" onClick={() => navigate("/productos")}>
-                        Volver al catálogo
+                    <button
+                        className="btn-volver"
+                        onClick={() => navigate(esAdmin ? "/admin" : "/productos")}
+                    >
+                        {esAdmin ? "Volver al panel" : "Volver al catálogo"}
                     </button>
 
                     {esAdmin && (
