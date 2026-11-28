@@ -1,10 +1,11 @@
 import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.js";
 
 function Login() {
     const { iniciarSesion } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
     const [formulario, setFormulario] = useState({ email: "", password: "" });
     const [mostrarPassword, setMostrarPassword] = useState(false);
     const [enviando, setEnviando] = useState(false);
@@ -53,6 +54,11 @@ function Login() {
                     </header>
 
                     <form className="login-form" onSubmit={handleSubmit}>
+                        {location.state?.mensaje && (
+                            <p className="mensaje-exito login-mensaje" role="status">
+                                {location.state.mensaje}
+                            </p>
+                        )}
                         {error && (
                             <p className="mensaje-error login-mensaje" role="alert">
                                 {error}
