@@ -12,6 +12,7 @@ import Login from "./components/Login";
 import Registro from "./components/Registro";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import Perfil from "./components/Perfil";
+import AdminPanel from "./components/AdminPanel";
 import { useAuth } from "./context/AuthContext.js";
 
 const API_URL = (import.meta.env.VITE_API_URL || "http://localhost:3000").replace(/\/$/, "");
@@ -167,7 +168,7 @@ function App() {
         );
     }
 
-    async function eliminarProducto(id) {
+    async function eliminarProducto(id, { redirigir = true } = {}) {
         const idEliminado = String(id);
 
         try {
@@ -195,12 +196,17 @@ function App() {
                 actual.filter((producto) => String(producto._id ?? producto.id) !== idEliminado)
             );
 
-            navigate("/productos", {
-                state: { mensaje: "Producto eliminado correctamente." }
-            });
+            if (redirigir) {
+                navigate("/admin", {
+                    state: { mensaje: "Producto eliminado correctamente." }
+                });
+            }
         } catch (err) {
             console.error("Error al eliminar el producto:", err);
-            setError(err.message || "No se pudo eliminar el producto.");
+            if (!redirigir) {
+                throw err;
+            }
+            window.alert(err.message || "No se pudo eliminar el producto.");
         }
     }
 
@@ -252,6 +258,19 @@ function App() {
                     <Route path="/contacto" element={<ContactForm />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/registro" element={<Registro />} />
+                    <Route
+                        path="/admin"
+                        element={
+                            <ProtectedRoute soloAdmin>
+                                <AdminPanel
+                                    productos={productos}
+                                    cargando={cargando}
+                                    error={error}
+                                    onEliminar={eliminarProducto}
+                                />
+                            </ProtectedRoute>
+                        }
+                    />
                     <Route
                         path="/admin/crear-producto"
                         element={
